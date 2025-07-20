@@ -1,501 +1,14 @@
 <!DOCTYPE html>
-<html lang="en"><head><script>(function(firebaseConfig, initialAuthToken, appId) {
-        window.__firebase_config = firebaseConfig;
-        window.__initial_auth_token = initialAuthToken;
-        window.__app_id = appId;
-            })("\n{\n  \"apiKey\": \"AIzaSyCqyCcs2R2e7AegGjvFAwG98wlamtbHvZY\",\n  \"authDomain\": \"bard-frontend.firebaseapp.com\",\n  \"projectId\": \"bard-frontend\",\n  \"storageBucket\": \"bard-frontend.firebasestorage.app\",\n  \"messagingSenderId\": \"175205271074\",\n  \"appId\": \"1:175205271074:web:2b7bd4d34d33bf38e6ec7b\"\n}\n","eyJhbGciOiJSUzI1NiIsImtpZCI6ImM5OGExYTdkYzllN2M4NTJlZmFmNzExNDAxYTAzY2FkM2Y4ZjVhYzkiLCJ0eXAiOiJKV1QifQ.eyJzdWIiOiJmaXJlYmFzZS1hZG1pbnNkay1mYnN2Y0BiYXJkLWZyb250ZW5kLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwiYXVkIjoiaHR0cHM6XC9cL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbVwvZ29vZ2xlLmlkZW50aXR5LmlkZW50aXR5dG9vbGtpdC52MS5JZGVudGl0eVRvb2xraXQiLCJ1aWQiOiIxNjIwNDg0MjcwMDA3NTI4OTcyOCIsImlzcyI6ImZpcmViYXNlLWFkbWluc2RrLWZic3ZjQGJhcmQtZnJvbnRlbmQuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iLCJjbGFpbXMiOnsiYXBwSWQiOiJjX2VjMjBkMjVjMzM2NDY0ODhfcG9ydGZvbGlvLXBhZ2UtMS03MCJ9LCJleHAiOjE3NTI1Mzk5MjgsImlhdCI6MTc1MjUzNjMyOCwiYWxnIjoiUlMyNTYifQ.bFRtkChGyUsrVqCYjTZ1ZiQjFLFpPzcqiT6WFxTzzTlV9TmJ7Gde_JDlAsxN173gY7CpGwrKoyMwFWTPMPrLevGQhr5UUMFWH5hMapuUPcJTaBALxDVMzpY0jfl9vuYIfBaO6jYhr3U5g1LVxef4wGnq-l9Cim1evGWn1QNa2zblHMwfVdSC6maHyuVn_2a4FxDXo8QYrVHLGZJpYie1zO3DcdERYQVIxNhZOHyo5b_MOsv4-iQUWuIgpRDNiunmCLESOkit-Nept4cdSsKPTDkM-5FkCMpOkhyQwV0YVY_d2_Xa_yy9Ctdt3exgNUcExdMUJF3Izke8cdvfedoAIw","c_ec20d25c33646488_portfolio-page-1-70")</script><script>(function() {
-  // Ensure this script is executed only once
-  if (window.firebaseAuthBridgeScriptLoaded) {
-    return;
-  }
-  window.firebaseAuthBridgeScriptLoaded = true;
-
-  let nextTokenPromiseId = 0;
-
-  // Stores { resolve, reject } for ongoing token requests
-  const pendingTokenPromises = {};
-
-  // Listen for messages from the Host Application
-  window.addEventListener('message', function(event) {
-
-    const messageData = event.data;
-
-  if (messageData && messageData.type === 'RESOLVE_NEW_FIREBASE_TOKEN') {
-      const { success, token, error, promiseId } = messageData ?? {};
-      if (pendingTokenPromises[promiseId]) {
-        if (success) {
-          pendingTokenPromises[promiseId].resolve(token);
-        } else {
-          pendingTokenPromises[promiseId].reject(new Error(error || 'Token refresh failed from host.'));
-        }
-        delete pendingTokenPromises[promiseId];
-      }
-    }
-  });
-
-  // Expose a function for the Generated App to request a new Firebase token
-  window.requestNewFirebaseToken = function() {
-    const currentPromiseId = nextTokenPromiseId++;
-    const promise = new Promise((resolve, reject) => {
-      pendingTokenPromises[currentPromiseId] = { resolve, reject };
-    });
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage({
-        type: 'REQUEST_NEW_FIREBASE_TOKEN',
-        promiseId: currentPromiseId
-      }, '*');
-    } else {
-      pendingTokenPromises[currentPromiseId].reject(new Error('No parent window to request token from.'));
-      delete pendingTokenPromises[currentPromiseId];
-    }
-    return promise;
-  };
-})();</script><script>
-let realOriginalGetUserMedia = null;
-if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  realOriginalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
-}
-
-(function() {
-  if (navigator.mediaDevices && navigator.mediaDevices.__proto__) {
-    try {
-      Object.defineProperty(navigator.mediaDevices.__proto__, 'getUserMedia', {
-        get: function() {
-          return undefined; // Or throw an error
-        },
-        configurable: false
-      });
-    } catch (error) {
-      console.error("Error defining prototype getter:", error);
-    }
-  }
-})();
-
-(function() {
-  const pendingMediaResolvers = {};
-  let nextMediaPromiseId = 0;
-
-  function requestMediaPermissions(constraints) {
-    const mediaPromiseId = nextMediaPromiseId++;
-    const promise = new Promise((resolve, reject) => {
-      pendingMediaResolvers[mediaPromiseId] = (granted) => {
-        delete pendingMediaResolvers[mediaPromiseId];
-        resolve(granted);
-      };
-    });
-
-    window.parent.postMessage({
-      type: 'requestMediaPermission',
-      constraints: constraints,
-      promiseId: mediaPromiseId,
-    }, '*');
-
-    return promise;
-  }
-
-  let originalGetUserMedia = realOriginalGetUserMedia;
-
-  function interceptGetUserMedia() {
-    if (navigator.mediaDevices) {
-      Object.defineProperty(navigator.mediaDevices, 'getUserMedia', {
-        value: function(constraints) {
-          return requestMediaPermissions(constraints).then((granted) => {
-            if (granted) {
-              if (originalGetUserMedia) {
-                return originalGetUserMedia(constraints);
-              } else {
-                throw new Error("Original getUserMedia not available.");
-              }
-            } else {
-              throw new DOMException('Permission denied', 'NotAllowedError');
-            }
-          });
-        },
-        writable: false,
-        configurable: false
-      });
-    }
-  }
-
-  interceptGetUserMedia();
-
-  const observer = new MutationObserver(function(mutationsList, observer) {
-    for (const mutation of mutationsList) {
-      if (mutation.type === 'reconfigured' && mutation.name === 'getUserMedia' && mutation.object === navigator.mediaDevices) {
-        interceptGetUserMedia();
-      } else if (mutation.type === 'attributes' && mutation.attributeName === 'getUserMedia' && mutation.target === navigator.mediaDevices) {
-        interceptGetUserMedia();
-      } else if (mutation.type === 'childList' && mutation.addedNodes) {
-        mutation.addedNodes.forEach(node => {
-          if (node === navigator.mediaDevices) {
-            interceptGetUserMedia();
-          }
-        });
-      }
-    }
-  });
-
-  function interceptSpeechRecognition() {
-    if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
-      return;
-    }
-
-    const OriginalSpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    const SpeechRecognitionWrapper = function(...args) {
-      const recognizer = new OriginalSpeechRecognition(...args);
-      const originalStart = recognizer.start.bind(recognizer);
-
-      recognizer.start = function() {
-        requestMediaPermissions({ audio: true }).then(granted => {
-          if (granted) {
-            originalStart();
-          } else {
-            const errorEvent = new SpeechRecognitionErrorEvent('error');
-            errorEvent.error = 'not-allowed'; // This is the standard error for permission denial.
-            recognizer.dispatchEvent(errorEvent);
-          }
-        });
-      };
-
-      return recognizer;
-    };
-
-    SpeechRecognitionWrapper.prototype = OriginalSpeechRecognition.prototype;
-    SpeechRecognitionWrapper.prototype.constructor = SpeechRecognitionWrapper;
-
-    if (window.SpeechRecognition) {
-      window.SpeechRecognition = SpeechRecognitionWrapper;
-    }
-    if (window.webkitSpeechRecognition) {
-      window.webkitSpeechRecognition = SpeechRecognitionWrapper;
-    }
-  }
-
-  interceptSpeechRecognition();
-
-  window.addEventListener('message', function(event) {
-    if (event.data) {
-      if (event.data.type === 'resolveMediaPermission') {
-        const { promiseId, granted } = event.data;
-        if (pendingMediaResolvers[promiseId]) {
-          pendingMediaResolvers[promiseId](granted);
-        }
-      }
-    }
-  });
-
-})();</script><script>((function(modelInformation) {
-  const originalFetch = window.fetch;
-  // TODO: b/421908508 - Move these out of the script and match all generative AI model calls.
-  let googleLlmBaseApiUrls = [
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':streamGenerateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.textModelName + ':generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predict',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageModelName + ':predictLongRunning',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.imageEditModelName + ':generateContent',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predict',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.videoModelName + ':predictLongRunning',
-    'https://generativelanguage.googleapis.com/v1beta/models/' + modelInformation.ttsModelName + ':generateContent',
-  ];
-  modelInformation.deprecatedTextModelNames.forEach((modelName) => {
-    googleLlmBaseApiUrls.push(
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':streamGenerateContent',
-      'https://generativelanguage.googleapis.com/v1beta/models/' + modelName + ':generateContent',
-    );
-  });
-
-  const pendingFetchResolvers = {};
-  let nextPromiseId = 0;
-
-  function handleStringInput(input, optionsArgument) {
-    const actualUrl = input;
-    const fetchCallArgs = [actualUrl, optionsArgument];
-    const effectiveOptions = optionsArgument || {};
-    const bodyForApiKeyCheck = effectiveOptions.body;
-    const bodyForPostMessage = effectiveOptions.body;
-    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
-  }
-
-  function handleRequestInput(input, optionsArgument) {
-    const actualUrl = input.url;
-    const fetchCallArgs = [input, optionsArgument];
-    const effectiveOptions = { method: input.method, headers: new Headers(input.headers) };
-    let bodyForApiKeyCheck;
-    let bodyForPostMessage;
-
-    if (optionsArgument) {
-      if (optionsArgument.method) effectiveOptions.method = optionsArgument.method;
-      if (optionsArgument.headers) effectiveOptions.headers = new Headers(optionsArgument.headers);
-      if ('body' in optionsArgument) {
-        bodyForApiKeyCheck = optionsArgument.body;
-        bodyForPostMessage = optionsArgument.body;
-      } else {
-        bodyForApiKeyCheck = undefined;
-        bodyForPostMessage = input.body;
-      }
-    } else {
-      bodyForApiKeyCheck = undefined;
-      bodyForPostMessage = input.body;
-    }
-    return { actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage };
-  }
-
-  window.fetch = function(input, optionsArgument) {
-    let actualUrl;
-    let fetchCallArgs;
-    let effectiveOptions = {};
-    let bodyForApiKeyCheck;
-    let bodyForPostMessage;
-
-    if (typeof input === 'string') {
-      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleStringInput(input, optionsArgument));
-    } else if (input instanceof Request) {
-      ({actualUrl, fetchCallArgs, effectiveOptions, bodyForApiKeyCheck, bodyForPostMessage} = handleRequestInput(input, optionsArgument));
-    } else {
-      return originalFetch.apply(window, [input, optionsArgument]);
-    }
-
-    effectiveOptions.method = effectiveOptions.method || 'GET';
-    if (!effectiveOptions.headers) {
-      effectiveOptions.headers = new Headers();
-    }
-
-
-    if (typeof actualUrl === 'string' && googleLlmBaseApiUrls.some((url) => actualUrl.startsWith(url))) {
-      let apiKeyIsNull = true;
-
-      const regex = new RegExp("models/([^:]+)");
-      const modelNameMatch = actualUrl.match(regex);
-      const modelName = modelNameMatch ? modelNameMatch[1] : 'unspecified';
-
-
-      try {
-        const urlObject = new URL(actualUrl);  // Use URL object for robust parsing
-        const apiKeyParam = urlObject.searchParams.get('key');
-        if (apiKeyParam) {
-          apiKeyIsNull = false;
-        }
-      } catch (e) {
-        // Continue checks even if URL parsing fails
-      }
-
-      if (apiKeyIsNull && effectiveOptions.headers) {
-        const h = new Headers(effectiveOptions.headers);
-        const apiKeyHeaderValue = h.get('X-API-Key') || h.get('x-api-key');
-        if (apiKeyHeaderValue) {
-          apiKeyIsNull = false;
-          return originalFetch.apply(window, fetchCallArgs);
-        }
-      }
-
-      if (apiKeyIsNull && effectiveOptions.method && ['POST', 'PUT', 'PATCH'].includes(effectiveOptions.method.toUpperCase()) && typeof bodyForApiKeyCheck === 'string') {
-        try {
-          const bodyData = JSON.parse(bodyForApiKeyCheck);
-          if (bodyData && bodyData.apiKey) {
-            apiKeyIsNull = false;
-            return originalFetch.apply(window, fetchCallArgs);
-          }
-        } catch (e) {
-          // Ignore JSON parsing errors
-        }
-      }
-
-      if(apiKeyIsNull) {
-        const promiseId = nextPromiseId++;
-        const promise = new Promise((resolve) => {
-          pendingFetchResolvers[promiseId] = (resolvedResponse) => {
-            delete pendingFetchResolvers[promiseId];
-            resolve(resolvedResponse);
-          };
-        });
-
-        let serializedBodyForPostMessage;
-        if (typeof bodyForPostMessage === 'string' || bodyForPostMessage == null) {
-            serializedBodyForPostMessage = bodyForPostMessage;
-        } else if (bodyForPostMessage instanceof ReadableStream) {
-            serializedBodyForPostMessage = null;
-        } else {
-            try {
-                serializedBodyForPostMessage = JSON.stringify(bodyForPostMessage);
-            } catch (e) {
-                serializedBodyForPostMessage = null;
-            }
-        }
-
-        const messageOptions = {
-            method: effectiveOptions.method,
-            headers: Object.fromEntries(new Headers(effectiveOptions.headers).entries()),
-            body: serializedBodyForPostMessage
-        };
-
-        window.parent.postMessage({
-          type: 'requestFetch',
-          url: actualUrl,
-          modelName: modelName,
-          options: messageOptions,
-          promiseId: promiseId,
-        }, '*');
-
-        return promise;
-      }
-      return originalFetch.apply(window, fetchCallArgs);
-    }
-    return originalFetch.apply(window, fetchCallArgs);
-  };
-
-  window.addEventListener('message', function(event) {
-    if (event.data && event.data.type === 'resolveFetch') {
-      const { promiseId, response } = event.data;
-      if (pendingFetchResolvers[promiseId]) {
-        try {
-          const reconstructedResponse = new Response(response.body, {
-            status: response.status,
-            statusText: response.statusText,
-            headers: new Headers(response.headers),
-          });
-          pendingFetchResolvers[promiseId](reconstructedResponse);
-        } catch (error) {
-          pendingFetchResolvers[promiseId](new Response(null, { status: 500, statusText: "Interceptor Response Reconstruction Error" }));
-        }
-      }
-    }
-  });
-
-}))({"textModelName":"gemini-2.5-flash-preview-04-17","imageModelName":"imagen-3.0-generate-002","imageEditModelName":"gemini-2.0-flash-preview-image-generation","videoModelName":"veo-2.0-generate-001","ttsModelName":"gemini-2.5-flash-preview-tts","deprecatedTextModelNames":["gemini-2.0-flash"]})</script><script>(function() {
-  const originalConsoleLog = console.log;
-  const originalConsoleError = console.error;
-
-    /**
-   * Normalizes an error event or a promise rejection reason into a structured error object.
-   * @param {*} errorEventOrReason The error object or reason.
-   * @return {object} Structured error data { message, name, stack }.
-   */
-  function getErrorObject(errorEventOrReason) {
-    if (errorEventOrReason instanceof Error) {
-      return {
-        message: errorEventOrReason.message,
-        name: errorEventOrReason.name,
-        stack: errorEventOrReason.stack,
-      };
-    }
-    // Fallback for non-Error objects.
-    try {
-      return {
-        message: JSON.stringify(errorEventOrReason),
-        name: 'UnknownErrorType',
-        stack: null,
-      };
-    } catch (e) {
-      return {
-        message: String(errorEventOrReason),
-        name: 'UnknownErrorTypeNonStringifiable',
-        stack: null,
-      };
-    }
-  }
-
-  /**
-   * Converts an array of arguments (from log/error) into a single string.
-   * Handles Error objects specially to include their message and stack.
-   * @param {Array<*>} args - Arguments passed to console methods.
-   * @return {string} A string representation of the arguments.
-   */
-  function stringifyArgs(args) {
-    return args
-      .map((arg) => {
-        if (arg instanceof Error) {
-          const {message, stack} = arg;
-          return `Error: ${message}${stack ? ('\nStack: ' + stack) : ''}`;
-        }
-        if (typeof arg === 'object' && arg !== null) {
-          try {
-            return JSON.stringify(arg);
-          } catch (error) {
-            return '[Circular Object]';
-          }
-        } else {
-          return String(arg);
-        }
-      })
-      .join(' ');
-  }
-
-  console.log = function(...args) {
-    const logString = stringifyArgs(args);
-    window.parent.postMessage({ type: 'log', message: logString }, '*');
-    originalConsoleLog.apply(console, args);
-  };
-
-  console.error = function(...args) {
-    let errorData;
-    if (args.length > 0 && args[0] instanceof Error) {
-      const err = args[0];
-      // If the first arg is an Error, capture its details.
-      errorData = {
-        type: 'error',
-        source: 'CONSOLE_ERROR',
-        ...getErrorObject(err),
-        rawArgsString: stringifyArgs(args.slice(1)),
-        timestamp: new Date().toISOString(),
-      };
-    } else {
-      // If not an Error object, treat all args as a general error message.
-      errorData = {
-        type: 'error',
-        source: 'CONSOLE_ERROR',
-        message: stringifyArgs(args),
-        name: 'ConsoleLoggedError',
-        stack: null,
-        timestamp: new Date().toISOString(),
-      };
-    }
-    window.parent.postMessage(errorData, '*');
-    originalConsoleError.apply(console, args);
-  };
-
-  // Listen for global unhandled synchronous errors.
-  window.addEventListener('error', function(event) {
-    const errorDetails = event.error ? getErrorObject(event.error) : {
-      message: event.message,
-      name: 'GlobalError',
-      stack: null,
-      filename: event.filename,
-      lineno: event.lineno,
-      colno: event.colno,
-    };
-
-    window.parent.postMessage({
-      type: 'error',
-      source: 'global',
-      ...errorDetails,
-      message: errorDetails.message || event.message,
-      timestamp: new Date().toISOString(),
-    }, '*');
-  });
-
-  // Listen for unhandled promise rejections (asynchronous errors).
-  window.addEventListener('unhandledrejection', function(event) {
-    const errorDetails = getErrorObject(event.reason);
-
-    window.parent.postMessage({
-      type: 'error',
-      source: 'unhandledrejection',
-      ...errorDetails,
-      message: errorDetails.message || 'Unhandled Promise Rejection',
-      timestamp: new Date().toISOString(),
-    }, '*');
-  });
-
-})();</script>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Professional Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -617,6 +130,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 <a href="#about" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">About Me</a>
                 <a href="#assessment" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">Self-Assessment</a>
                 <a href="#timeline" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">AI Timeline</a>
+                <a href="#ml-vs-dl" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">ML Case Study</a>
             </div>
         </nav>
     </header>
@@ -644,7 +158,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                         <ul class="mt-4 space-y-2 text-gray-700 list-disc">
                             <li><strong>Machine Learning Concepts:</strong> Understanding core models, training methods, and the development lifecycle.</li>
                             <li><strong>Data Challenges:</strong> Analyzing the impact of data labeling, sources, and bias on model integrity.</li>
-                            <li><strong>Deep Learning &amp; Neural Nets:</strong> Exploring recent developments and their commercial applications.</li>
+                            <li><strong>Deep Learning & Neural Nets:</strong> Exploring recent developments and their commercial applications.</li>
                             <li><strong>Ethical AI:</strong> Applying biblical and ethical principles to ensure responsible innovation.</li>
                         </ul>
                     </div>
@@ -669,9 +183,9 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                         <h3 class="text-green-700 border-green-200">Top 3 Strengths</h3>
                         <p class="my-4 text-gray-600">My top strengths are consistently in the people-oriented and adaptive aspects of leadership.</p>
                         <ul class="space-y-4 text-gray-800">
-                            <li><strong>Flexibility &amp; Adaptability:</strong> Highly open to new ideas and willing to adjust plans, indicating a strong capacity to navigate uncertainty.</li>
-                            <li><strong>Communication &amp; Stakeholder Engagement:</strong> Strong ability to actively listen, ensure alignment, and build trust with team members.</li>
-                            <li><strong>Continuous Learning &amp; Ethical Awareness:</strong> Strong commitment to staying current with AI/ML advancements and a solid understanding of ethical considerations.</li>
+                            <li><strong>Flexibility & Adaptability:</strong> Highly open to new ideas and willing to adjust plans, indicating a strong capacity to navigate uncertainty.</li>
+                            <li><strong>Communication & Stakeholder Engagement:</strong> Strong ability to actively listen, ensure alignment, and build trust with team members.</li>
+                            <li><strong>Continuous Learning & Ethical Awareness:</strong> Strong commitment to staying current with AI/ML advancements and a solid understanding of ethical considerations.</li>
                         </ul>
                     </div>
                      <div>
@@ -679,8 +193,8 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                         <p class="my-4 text-gray-600">My primary areas for growth lie in the structural, tactical, and project execution domains, particularly within the technical context of AI/ML.</p>
                         <ul class="space-y-4 text-gray-800">
                             <li><strong>AI/ML Project Management:</strong> A significant growth area, particularly in coordinating cross-functional teams and handling budgeting and financial management.</li>
-                            <li><strong>Planning &amp; Risk Management:</strong> A need to improve in creating detailed change management plans and developing concrete risk mitigation strategies.</li>
-                            <li><strong>Change Readiness &amp; Skill Development:</strong> Need to develop my ability to identify and address AI/ML-related skill gaps and assess organizational readiness for adoption.</li>
+                            <li><strong>Planning & Risk Management:</strong> A need to improve in creating detailed change management plans and developing concrete risk mitigation strategies.</li>
+                            <li><strong>Change Readiness & Skill Development:</strong> Need to develop my ability to identify and address AI/ML-related skill gaps and assess organizational readiness for adoption.</li>
                         </ul>
                     </div>
                 </div>
@@ -829,87 +343,62 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                         </div>
                     </div>
                 </section>
-
-                <section id="generative-age" class="py-16 bg-gray-50 px-4">
-                    <h2 class="section-title">The Generative Age: Language Takes Center Stage</h2>
-                    <p class="section-subtitle">The invention of new architectures unlocked the ability for AI to not just classify, but create. This led to an explosion in Natural Language Processing and the mainstream phenomenon of Generative AI.</p>
-                    <div class="card md:col-span-2 max-w-5xl mx-auto">
-                        <div class="relative pl-12 space-y-10">
-                            <div class="timeline-item relative">
-                                <div class="timeline-dot"></div>
-                                <div class="pl-10">
-                                    <h4 class="font-bold text-xl text-[#07575B]">2017: The Transformer Architecture</h4>
-                                    <p class="text-gray-600">Google's "Attention Is All You Need" paper introduces the Transformer. Its "self-attention" mechanism revolutionizes how models handle sequential data, paving the way for large language models.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item relative">
-                                <div class="timeline-dot"></div>
-                                <div class="pl-10">
-                                    <h4 class="font-bold text-xl text-[#07575B]">2018: BERT's Breakthrough</h4>
-                                    <p class="text-gray-600">Google's BERT (Bidirectional Encoder Representations from Transformers) achieves state-of-the-art results on NLP tasks by learning to understand the context of a word from both sides of a sentence, a major leap in language understanding.</p>
-                                </div>
-                            </div>
-                             <div class="timeline-item relative">
-                                <div class="timeline-dot"></div>
-                                <div class="pl-10">
-                                    <h4 class="font-bold text-xl text-[#07575B]">2020-2023: The GPT Era</h4>
-                                    <p class="text-gray-600">OpenAI releases its series of powerful Generative Pre-trained Transformer (GPT) models. The public launch of ChatGPT in late 2022 makes generative AI a global phenomenon, accessible to millions.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="governance" class="py-16 px-4">
-                    <h2 class="section-title">Building Guardrails: Ethical &amp; Governance Milestones</h2>
-                    <p class="section-subtitle">As AI's power grows, so does the global effort to ensure its responsible and ethical use. These milestones signal a vital shift towards accountability and human-centric governance.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                        <div class="card">
-                            <h3 class="font-bold text-xl text-center text-[#07575B] mb-3">2018: GDPR Takes Effect</h3>
-                            <p class="text-gray-600">The EU's General Data Protection Regulation (GDPR) sets a new global standard for data privacy. It includes provisions on automated decision-making and the "right to explanation," directly impacting how AI systems that use personal data can be deployed.</p>
-                        </div>
-                        <div class="card">
-                            <h3 class="font-bold text-xl text-center text-[#07575B] mb-3">2021: UNESCO AI Ethics Recommendation</h3>
-                            <p class="text-gray-600">UNESCO's member states adopt the first-ever global agreement on the Ethics of Artificial Intelligence. It provides a normative framework based on values like human rights, transparency, and fairness to guide the construction of legal AI infrastructure.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="future" class="py-16 bg-gray-50 px-4">
-                    <h2 class="section-title">The Next Horizon: Emerging Trends</h2>
-                    <p class="section-subtitle">The field continues to accelerate, focusing on making AI more transparent, beneficial, and capable, while wrestling with the ultimate goal of general intelligence.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                        <div class="card text-center">
-                            <h3 class="font-bold text-xl text-[#07575B] mb-3">Explainable AI (XAI)</h3>
-                            <p class="text-gray-600">A critical area of research focused on developing techniques that allow humans to understand and trust the results and output created by machine learning algorithms. XAI aims to open the "black box" of complex models.</p>
-                        </div>
-                        <div class="card text-center">
-                            <h3 class="font-bold text-xl text-[#07575B] mb-3">AI for Social Good</h3>
-                            <p class="text-gray-600">A growing movement to apply AI to humanity's greatest challenges. This includes using AI for drug discovery in healthcare, optimizing energy grids for climate science, and improving agricultural yields.</p>
-                        </div>
-                        <div class="card text-center">
-                            <h3 class="font-bold text-xl text-[#07575B] mb-3">The Quest for AGI</h3>
-                            <p class="text-gray-600">The pursuit of Artificial General Intelligence—a machine that can perform any intellectual task a human can—remains the field's "holy grail" and is now the stated primary mission of leading research labs.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="sources" class="py-16 px-4">
-                    <h2 class="section-title">Sources &amp; Further Reading</h2>
-                    <div class="card max-w-4xl mx-auto">
-                        <ol class="list-decimal list-inside space-y-3 text-gray-700 text-sm">
-                            <li>Russell, S. J., &amp; Norvig, P. (2020). <em>Artificial Intelligence: A Modern Approach (4th ed.)</em>. Pearson.</li>
-                            <li>Nilsson, N. J. (2009). <em>The Quest for Artificial Intelligence: A History of Ideas and Achievements</em>. Cambridge University Press.</li>
-                            <li>Kaplan, J. (2016). <em>Artificial Intelligence: What Everyone Needs to Know</em>. Oxford University Press.</li>
-                            <li>Ford, M. (2018). <em>Architects of Intelligence: The truth about AI from the people building it</em>. Packt Publishing.</li>
-                            <li>Crevier, D. (1993). <em>AI: The Tumultuous History of the Search for Artificial Intelligence</em>. Basic Books.</li>
-                            <li>Broussard, M. (2018). <em>Artificial Unintelligence: How Computers Misunderstand the World</em>. The MIT Press.</li>
-                            <li>Various articles from sources like <em>The New York Times</em>, <em>Wired</em>, <em>The Verge</em>, and academic papers related to specific models (e.g., "Attention Is All You Need").</li>
-                        </ol>
-                    </div>
-                </section>
             </div>
         </div>
+
+        <!-- Transition 3 -->
+        <div class="transition-divider">
+            <p>Having explored the history, the next step is to apply these concepts. This case study demonstrates an understanding of when to use different machine learning techniques based on the problem and data at hand.</p>
+            <div class="icon">◇</div>
+        </div>
+
+        <!-- ML vs DL Case Study Section -->
+        <section id="ml-vs-dl" class="py-16 bg-gray-100 rounded-lg">
+            <h2 class="section-title">Case Study: Machine Learning vs. Deep Learning</h2>
+            <p class="section-subtitle">Analyzing the suitability of different AI approaches for distinct real-world problems, illustrating the core principle of choosing the right tool for the job.</p>
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- ML Case Study Card -->
+                <div class="card">
+                    <h3 class="text-xl font-bold text-[#003B46] text-center mb-4">Application: House Price Prediction</h3>
+                    <div class="text-center text-5xl mb-4">🏠</div>
+                    <div class="bg-green-100 text-green-800 p-3 rounded-lg mb-4">
+                        <h4 class="font-bold">Best Fit: Traditional Machine Learning</h4>
+                        <p class="text-sm">e.g., Linear Regression</p>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">Why it Works:</h4>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                        <li><strong>Structured Data:</strong> The model uses well-defined, tabular data (square footage, bedrooms, etc.), which is ideal for traditional ML.</li>
+                        <li><strong>High Interpretability:</strong> The model's logic is clear and explainable (e.g., "price increases by $X per square foot"), which is crucial for business trust.</li>
+                        <li><strong>Efficiency:</strong> It's computationally inexpensive and effective on smaller, localized datasets.</li>
+                    </ul>
+                    <h4 class="font-bold text-gray-800 mt-4 mb-2">Why Deep Learning is Unsuitable:</h4>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                        <li><strong>Unnecessary Complexity:</strong> Using a neural network for this problem is overkill and inefficient.</li>
+                        <li><strong>"Black Box" Problem:</strong> It would be difficult to explain *why* the model produced a specific price, a major drawback for financial applications.</li>
+                    </ul>
+                </div>
+                <!-- DL Case Study Card -->
+                <div class="card">
+                    <h3 class="text-xl font-bold text-[#003B46] text-center mb-4">Application: Facial Recognition</h3>
+                    <div class="text-center text-5xl mb-4">👤</div>
+                    <div class="bg-blue-100 text-blue-800 p-3 rounded-lg mb-4">
+                        <h4 class="font-bold">Best Fit: Deep Learning</h4>
+                        <p class="text-sm">e.g., Convolutional Neural Network (CNN)</p>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2">Why it Works:</h4>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                        <li><strong>Unstructured Data:</strong> The model excels at processing raw pixel data from an image, where features are not predefined.</li>
+                        <li><strong>Automatic Feature Learning:</strong> It automatically learns the complex, hierarchical features of a face (edges, textures, shapes), a task impossible for humans to program manually.</li>
+                        <li><strong>Robustness:</strong> It can accurately identify faces under varied lighting, angles, and expressions.</li>
+                    </ul>
+                    <h4 class="font-bold text-gray-800 mt-4 mb-2">Why Traditional ML is Unsuitable:</h4>
+                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                        <li><strong>Impossible Feature Engineering:</strong> Manually defining the features of a human face from pixel data is not feasible, making traditional ML ineffective for this task.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer class="bg-[#003B46] text-white py-8 px-4 mt-16">
@@ -1063,6 +552,5 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             }
         });
     </script>
-
-
-</body></html>
+</body>
+</html>
