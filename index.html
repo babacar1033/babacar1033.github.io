@@ -119,6 +119,62 @@
             font-size: 1.5rem;
             color: #C4DFE6;
         }
+        /* Styles for NN Explainer */
+        .nn-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 2rem;
+        }
+        .step-number {
+            background-color: #4f46e5;
+            color: white;
+            border-radius: 9999px;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        .fruit-item {
+            width: 100px;
+            height: 100px;
+            font-size: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .fruit-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .weight-slider {
+            -webkit-appearance: none; appearance: none;
+            width: 100%; height: 8px;
+            background: #d1d5db; border-radius: 5px;
+            outline: none; opacity: 0.7;
+            transition: opacity .2s;
+        }
+        .weight-slider:hover { opacity: 1; }
+        .weight-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 20px; height: 20px;
+            background: #4f46e5; cursor: pointer;
+            border-radius: 50%;
+        }
+        .weight-slider::-moz-range-thumb {
+            width: 20px; height: 20px;
+            background: #4f46e5; cursor: pointer;
+            border-radius: 50%;
+        }
+        #feedback-message { transition: all 0.5s ease-in-out; }
     </style>
 </head>
 <body class="antialiased">
@@ -131,6 +187,7 @@
                 <a href="#assessment" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">Self-Assessment</a>
                 <a href="#timeline" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">AI Timeline</a>
                 <a href="#ml-vs-dl" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">ML Case Study</a>
+                <a href="#nn-explainer" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">NN Explainer</a>
             </div>
         </nav>
     </header>
@@ -463,6 +520,96 @@
             </div>
         </section>
 
+        <!-- Transition 4 -->
+        <div class="transition-divider">
+            <p>To bring these concepts to life, the last artifact in date is an interactive demonstration of the core principles of a neural network, applying the communication strategies discussed in our course.</p>
+            <div class="icon">◇</div>
+        </div>
+
+        <!-- Neural Network Explainer Section -->
+        <section id="nn-explainer" class="py-16">
+            <h2 class="section-title">The Neural Network Explainer</h2>
+            <p class="section-subtitle">An interactive artifact based on Class Discussion 3.4, demonstrating how to communicate complex topics simply by applying core learning principles.</p>
+            
+            <div class="max-w-5xl mx-auto space-y-8">
+                <div class="nn-card">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-3">The "Sorting Machine" Analogy</h3>
+                    <p class="text-lg text-slate-600 leading-relaxed">
+                        Think of a neural network as a smart **"sorting machine"** that learns to identify things just by looking at lots of examples. This interactive guide will walk you through how this "machine" works. We'll teach it to tell the difference between an apple 🍎 and a banana 🍌.
+                    </p>
+                </div>
+
+                <div class="nn-card md:flex items-center gap-8">
+                    <div class="step-number mb-4 md:mb-0">1</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Taking In Details (The "Input")</h3>
+                        <p class="text-slate-600">Our machine doesn't see a "whole" fruit. Instead, its sensors focus on simple details: **Color** and **Shape**.</p>
+                    </div>
+                </div>
+
+                <div class="nn-card md:flex items-center gap-8">
+                    <div class="step-number mb-4 md:mb-0">2</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Finding Patterns (The "Hidden Layer")</h3>
+                        <p class="text-slate-600">This is the machine's "brain." It combines the input details and learns to give different importance, or **"weight,"** to each clue. Initially, it just guesses!</p>
+                    </div>
+                </div>
+                
+                <div class="nn-card">
+                    <div class="md:flex items-center gap-8 mb-6">
+                        <div class="step-number mb-4 md:mb-0">3</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800 mb-2">Learning from Mistakes (The "Training")</h3>
+                            <p class="text-slate-600">You are the "Coach." Show the machine a fruit, and if it's wrong, it will adjust its weights to get better. **Click a fruit to start training!**</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                            <div class="text-center">
+                                <h4 class="font-bold text-lg mb-4">1. Choose a Fruit</h4>
+                                <div class="flex justify-center gap-4">
+                                    <div id="show-apple" class="fruit-item bg-red-100 border-red-200">🍎</div>
+                                    <div id="show-banana" class="fruit-item bg-yellow-100 border-yellow-200">🍌</div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="font-bold text-lg mb-4">2. The Machine's "Brain"</h4>
+                                <div class="space-y-4 text-sm">
+                                    <div>
+                                        <label for="weight-color" class="font-semibold text-slate-700">Importance of Color</label>
+                                        <input type="range" min="0" max="100" value="50" class="weight-slider" id="weight-color" disabled>
+                                        <div class="flex justify-between text-xs text-slate-500"><span>Yellow</span><span>Red</span></div>
+                                    </div>
+                                    <div>
+                                        <label for="weight-shape" class="font-semibold text-slate-700">Importance of Shape</label>
+                                        <input type="range" min="0" max="100" value="50" class="weight-slider" id="weight-shape" disabled>
+                                        <div class="flex justify-between text-xs text-slate-500"><span>Curved</span><span>Round</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="font-bold text-lg mb-4">3. The Machine's Guess</h4>
+                                <div id="machine-guess" class="text-6xl p-4 rounded-lg bg-slate-200 h-[100px] flex items-center justify-center">?</div>
+                                <div id="feedback-message" class="mt-2 h-10 text-slate-600 font-semibold flex items-center justify-center"></div>
+                            </div>
+                        </div>
+                         <div class="text-center mt-6">
+                            <button id="reset-btn" class="text-sm bg-slate-200 text-slate-600 hover:bg-slate-300 px-4 py-2 rounded-md transition-colors">Reset Brain</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nn-card md:flex items-center gap-8">
+                    <div class="step-number mb-4 md:mb-0">4</div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Real-World Application</h3>
+                        <p class="text-slate-600">By repeating this "guess and correct" process thousands of times, a real neural network gets incredibly good at finding complex patterns. This is how AI recognizes faces, understands voice commands, and helps doctors diagnose diseases. It's all about learning from practice!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer class="bg-[#003B46] text-white py-8 px-4 mt-16">
@@ -473,7 +620,7 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-
+            // --- Existing Chart.js Code ---
             const brandColors = {
                 darkBlue: '#003B46',
                 cyan: '#07575B',
@@ -482,9 +629,7 @@
             };
             
             function wrapLabels(label, maxLength) {
-                if (typeof label !== 'string' || label.length <= maxLength) {
-                    return label;
-                }
+                if (typeof label !== 'string' || label.length <= maxLength) return label;
                 const words = label.split(' ');
                 let lines = [];
                 let currentLine = '';
@@ -503,40 +648,19 @@
             const tooltipTitleCallback = (tooltipItems) => {
                 const item = tooltipItems[0];
                 let label = item.chart.data.labels[item.dataIndex];
-                if (Array.isArray(label)) {
-                    return label.join(' ');
-                }
+                if (Array.isArray(label)) return label.join(' ');
                 return label;
             };
 
             const defaultChartOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
+                responsive: true, maintainAspectRatio: false,
                 plugins: {
-                    legend: {
-                        labels: {
-                            color: '#212529',
-                            font: {
-                                size: 14
-                            }
-                        }
-                    },
-                    tooltip: {
-                        enabled: true,
-                        callbacks: {
-                           title: tooltipTitleCallback
-                        }
-                    }
+                    legend: { labels: { color: '#212529', font: { size: 14 } } },
+                    tooltip: { enabled: true, callbacks: { title: tooltipTitleCallback } }
                 },
                 scales: {
-                    y: {
-                        ticks: { color: '#212529', beginAtZero: true },
-                        grid: { color: '#e9ecef' }
-                    },
-                    x: {
-                        ticks: { color: '#212529' },
-                        grid: { display: false }
-                    }
+                    y: { ticks: { color: '#212529', beginAtZero: true }, grid: { color: '#e9ecef' } },
+                    x: { ticks: { color: '#212529' }, grid: { display: false } }
                 }
             };
 
@@ -551,16 +675,13 @@
                             data: [60, 20, 70, 30, 40, 95],
                             borderColor: brandColors.cyan,
                             backgroundColor: 'rgba(7, 87, 91, 0.2)',
-                            fill: true,
-                            tension: 0.4,
-                            pointBackgroundColor: brandColors.darkBlue,
-                            pointRadius: 5
+                            fill: true, tension: 0.4,
+                            pointBackgroundColor: brandColors.darkBlue, pointRadius: 5
                         }]
                     },
                     options: { ...defaultChartOptions }
                 });
             }
-
 
             const victoriesCtx = document.getElementById('victoriesChart');
             if(victoriesCtx) {
@@ -576,43 +697,118 @@
                         datasets: [{
                             label: 'Conceptual Impact Score',
                             data: [50, 75, 95],
-                            backgroundColor: [
-                                brandColors.lightCyan,
-                                brandColors.cyan,
-                                brandColors.darkBlue,
-                            ],
-                            borderColor: [
-                                 brandColors.lightCyan,
-                                 brandColors.cyan,
-                                 brandColors.darkBlue,
-                            ],
+                            backgroundColor: [brandColors.lightCyan, brandColors.cyan, brandColors.darkBlue],
+                            borderColor: [brandColors.lightCyan, brandColors.cyan, brandColors.darkBlue],
                             borderWidth: 1
                         }]
                     },
                     options: {
                         ...defaultChartOptions,
                         indexAxis: 'y',
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: { callbacks: { title: tooltipTitleCallback } }
-                        },
+                        plugins: { legend: { display: false }, tooltip: { callbacks: { title: tooltipTitleCallback } } },
                          scales: {
                             x: {
                                 ticks: { color: '#212529', beginAtZero: true },
                                 grid: { color: '#e9ecef' },
-                                title: {
-                                    display: true,
-                                    text: 'Impact Score / Technological Leap',
-                                    color: '#6c757d'
-                                }
+                                title: { display: true, text: 'Impact Score / Technological Leap', color: '#6c757d' }
                             },
-                            y: {
-                                ticks: { color: '#212529', font: { size: 14 } },
-                                grid: { display: false }
-                            }
+                            y: { ticks: { color: '#212529', font: { size: 14 } }, grid: { display: false } }
                         }
                     }
                 });
+            }
+
+            // --- New Neural Network Explainer Code ---
+            const showAppleBtn = document.getElementById('show-apple');
+            const showBananaBtn = document.getElementById('show-banana');
+            const resetBtn = document.getElementById('reset-btn');
+            
+            const colorSlider = document.getElementById('weight-color');
+            const shapeSlider = document.getElementById('weight-shape');
+            const machineGuessEl = document.getElementById('machine-guess');
+            const feedbackMessageEl = document.getElementById('feedback-message');
+
+            if (showAppleBtn) { // Check if the NN explainer elements exist
+                let colorWeight = 50; // 0-49 is yellow, 51-100 is red
+                let shapeWeight = 50; // 0-49 is curved, 51-100 is round
+
+                function updateNNSliders() {
+                    colorSlider.value = colorWeight;
+                    shapeSlider.value = shapeWeight;
+                }
+
+                function getMachineGuess() {
+                    const score = (colorWeight - 50) + (shapeWeight - 50);
+                    if (score > 0) return 'apple';
+                    if (score < 0) return 'banana';
+                    return Math.random() < 0.5 ? 'apple' : 'banana';
+                }
+                
+                function displayGuess(guess) {
+                     machineGuessEl.textContent = guess === 'apple' ? '🍎' : '🍌';
+                }
+
+                function showFeedback(message, isCorrect) {
+                    feedbackMessageEl.textContent = message;
+                    if (isCorrect) {
+                        feedbackMessageEl.classList.remove('text-red-500');
+                        feedbackMessageEl.classList.add('text-green-500');
+                        machineGuessEl.classList.add('bg-green-200');
+                    } else {
+                        feedbackMessageEl.classList.remove('text-green-500');
+                        feedbackMessageEl.classList.add('text-red-500');
+                        machineGuessEl.classList.add('bg-red-200');
+                    }
+                    
+                    setTimeout(() => {
+                        machineGuessEl.textContent = '?';
+                        machineGuessEl.classList.remove('bg-green-200', 'bg-red-200');
+                        feedbackMessageEl.textContent = '';
+                    }, 2500);
+                }
+
+                function train(shownFruit) {
+                    const guess = getMachineGuess();
+                    displayGuess(guess);
+                    const isCorrect = guess === shownFruit;
+
+                    if (isCorrect) {
+                        showFeedback("Correct! The machine's weights were good.", true);
+                        if (shownFruit === 'apple') {
+                            colorWeight = Math.min(100, colorWeight + 2);
+                            shapeWeight = Math.min(100, shapeWeight + 2);
+                        } else {
+                            colorWeight = Math.max(0, colorWeight - 2);
+                            shapeWeight = Math.max(0, shapeWeight - 2);
+                        }
+                    } else {
+                        showFeedback("Wrong! Adjusting the machine's brain...", false);
+                        if (shownFruit === 'apple') {
+                            colorWeight = Math.min(100, colorWeight + 15);
+                            shapeWeight = Math.min(100, shapeWeight + 15);
+                        } else {
+                            colorWeight = Math.max(0, colorWeight - 15);
+                            shapeWeight = Math.max(0, shapeWeight - 15);
+                        }
+                    }
+                    
+                    setTimeout(updateNNSliders, 500);
+                }
+                
+                showAppleBtn.addEventListener('click', () => train('apple'));
+                showBananaBtn.addEventListener('click', () => train('banana'));
+
+                resetBtn.addEventListener('click', () => {
+                    colorWeight = 50;
+                    shapeWeight = 50;
+                    updateNNSliders();
+                    feedbackMessageEl.textContent = "Brain has been reset to its initial state.";
+                     setTimeout(() => {
+                        feedbackMessageEl.textContent = '';
+                    }, 2000);
+                });
+
+                updateNNSliders();
             }
         });
     </script>
