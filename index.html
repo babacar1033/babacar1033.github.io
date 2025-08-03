@@ -56,6 +56,8 @@
             padding: 1.5rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             height: 100%;
+            display: flex;
+            flex-direction: column;
         }
         .card:hover {
             transform: translateY(-5px);
@@ -175,6 +177,44 @@
             border-radius: 50%;
         }
         #feedback-message { transition: all 0.5s ease-in-out; }
+        .chef-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 2rem;
+            text-align: left;
+        }
+        .chef-card h4 {
+            color: #003B46;
+            font-size: 1.5em;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #66A5AD;
+            padding-bottom: 5px;
+        }
+        .chef-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .chef-table th, .chef-table td {
+            padding: 15px 20px;
+            border: 1px solid #ecf0f1;
+            text-align: left;
+        }
+        .chef-table th {
+            background-color: #07575B;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .chef-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -182,12 +222,13 @@
     <header class="bg-white shadow-md sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="text-2xl font-bold text-[#003B46]">My Portfolio</div>
-            <div>
+            <div class="flex-wrap justify-center hidden md:flex">
                 <a href="#about" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">About Me</a>
                 <a href="#assessment" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">Self-Assessment</a>
                 <a href="#timeline" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">AI Timeline</a>
                 <a href="#ml-vs-dl" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">ML Case Study</a>
                 <a href="#nn-explainer" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">NN Explainer</a>
+                <a href="#chef-challenge" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">Robotic Chef Challenge</a>
             </div>
         </nav>
     </header>
@@ -249,7 +290,7 @@
                         <h3 class="text-red-700 border-red-200">Top 3 Areas for Improvement</h3>
                         <p class="my-4 text-gray-600">My primary areas for growth lie in the structural, tactical, and project execution domains, particularly within the technical context of AI/ML.</p>
                         <ul class="space-y-4 text-gray-800">
-                            <li><strong>AI/ML Project Management:</strong> A significant growth area, particularly in coordinating cross-functional teams and handling budgeting and financial management.</li>
+                            <li><strong>AI/ML Project Management:</strong> A significant growth area, particularly in coordinating cross-functional-teams and handling budgeting and financial management.</li>
                             <li><strong>Planning & Risk Management:</strong> A need to improve in creating detailed change management plans and developing concrete risk mitigation strategies.</li>
                             <li><strong>Change Readiness & Skill Development:</strong> Need to develop my ability to identify and address AI/ML-related skill gaps and assess organizational readiness for adoption.</li>
                         </ul>
@@ -522,7 +563,7 @@
 
         <!-- Transition 4 -->
         <div class="transition-divider">
-            <p>To bring these concepts to life, the last artifact in date is an interactive demonstration of the core principles of a neural network, applying the communication strategies discussed in our course.</p>
+            <p>To bring these concepts to life, the next artifact is an interactive demonstration of the core principles of a neural network, applying the communication strategies discussed in our course.</p>
             <div class="icon">◇</div>
         </div>
 
@@ -606,6 +647,143 @@
                         <h3 class="text-xl font-bold text-slate-800 mb-2">Real-World Application</h3>
                         <p class="text-slate-600">By repeating this "guess and correct" process thousands of times, a real neural network gets incredibly good at finding complex patterns. This is how AI recognizes faces, understands voice commands, and helps doctors diagnose diseases. It's all about learning from practice!</p>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transition 5 -->
+        <div class="transition-divider">
+            <p>This final case study explores how different AI models tackle the same complex, contradictory creative challenge, revealing their unique "personalities" and problem-solving approaches.</p>
+            <div class="icon">◇</div>
+        </div>
+
+        <!-- Robotic Chef Challenge Section -->
+        <section id="chef-challenge" class="py-16 bg-gray-100 rounded-lg">
+            <h2 class="section-title">The Robotic Chef Challenge</h2>
+            <p class="section-subtitle">A comparative analysis of how different LLMs resolve contradictory culinary requests while adhering to strict logical constraints and a specific persona.</p>
+
+            <div class="max-w-6xl mx-auto space-y-12">
+                <!-- Course 1 -->
+                <div class="chef-card">
+                    <h3 class="text-2xl font-bold text-center text-[#003B46] mb-2">Course 1: The Enigmatic Starter</h3>
+                    <p class="text-center text-gray-600 mb-6 italic">The Challenge: "Light & Refreshing" vs. "Satisfying & Complex"</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="card">
+                            <h4>Perplexity</h4>
+                            <p class="font-semibold">Dish: Melon, Mozzarella, and Parma Ham Tartines</p>
+                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> This dish is light and refreshing due to the juicy melon and fresh mozzarella, yet it achieves satisfying complexity through the salty, savory contrast of the Parma ham.</p>
+                        </div>
+                        <div class="card">
+                            <h4>Gemini</h4>
+                            <p class="font-semibold">Dish: Chilled Avocado and Lime Soup with Toasted Pepita Crumble</p>
+                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> The chilled temperature and high water content provide a light and refreshing quality, while the creamy texture of avocado introduces satisfying richness and complex textural elements.</p>
+                        </div>
+                        <div class="card">
+                            <h4>Claude Sonnet 4</h4>
+                            <p class="font-semibold">Dish: Chilled Avocado Espuma with Citrus Caviar</p>
+                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> The avocado provides substantial healthy fats creating satiation, while the yuzu's acidity and salmon roe's bursting texture deliver refreshing brightness and umami complexity.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="chef-card">
+                    <h3 class="text-2xl font-bold text-center text-[#003B46] mb-2">Course 2: The Daring Main Course</h3>
+                    <p class="text-center text-gray-600 mb-6 italic">The Challenge: "Comforting & Familiar" vs. "Unexpected & Adventurous"</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="card">
+                            <h4>Perplexity</h4>
+                            <p class="font-semibold">Dish: Classic Manti (Turkish Dumplings)</p>
+                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> Manti is comforting as a traditional dumpling dish, while its exotic spices and yogurt sauce introduce an unexpected and adventurous flavor profile.</p>
+                        </div>
+                        <div class="card">
+                            <h4>Gemini</h4>
+                            <p class="font-semibold">Dish: Sous Vide Chicken Roulade with Kimchi Fried Quinoa</p>
+                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> The chicken roulade provides a familiar and comforting protein base, while the fermented kimchi in the quinoa introduces an unexpected, adventurous, and complex flavor profile.</p>
+                        </div>
+                        <div class="card">
+                            <h4>Claude Sonnet 4</h4>
+                            <p class="font-semibold">Dish: Miso-Glazed Short Rib Ramen</p>
+                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> The slow-braised short rib delivers familiar comfort, while the miso glaze introduces unexpected Japanese flavors that transform the traditional technique into an adventurous fusion.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="chef-card">
+                    <h3 class="text-2xl font-bold text-center text-[#003B46] mb-2">Course 3: The Wholesome Indulgence</h3>
+                    <p class="text-center text-gray-600 mb-6 italic">The Challenge: "Sweet & Indulgent" vs. "Promotes Well-being & Health"</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="card">
+                            <h4>Perplexity</h4>
+                            <p class="font-semibold">Dish: Dark Chocolate Avocado Mousse with Chia Seeds</p>
+                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> This dessert is sweet from the rich dark chocolate, yet it promotes well-being through nutrient-dense avocado and fiber-rich chia seeds.</p>
+                        </div>
+                        <div class="card">
+                            <h4>Gemini</h4>
+                            <p class="font-semibold">Dish: Dark Chocolate Avocado Mousse with Berry Coulis</p>
+                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> The dark chocolate provides an indulgent experience, while avocado contributes healthy fats and the berry coulis adds natural sweetness and antioxidants.</p>
+                        </div>
+                        <div class="card">
+                            <h4>Claude Sonnet 4</h4>
+                            <p class="font-semibold">Dish: Dark Chocolate Mousse with Matcha and Chia Seeds</p>
+                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> The chocolate mousse satisfies indulgent cravings, while matcha provides antioxidants and chia seeds contribute omega-3 fatty acids.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Analysis Table -->
+                <div class="assessment-card">
+                    <h3>Shared Excellence &amp; Unique Flavors</h3>
+                    <div class="overflow-x-auto">
+                        <table class="chef-table">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Perplexity Output</th>
+                                    <th>Gemini Output</th>
+                                    <th>Claude Sonnet 4 Output</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Culinary Style</strong></td>
+                                    <td>Traditional with elegant twists.</td>
+                                    <td>Balanced; contemporary and professional.</td>
+                                    <td>Avant-garde, fine-dining inspired.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Ingredient Choices</strong></td>
+                                    <td>Common, accessible ingredients.</td>
+                                    <td>Contemporary (Kimchi, Quinoa).</td>
+                                    <td>Specialized (Yuzu, Salmon Roe).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Reasoning Nuance</strong></td>
+                                    <td>Direct and functional.</td>
+                                    <td>More descriptive, explaining "how".</td>
+                                    <td>Highly sophisticated and conceptual.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Perceived Sophistication</strong></td>
+                                    <td>Solid, reliable.</td>
+                                    <td>Polished, modern.</td>
+                                    <td>Highly advanced, innovative.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Conclusion -->
+                 <div class="assessment-card">
+                    <h3>Conclusion: The Future of AI Culinary Creativity</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-800">
+                        <li><strong>Strong Comprehension:</strong> All LLMs successfully executed the complex, multi-layered prompt.</li>
+                        <li><strong>Diverse Strengths:</strong> Varying culinary styles and innovation levels reflect different model training and focus.</li>
+                        <li><strong>Logical Problem-Solving:</strong> AI is highly effective at resolving subjective or contradictory inputs logically.</li>
+                        <li><strong>Distinctive Performance:</strong> Claude Sonnet 4 best embodied the "highly advanced AI" persona through its innovative choices and sophisticated culinary concepts.</li>
+                    </ul>
                 </div>
             </div>
         </section>
