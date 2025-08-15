@@ -63,6 +63,51 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
         }
+        .artifact-summary-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .artifact-summary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .artifact-summary-card .artifact-number {
+            display: inline-block;
+            background-color: #07575B;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            align-self: flex-start;
+        }
+        .artifact-summary-card .artifact-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #003B46;
+            margin-bottom: 0.5rem;
+        }
+        .artifact-summary-card .artifact-description {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #6c757d;
+            flex-grow: 1;
+            margin-bottom: 1rem;
+        }
+        .artifact-summary-card .artifact-icon {
+            margin-top: auto;
+            text-align: right;
+            font-size: 2.5rem;
+            color: #C4DFE6;
+            line-height: 1;
+        }
         .timeline-item::before {
             content: '';
             position: absolute;
@@ -121,7 +166,6 @@
             font-size: 1.5rem;
             color: #C4DFE6;
         }
-        /* Styles for NN Explainer */
         .nn-card {
             background-color: white;
             border-radius: 0.75rem;
@@ -215,6 +259,26 @@
         .chef-table tr:nth-child(even) {
             background-color: #f8f9fa;
         }
+        /* Artifact Detail Styles */
+        .artifact-details-card {
+            background-color: #e9ecef;
+            border-left: 5px solid #07575B;
+            padding: 2rem;
+            border-radius: 0.75rem;
+        }
+        .artifact-details-card h4 {
+            font-weight: 700;
+            color: #003B46;
+            margin-bottom: 0.5rem;
+        }
+        .artifact-details-card p, .artifact-details-card ul {
+            font-size: 0.95rem;
+            color: #495057;
+        }
+        .artifact-details-card ul {
+            list-style-type: disc;
+            padding-left: 1.25rem;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -224,11 +288,13 @@
             <div class="text-2xl font-bold text-[#003B46]">My Portfolio</div>
             <div class="flex-wrap justify-center hidden md:flex">
                 <a href="#about" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">About Me</a>
+                <a href="#portfolio" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">My Artifacts</a>
                 <a href="#assessment" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">Self-Assessment</a>
                 <a href="#timeline" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">AI Timeline</a>
                 <a href="#ml-vs-dl" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">ML Case Study</a>
                 <a href="#nn-explainer" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">NN Explainer</a>
                 <a href="#chef-challenge" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">Robotic Chef Challenge</a>
+                <a href="#commercial-ai" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">Commercial AI</a>
             </div>
         </nav>
     </header>
@@ -264,6 +330,68 @@
             </div>
         </section>
 
+        <!-- Artifacts Summary Section -->
+        <section id="portfolio" class="py-16 bg-gray-100 rounded-lg">
+            <h2 class="section-title">My Artifacts</h2>
+            <p class="section-subtitle">A collection of projects demonstrating my journey into AI and Data Analysis. Each artifact represents a key area of study, from self-assessment and historical context to practical application and creative problem-solving. Click on any card to explore.</p>
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <a href="#assessment" class="block rounded-lg no-underline text-current">
+                    <div class="artifact-summary-card">
+                        <span class="artifact-number">Artifact 1</span>
+                        <h3 class="artifact-title">Personal Self-Assessment</h3>
+                        <p class="artifact-description">An analysis of my leadership strengths and growth areas in the context of AI/ML integration, based on formal assessment tools.</p>
+                        <div class="artifact-icon">📊</div>
+                    </div>
+                </a>
+
+                <a href="#timeline" class="block rounded-lg no-underline text-current">
+                    <div class="artifact-summary-card">
+                        <span class="artifact-number">Artifact 2</span>
+                        <h3 class="artifact-title">The Cycles of AI</h3>
+                        <p class="artifact-description">A visual history tracing the key milestones, figures, and cyclical "seasons" of AI development from its inception to the modern day.</p>
+                        <div class="artifact-icon">⏳</div>
+                    </div>
+                </a>
+
+                <a href="#ml-vs-dl" class="block rounded-lg no-underline text-current">
+                    <div class="artifact-summary-card">
+                        <span class="artifact-number">Artifact 3</span>
+                        <h3 class="artifact-title">ML vs. Deep Learning</h3>
+                        <p class="artifact-description">A practical case study comparing traditional Machine Learning and Deep Learning to illustrate the principle of choosing the right tool for the job.</p>
+                        <div class="artifact-icon">⚖️</div>
+                    </div>
+                </a>
+
+                <a href="#nn-explainer" class="block rounded-lg no-underline text-current">
+                    <div class="artifact-summary-card">
+                        <span class="artifact-number">Artifact 4</span>
+                        <h3 class="artifact-title">Neural Network Explainer</h3>
+                        <p class="artifact-description">An interactive artifact designed to communicate the core concepts of a neural network in a simple, intuitive, and hands-on way.</p>
+                        <div class="artifact-icon">🧠</div>
+                    </div>
+                </a>
+                
+                <a href="#chef-challenge" class="block rounded-lg no-underline text-current">
+                    <div class="artifact-summary-card">
+                        <span class="artifact-number">Artifact 5</span>
+                        <h3 class="artifact-title">Robotic Chef Challenge</h3>
+                        <p class="artifact-description">A comparative analysis of different LLMs tasked with a complex, creative challenge, revealing their unique problem-solving "personalities."</p>
+                        <div class="artifact-icon">🤖</div>
+                    </div>
+                </a>
+                
+                <a href="#commercial-ai" class="block rounded-lg no-underline text-current">
+                    <div class="artifact-summary-card">
+                        <span class="artifact-number">Artifact 6</span>
+                        <h3 class="artifact-title">The Dual Reality of AI</h3>
+                        <p class="artifact-description">An analysis of commercial AI's real-world impact and inherent risks, highlighted by a major data breach case study.</p>
+                        <div class="artifact-icon">⚠️</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
         <!-- Transition 1 -->
         <div class="transition-divider">
             <p>My journey into AI begins with a clear understanding of my own capabilities and growth areas.</p>
@@ -271,57 +399,88 @@
         </div>
 
         <!-- Personal Assessment Section -->
-        <section id="assessment" class="py-16 bg-gray-100 rounded-lg">
-            <h2 class="section-title">Personal Self-Assessment</h2>
-            <p class="section-subtitle">A reflection based on an analysis of two self-assessments: the Change Management Skills Self-Assessment and the AI/ML Integration Leadership Skills Self-Assessment.</p>
-            
-            <div class="assessment-card max-w-5xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-                    <div>
-                        <h3 class="text-green-700 border-green-200">Top 3 Strengths</h3>
-                        <p class="my-4 text-gray-600">My top strengths are consistently in the people-oriented and adaptive aspects of leadership.</p>
-                        <ul class="space-y-4 text-gray-800">
-                            <li><strong>Flexibility & Adaptability:</strong> Highly open to new ideas and willing to adjust plans, indicating a strong capacity to navigate uncertainty.</li>
-                            <li><strong>Communication & Stakeholder Engagement:</strong> Strong ability to actively listen, ensure alignment, and build trust with team members.</li>
-                            <li><strong>Continuous Learning & Ethical Awareness:</strong> Strong commitment to staying current with AI/ML advancements and a solid understanding of ethical considerations.</li>
+        <section id="assessment" class="py-16 bg-white rounded-lg">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="section-title">Artifact 1: Personal Self-Assessment</h2>
+                <p class="section-subtitle">An inward look to establish a baseline for professional growth in the AI landscape.</p>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                    <div class="artifact-details-card">
+                        <h4>Introduction</h4>
+                        <p>Effective professional growth begins with honest self-reflection. This artifact documents a structured analysis of my current skills, establishing a clear baseline from which to measure my development as I transition into the field of AI and Machine Learning.</p>
+                        <h4 class="mt-4">Objective</h4>
+                        <p>To identify and understand my core strengths and primary areas for improvement regarding the leadership and management skills required to successfully implement AI/ML technologies.</p>
+                        <h4 class="mt-4">Process</h4>
+                        <ul class="space-y-2">
+                            <li>Completed two formal questionnaires: the "Change Management Skills Self-Assessment" and the "AI/ML Integration Leadership Skills Self-Assessment."</li>
+                            <li>Analyzed results to distill my top three strengths and three most significant areas for improvement.</li>
+                            <li>Critically evaluated the assessment tools, proposing revisions to enhance their applicability.</li>
                         </ul>
-                    </div>
-                     <div>
-                        <h3 class="text-red-700 border-red-200">Top 3 Areas for Improvement</h3>
-                        <p class="my-4 text-gray-600">My primary areas for growth lie in the structural, tactical, and project execution domains, particularly within the technical context of AI/ML.</p>
-                        <ul class="space-y-4 text-gray-800">
-                            <li><strong>AI/ML Project Management:</strong> A significant growth area, particularly in coordinating cross-functional-teams and handling budgeting and financial management.</li>
-                            <li><strong>Planning & Risk Management:</strong> A need to improve in creating detailed change management plans and developing concrete risk mitigation strategies.</li>
-                            <li><strong>Change Readiness & Skill Development:</strong> Need to develop my ability to identify and address AI/ML-related skill gaps and assess organizational readiness for adoption.</li>
+                        <h4 class="mt-4">Tools & Technologies</h4>
+                        <ul class="space-y-2">
+                            <li>Self-Assessment Frameworks</li>
+                            <li>Critical Thinking & Analysis</li>
                         </ul>
+                        <h4 class="mt-4">Unique Value & Relevance</h4>
+                        <p>This artifact demonstrates a proactive and methodical approach to personal development, showing a commitment to cultivating the self-awareness and strategic thinking necessary for leadership in a tech-driven environment.</p>
                     </div>
-                </div>
 
-                <div class="mt-12">
-                     <h3>Personal Opinion of the Assessments</h3>
-                     <p class="my-4 text-gray-700">Building on my initial thoughts, I find these assessments to be valuable tools for structured self-reflection. They move beyond a vague sense of one's abilities and provide a concrete framework for analysis. As I noted, they are excellent for establishing a personal baseline. Down the line, they can serve as a benchmark to see how far I've come after focused effort in my growth areas. They transform abstract goals like "become a better leader" into a tangible checklist of skills to develop, making the process of improvement less daunting and more measurable.</p>
-                </div>
-
-                <div class="mt-12">
-                     <h3>Suggested Revisions to the Assessments</h3>
-                     <p class="my-4 text-gray-700">Based on the articles and my own experience, I would make revisions to make the assessments more inclusive of different career stages. As I reflected, some questions seem to assume a significant level of corporate or managerial experience, which can be difficult to answer accurately otherwise.</p>
-                     <ul class="space-y-4 text-gray-800">
-                        <li><strong>Add Experience-Level Alternatives:</strong> For questions that presume a high level of authority, add alternative phrasings. For example, instead of "I handle budgeting for AI/ML projects," add "I understand the resource considerations (e.g., time, cost) for an AI/ML project."</li>
-                        <li><strong>Introduce a "Learning and Application" Section:</strong> To better capture the skills of those not yet in formal leadership roles, add a section focused on the ability to learn and apply concepts, such as "I effectively apply concepts from courses or training to my work."</li>
-                        <li><strong>Make "Sway" and "Support" More Explicit:</strong> Drawing from the Center for Creative Leadership (CCL), the concepts of "Sway" (influencing stakeholders) and "Support" (removing barriers) could be more distinct. For example: "I can effectively build a coalition of support for a new idea."</li>
-                    </ul>
+                    <div class="assessment-card">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                            <div>
+                                <h3 class="text-green-700 border-green-200">Top 3 Strengths</h3>
+                                <ul class="mt-4 space-y-4 text-gray-800">
+                                    <li><strong>Flexibility & Adaptability:</strong> Highly open to new ideas and willing to adjust plans.</li>
+                                    <li><strong>Communication & Engagement:</strong> Strong ability to listen, align, and build trust.</li>
+                                    <li><strong>Continuous Learning & Ethics:</strong> Committed to staying current and understanding ethical considerations.</li>
+                                </ul>
+                            </div>
+                             <div>
+                                <h3 class="text-red-700 border-red-200">Top 3 Areas for Improvement</h3>
+                                <ul class="mt-4 space-y-4 text-gray-800">
+                                    <li><strong>AI/ML Project Management:</strong> Coordinating teams and handling budgets.</li>
+                                    <li><strong>Planning & Risk Management:</strong> Creating detailed plans and mitigation strategies.</li>
+                                    <li><strong>Change Readiness:</strong> Identifying and addressing skill gaps for AI adoption.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Transition 2 -->
         <div class="transition-divider">
-            <p>Grounded in this self-awareness, I delved into the history of the field itself. The following artifact represents a deep exploration of the key milestones, cycles, and figures that have shaped Artificial Intelligence.</p>
+            <p>Grounded in this self-awareness, I delved into the history of the field itself.</p>
             <div class="icon">◇</div>
         </div>
 
         <!-- AI Timeline Section -->
         <div id="timeline" class="pt-16">
+            <div class="max-w-6xl mx-auto mb-8">
+                <div class="artifact-details-card">
+                    <h2 class="section-title mt-0 text-left">Artifact 2: The Cycles of AI</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h4>Introduction & Objective</h4>
+                            <p>To understand where a field is going, one must first understand where it has been. This artifact researches, synthesizes, and visually represents the key milestones, technological shifts, and cyclical patterns of AI history.</p>
+                            <h4 class="mt-4">Unique Value & Relevance</h4>
+                            <p>This artifact showcases the ability to distill a broad, complex subject into an engaging narrative and use data visualization to communicate key insights, which is vital for understanding current trends.</p>
+                        </div>
+                        <div>
+                            <h4>Process & Tools</h4>
+                            <ul class="space-y-2">
+                                <li>Conducted extensive research into AI history.</li>
+                                <li>Organized data into a chronological narrative of thematic eras.</li>
+                                <li>Designed and developed two data visualizations using <strong>Chart.js</strong>.</li>
+                                <li>Wrote detailed descriptions to create a cohesive story.</li>
+                                <li><strong>Tools:</strong> Historical Research, HTML, TailwindCSS, JavaScript.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <header class="bg-gradient-to-br from-[#003B46] to-[#07575B] text-white py-20 px-4 rounded-t-lg">
                 <div class="container mx-auto text-center">
                     <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tight">The Cycles of AI</h1>
@@ -510,142 +669,147 @@
 
         <!-- Transition 3 -->
         <div class="transition-divider">
-            <p>Having explored the history, the next step is to apply these concepts. This case study demonstrates an understanding of when to use different machine learning techniques based on the problem and data at hand.</p>
+            <p>Having explored the history, the next step is to apply these concepts to practical scenarios.</p>
             <div class="icon">◇</div>
         </div>
 
         <!-- ML vs DL Case Study Section -->
         <section id="ml-vs-dl" class="py-16 bg-gray-100 rounded-lg">
-            <h2 class="section-title">Case Study: Machine Learning vs. Deep Learning</h2>
-            <p class="section-subtitle">Analyzing the suitability of different AI approaches for distinct real-world problems, illustrating the core principle of choosing the right tool for the job.</p>
-            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- ML Case Study Card -->
-                <div class="card">
-                    <h3 class="text-xl font-bold text-[#003B46] text-center mb-4">Application: House Price Prediction</h3>
-                    <div class="text-center text-5xl mb-4">🏠</div>
-                    <div class="bg-green-100 text-green-800 p-3 rounded-lg mb-4">
-                        <h4 class="font-bold">Best Fit: Traditional Machine Learning</h4>
-                        <p class="text-sm">e.g., Linear Regression</p>
+            <div class="max-w-6xl mx-auto">
+                <h2 class="section-title">Artifact 3: ML vs. Deep Learning Case Study</h2>
+                <p class="section-subtitle">A practical analysis of choosing the right tool for the right problem.</p>
+                
+                <div class="artifact-details-card mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h4>Introduction & Objective</h4>
+                            <p>Success in data science hinges on selecting the most appropriate tool. This case study illustrates the critical thinking involved in choosing between traditional ML and Deep Learning based on problem characteristics.</p>
+                            <h4 class="mt-4">Unique Value & Relevance</h4>
+                            <p>This artifact showcases the practical decision-making skills required in any data-focused role. It proves an ability to make sound, reasoned technical choices that align with project goals—a core competency for an effective data professional.</p>
+                        </div>
+                        <div>
+                            <h4>Process & Tools</h4>
+                            <ul class="space-y-2">
+                                <li>Selected two contrasting problems: House Price Prediction (structured data) and Facial Recognition (unstructured data).</li>
+                                <li>Analyzed the core requirements of each problem (data type, feature engineering, explainability).</li>
+                                <li>Authored a concise rationale for the best-fit paradigm for each case.</li>
+                                <li>Designed a clear, side-by-side visual layout for intuitive comparison.</li>
+                                <li><strong>Tools:</strong> Conceptual Analysis, HTML, TailwindCSS.</li>
+                            </ul>
+                        </div>
                     </div>
-                    <h4 class="font-bold text-gray-800 mb-2">Why it Works:</h4>
-                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
-                        <li><strong>Structured Data:</strong> The model uses well-defined, tabular data (square footage, bedrooms, etc.), which is ideal for traditional ML.</li>
-                        <li><strong>High Interpretability:</strong> The model's logic is clear and explainable (e.g., "price increases by $X per square foot"), which is crucial for business trust.</li>
-                        <li><strong>Efficiency:</strong> It's computationally inexpensive and effective on smaller, localized datasets.</li>
-                    </ul>
-                    <h4 class="font-bold text-gray-800 mt-4 mb-2">Why Deep Learning is Unsuitable:</h4>
-                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
-                        <li><strong>Unnecessary Complexity:</strong> Using a neural network for this problem is overkill and inefficient.</li>
-                        <li><strong>"Black Box" Problem:</strong> It would be difficult to explain *why* the model produced a specific price, a major drawback for financial applications.</li>
-                    </ul>
                 </div>
-                <!-- DL Case Study Card -->
-                <div class="card">
-                    <h3 class="text-xl font-bold text-[#003B46] text-center mb-4">Application: Facial Recognition</h3>
-                    <div class="text-center text-5xl mb-4">👤</div>
-                    <div class="bg-blue-100 text-blue-800 p-3 rounded-lg mb-4">
-                        <h4 class="font-bold">Best Fit: Deep Learning</h4>
-                        <p class="text-sm">e.g., Convolutional Neural Network (CNN)</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="card">
+                        <h3 class="text-xl font-bold text-[#003B46] text-center mb-4">Application: House Price Prediction</h3>
+                        <div class="text-center text-5xl mb-4">🏠</div>
+                        <div class="bg-green-100 text-green-800 p-3 rounded-lg mb-4">
+                            <h4 class="font-bold">Best Fit: Traditional Machine Learning</h4>
+                            <p class="text-sm">e.g., Linear Regression</p>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">Why it Works:</h4>
+                        <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                            <li><strong>Structured Data:</strong> Ideal for well-defined, tabular data.</li>
+                            <li><strong>High Interpretability:</strong> Logic is clear and explainable, crucial for business trust.</li>
+                            <li><strong>Efficiency:</strong> Computationally inexpensive and effective on smaller datasets.</li>
+                        </ul>
                     </div>
-                    <h4 class="font-bold text-gray-800 mb-2">Why it Works:</h4>
-                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
-                        <li><strong>Unstructured Data:</strong> The model excels at processing raw pixel data from an image, where features are not predefined.</li>
-                        <li><strong>Automatic Feature Learning:</strong> It automatically learns the complex, hierarchical features of a face (edges, textures, shapes), a task impossible for humans to program manually.</li>
-                        <li><strong>Robustness:</strong> It can accurately identify faces under varied lighting, angles, and expressions.</li>
-                    </ul>
-                    <h4 class="font-bold text-gray-800 mt-4 mb-2">Why Traditional ML is Unsuitable:</h4>
-                    <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
-                        <li><strong>Impossible Feature Engineering:</strong> Manually defining the features of a human face from pixel data is not feasible, making traditional ML ineffective for this task.</li>
-                    </ul>
+                    <div class="card">
+                        <h3 class="text-xl font-bold text-[#003B46] text-center mb-4">Application: Facial Recognition</h3>
+                        <div class="text-center text-5xl mb-4">👤</div>
+                        <div class="bg-blue-100 text-blue-800 p-3 rounded-lg mb-4">
+                            <h4 class="font-bold">Best Fit: Deep Learning</h4>
+                            <p class="text-sm">e.g., Convolutional Neural Network (CNN)</p>
+                        </div>
+                        <h4 class="font-bold text-gray-800 mb-2">Why it Works:</h4>
+                        <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
+                            <li><strong>Unstructured Data:</strong> Excels at processing raw pixel data from images.</li>
+                            <li><strong>Automatic Feature Learning:</strong> Automatically learns complex, hierarchical features of a face.</li>
+                            <li><strong>Robustness:</strong> Accurately identifies faces under varied conditions.</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Transition 4 -->
         <div class="transition-divider">
-            <p>To bring these concepts to life, the next artifact is an interactive demonstration of the core principles of a neural network, applying the communication strategies discussed in our course.</p>
+            <p>To bring these concepts to life, the next artifact is an interactive demonstration of a neural network's core principles.</p>
             <div class="icon">◇</div>
         </div>
 
         <!-- Neural Network Explainer Section -->
         <section id="nn-explainer" class="py-16">
-            <h2 class="section-title">The Neural Network Explainer</h2>
-            <p class="section-subtitle">An interactive artifact based on Class Discussion 3.4, demonstrating how to communicate complex topics simply by applying core learning principles.</p>
-            
-            <div class="max-w-5xl mx-auto space-y-8">
-                <div class="nn-card">
-                    <h3 class="text-2xl font-bold text-slate-800 mb-3">The "Sorting Machine" Analogy</h3>
-                    <p class="text-lg text-slate-600 leading-relaxed">
-                        Think of a neural network as a smart **"sorting machine"** that learns to identify things just by looking at lots of examples. This interactive guide will walk you through how this "machine" works. We'll teach it to tell the difference between an apple 🍎 and a banana 🍌.
-                    </p>
-                </div>
+            <div class="max-w-6xl mx-auto">
+                <h2 class="section-title">Artifact 4: The Neural Network Explainer</h2>
+                <p class="section-subtitle">An interactive tool for demystifying the "black box" of neural networks.</p>
 
-                <div class="nn-card md:flex items-center gap-8">
-                    <div class="step-number mb-4 md:mb-0">1</div>
-                    <div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-2">Taking In Details (The "Input")</h3>
-                        <p class="text-slate-600">Our machine doesn't see a "whole" fruit. Instead, its sensors focus on simple details: **Color** and **Shape**.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                    <div class="artifact-details-card">
+                        <h4>Introduction</h4>
+                        <p>One of the greatest challenges in AI is making its complex mechanisms understandable to a broader audience. This artifact tackles that challenge head-on by creating an interactive experience that teaches the fundamentals of a neural network through a simple, hands-on analogy.</p>
+                        <h4 class="mt-4">Objective</h4>
+                        <p>To design and build a functional web application that explains the core concepts of a neural network (inputs, weights, training, and prediction) in an intuitive and engaging way, without requiring any prior technical knowledge from the user.</p>
+                        <h4 class="mt-4">Process</h4>
+                        <ul class="space-y-2">
+                            <li>Conceived the "Sorting Machine" analogy to represent a neural network.</li>
+                            <li>Designed a simple user flow to guide the user through the learning process.</li>
+                            <li>Developed the interactive training module using vanilla JavaScript to simulate the "learning" process.</li>
+                        </ul>
+                        <h4 class="mt-4">Tools & Technologies</h4>
+                        <ul class="space-y-2">
+                            <li>HTML & TailwindCSS</li>
+                            <li>JavaScript (DOM Manipulation)</li>
+                            <li>Instructional & UI/UX Design</li>
+                        </ul>
+                        <h4 class="mt-4">Unique Value & Relevance</h4>
+                        <p>This project demonstrates a unique blend of technical skill (front-end development) and communication prowess. The ability to explain complex technical topics to non-technical stakeholders is a critical and highly valued skill in the industry.</p>
                     </div>
-                </div>
 
-                <div class="nn-card md:flex items-center gap-8">
-                    <div class="step-number mb-4 md:mb-0">2</div>
-                    <div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-2">Finding Patterns (The "Hidden Layer")</h3>
-                        <p class="text-slate-600">This is the machine's "brain." It combines the input details and learns to give different importance, or **"weight,"** to each clue. Initially, it just guesses!</p>
-                    </div>
-                </div>
-                
-                <div class="nn-card">
-                    <div class="md:flex items-center gap-8 mb-6">
-                        <div class="step-number mb-4 md:mb-0">3</div>
-                        <div>
-                            <h3 class="text-xl font-bold text-slate-800 mb-2">Learning from Mistakes (The "Training")</h3>
-                            <p class="text-slate-600">You are the "Coach." Show the machine a fruit, and if it's wrong, it will adjust its weights to get better. **Click a fruit to start training!**</p>
+                    <div class="space-y-8">
+                        <div class="nn-card">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-3">The "Sorting Machine" Analogy</h3>
+                            <p class="text-lg text-slate-600 leading-relaxed">
+                                Think of a neural network as a smart **"sorting machine"** that learns by example. We'll teach it to tell the difference between an apple 🍎 and a banana 🍌.
+                            </p>
                         </div>
-                    </div>
-
-                    <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-                            <div class="text-center">
-                                <h4 class="font-bold text-lg mb-4">1. Choose a Fruit</h4>
-                                <div class="flex justify-center gap-4">
-                                    <div id="show-apple" class="fruit-item bg-red-100 border-red-200">🍎</div>
-                                    <div id="show-banana" class="fruit-item bg-yellow-100 border-yellow-200">🍌</div>
+                         <div class="nn-card">
+                            <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                                    <div class="text-center">
+                                        <h4 class="font-bold text-lg mb-4">1. Choose a Fruit</h4>
+                                        <div class="flex justify-center gap-4">
+                                            <button type="button" id="show-apple" class="fruit-item bg-red-100 border-red-200" aria-label="Train with an apple">🍎</button>
+                                            <button type="button" id="show-banana" class="fruit-item bg-yellow-100 border-yellow-200" aria-label="Train with a banana">🍌</button>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <h4 class="font-bold text-lg mb-4">2. The Machine's "Brain"</h4>
+                                        <div class="space-y-4 text-sm">
+                                            <div>
+                                                <label for="weight-color" class="font-semibold text-slate-700">Importance of Color</label>
+                                                <input type="range" min="0" max="100" value="50" class="weight-slider" id="weight-color" disabled>
+                                                <div class="flex justify-between text-xs text-slate-500"><span>Yellow</span><span>Red</span></div>
+                                            </div>
+                                            <div>
+                                                <label for="weight-shape" class="font-semibold text-slate-700">Importance of Shape</label>
+                                                <input type="range" min="0" max="100" value="50" class="weight-slider" id="weight-shape" disabled>
+                                                <div class="flex justify-between text-xs text-slate-500"><span>Curved</span><span>Round</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <h4 class="font-bold text-lg mb-4">3. The Machine's Guess</h4>
+                                        <div id="machine-guess" class="text-6xl p-4 rounded-lg bg-slate-200 h-[100px] flex items-center justify-center">?</div>
+                                        <div id="feedback-message" class="mt-2 h-10 text-slate-600 font-semibold flex items-center justify-center"></div>
+                                    </div>
+                                </div>
+                                 <div class="text-center mt-6">
+                                    <button id="reset-btn" class="text-sm bg-slate-200 text-slate-600 hover:bg-slate-300 px-4 py-2 rounded-md transition-colors">Reset Brain</button>
                                 </div>
                             </div>
-                            <div class="text-center">
-                                <h4 class="font-bold text-lg mb-4">2. The Machine's "Brain"</h4>
-                                <div class="space-y-4 text-sm">
-                                    <div>
-                                        <label for="weight-color" class="font-semibold text-slate-700">Importance of Color</label>
-                                        <input type="range" min="0" max="100" value="50" class="weight-slider" id="weight-color" disabled>
-                                        <div class="flex justify-between text-xs text-slate-500"><span>Yellow</span><span>Red</span></div>
-                                    </div>
-                                    <div>
-                                        <label for="weight-shape" class="font-semibold text-slate-700">Importance of Shape</label>
-                                        <input type="range" min="0" max="100" value="50" class="weight-slider" id="weight-shape" disabled>
-                                        <div class="flex justify-between text-xs text-slate-500"><span>Curved</span><span>Round</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="text-center">
-                                <h4 class="font-bold text-lg mb-4">3. The Machine's Guess</h4>
-                                <div id="machine-guess" class="text-6xl p-4 rounded-lg bg-slate-200 h-[100px] flex items-center justify-center">?</div>
-                                <div id="feedback-message" class="mt-2 h-10 text-slate-600 font-semibold flex items-center justify-center"></div>
-                            </div>
                         </div>
-                         <div class="text-center mt-6">
-                            <button id="reset-btn" class="text-sm bg-slate-200 text-slate-600 hover:bg-slate-300 px-4 py-2 rounded-md transition-colors">Reset Brain</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="nn-card md:flex items-center gap-8">
-                    <div class="step-number mb-4 md:mb-0">4</div>
-                    <div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-2">Real-World Application</h3>
-                        <p class="text-slate-600">By repeating this "guess and correct" process thousands of times, a real neural network gets incredibly good at finding complex patterns. This is how AI recognizes faces, understands voice commands, and helps doctors diagnose diseases. It's all about learning from practice!</p>
                     </div>
                 </div>
             </div>
@@ -653,137 +817,211 @@
 
         <!-- Transition 5 -->
         <div class="transition-divider">
-            <p>This final case study explores how different AI models tackle the same complex, contradictory creative challenge, revealing their unique "personalities" and problem-solving approaches.</p>
+            <p>This final case study explores the creative and logical limits of modern AI models.</p>
             <div class="icon">◇</div>
         </div>
 
         <!-- Robotic Chef Challenge Section -->
         <section id="chef-challenge" class="py-16 bg-gray-100 rounded-lg">
-            <h2 class="section-title">The Robotic Chef Challenge</h2>
-            <p class="section-subtitle">A comparative analysis of how different LLMs resolve contradictory culinary requests while adhering to strict logical constraints and a specific persona.</p>
-
-            <div class="max-w-6xl mx-auto space-y-12">
-                <!-- Course 1 -->
-                <div class="chef-card">
-                    <h3 class="text-2xl font-bold text-center text-[#003B46] mb-2">Course 1: The Enigmatic Starter</h3>
-                    <p class="text-center text-gray-600 mb-6 italic">The Challenge: "Light & Refreshing" vs. "Satisfying & Complex"</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="card">
-                            <h4>Perplexity</h4>
-                            <p class="font-semibold">Dish: Melon, Mozzarella, and Parma Ham Tartines</p>
-                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> This dish is light and refreshing due to the juicy melon and fresh mozzarella, yet it achieves satisfying complexity through the salty, savory contrast of the Parma ham.</p>
-                        </div>
-                        <div class="card">
-                            <h4>Gemini</h4>
-                            <p class="font-semibold">Dish: Chilled Avocado and Lime Soup with Toasted Pepita Crumble</p>
-                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> The chilled temperature and high water content provide a light and refreshing quality, while the creamy texture of avocado introduces satisfying richness and complex textural elements.</p>
-                        </div>
-                        <div class="card">
-                            <h4>Claude Sonnet 4</h4>
-                            <p class="font-semibold">Dish: Chilled Avocado Espuma with Citrus Caviar</p>
-                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> The avocado provides substantial healthy fats creating satiation, while the yuzu's acidity and salmon roe's bursting texture deliver refreshing brightness and umami complexity.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Course 2 -->
-                <div class="chef-card">
-                    <h3 class="text-2xl font-bold text-center text-[#003B46] mb-2">Course 2: The Daring Main Course</h3>
-                    <p class="text-center text-gray-600 mb-6 italic">The Challenge: "Comforting & Familiar" vs. "Unexpected & Adventurous"</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="card">
-                            <h4>Perplexity</h4>
-                            <p class="font-semibold">Dish: Classic Manti (Turkish Dumplings)</p>
-                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> Manti is comforting as a traditional dumpling dish, while its exotic spices and yogurt sauce introduce an unexpected and adventurous flavor profile.</p>
-                        </div>
-                        <div class="card">
-                            <h4>Gemini</h4>
-                            <p class="font-semibold">Dish: Sous Vide Chicken Roulade with Kimchi Fried Quinoa</p>
-                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> The chicken roulade provides a familiar and comforting protein base, while the fermented kimchi in the quinoa introduces an unexpected, adventurous, and complex flavor profile.</p>
-                        </div>
-                        <div class="card">
-                            <h4>Claude Sonnet 4</h4>
-                            <p class="font-semibold">Dish: Miso-Glazed Short Rib Ramen</p>
-                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> The slow-braised short rib delivers familiar comfort, while the miso glaze introduces unexpected Japanese flavors that transform the traditional technique into an adventurous fusion.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Course 3 -->
-                <div class="chef-card">
-                    <h3 class="text-2xl font-bold text-center text-[#003B46] mb-2">Course 3: The Wholesome Indulgence</h3>
-                    <p class="text-center text-gray-600 mb-6 italic">The Challenge: "Sweet & Indulgent" vs. "Promotes Well-being & Health"</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="card">
-                            <h4>Perplexity</h4>
-                            <p class="font-semibold">Dish: Dark Chocolate Avocado Mousse with Chia Seeds</p>
-                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> This dessert is sweet from the rich dark chocolate, yet it promotes well-being through nutrient-dense avocado and fiber-rich chia seeds.</p>
-                        </div>
-                        <div class="card">
-                            <h4>Gemini</h4>
-                            <p class="font-semibold">Dish: Dark Chocolate Avocado Mousse with Berry Coulis</p>
-                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> The dark chocolate provides an indulgent experience, while avocado contributes healthy fats and the berry coulis adds natural sweetness and antioxidants.</p>
-                        </div>
-                        <div class="card">
-                            <h4>Claude Sonnet 4</h4>
-                            <p class="font-semibold">Dish: Dark Chocolate Mousse with Matcha and Chia Seeds</p>
-                            <p class="text-sm text-gray-600 mt-2"><strong>Reasoning:</strong> The chocolate mousse satisfies indulgent cravings, while matcha provides antioxidants and chia seeds contribute omega-3 fatty acids.</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="max-w-6xl mx-auto">
+                <h2 class="section-title">Artifact 5: The Robotic Chef Challenge</h2>
+                <p class="section-subtitle">A comparative analysis of how different LLMs tackle a complex, contradictory creative challenge.</p>
                 
-                <!-- Analysis Table -->
-                <div class="assessment-card">
-                    <h3>Shared Excellence &amp; Unique Flavors</h3>
-                    <div class="overflow-x-auto">
-                        <table class="chef-table">
-                            <thead>
-                                <tr>
-                                    <th>Feature</th>
-                                    <th>Perplexity Output</th>
-                                    <th>Gemini Output</th>
-                                    <th>Claude Sonnet 4 Output</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Culinary Style</strong></td>
-                                    <td>Traditional with elegant twists.</td>
-                                    <td>Balanced; contemporary and professional.</td>
-                                    <td>Avant-garde, fine-dining inspired.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Ingredient Choices</strong></td>
-                                    <td>Common, accessible ingredients.</td>
-                                    <td>Contemporary (Kimchi, Quinoa).</td>
-                                    <td>Specialized (Yuzu, Salmon Roe).</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Reasoning Nuance</strong></td>
-                                    <td>Direct and functional.</td>
-                                    <td>More descriptive, explaining "how".</td>
-                                    <td>Highly sophisticated and conceptual.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Perceived Sophistication</strong></td>
-                                    <td>Solid, reliable.</td>
-                                    <td>Polished, modern.</td>
-                                    <td>Highly advanced, innovative.</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                 <div class="artifact-details-card mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h4>Introduction & Objective</h4>
+                            <p>Modern LLMs have unique strengths and "personalities." This experiment probes these differences by giving multiple AIs the same complex and creative task: design a three-course menu that resolves contradictory culinary requirements.</p>
+                            <h4 class="mt-4">Unique Value & Relevance</h4>
+                            <p>This project demonstrates an advanced understanding of the current AI landscape. It moves beyond simply using AI to actively testing and analyzing its capabilities, showcasing cutting-edge skills in prompt engineering and comparative model analysis.</p>
+                        </div>
+                        <div>
+                            <h4>Process & Tools</h4>
+                            <ul class="space-y-2">
+                                <li>Engineered a detailed prompt for a "Robotic Chef" persona with specific constraints.</li>
+                                <li>Submitted the identical prompt to three different LLMs for a fair comparison.</li>
+                                <li>Conducted a qualitative analysis, comparing outputs on style, creativity, and reasoning.</li>
+                                <li>Synthesized the findings into a clear comparative table and conclusion.</li>
+                                <li><strong>Tools:</strong> Prompt Engineering, LLMs (Perplexity, Gemini, Claude), HTML.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Conclusion -->
-                 <div class="assessment-card">
-                    <h3>Conclusion: The Future of AI Culinary Creativity</h3>
-                    <ul class="list-disc list-inside space-y-2 text-gray-800">
-                        <li><strong>Strong Comprehension:</strong> All LLMs successfully executed the complex, multi-layered prompt.</li>
-                        <li><strong>Diverse Strengths:</strong> Varying culinary styles and innovation levels reflect different model training and focus.</li>
-                        <li><strong>Logical Problem-Solving:</strong> AI is highly effective at resolving subjective or contradictory inputs logically.</li>
-                        <li><strong>Distinctive Performance:</strong> Claude Sonnet 4 best embodied the "highly advanced AI" persona through its innovative choices and sophisticated culinary concepts.</li>
-                    </ul>
+                <div class="space-y-12">
+                     <div class="chef-card">
+                        <h3 class="text-2xl font-bold text-center text-[#003B46] mb-2">Course 1: The Enigmatic Starter</h3>
+                        <p class="text-center text-gray-600 mb-6 italic">The Challenge: "Light & Refreshing" vs. "Satisfying & Complex"</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="card">
+                                <h4>Perplexity</h4>
+                                <p class="font-semibold">Dish: Melon, Mozzarella, and Parma Ham Tartines</p>
+                            </div>
+                            <div class="card">
+                                <h4>Gemini</h4>
+                                <p class="font-semibold">Dish: Chilled Avocado and Lime Soup with Toasted Pepita Crumble</p>
+                            </div>
+                            <div class="card">
+                                <h4>Claude Sonnet 4</h4>
+                                <p class="font-semibold">Dish: Chilled Avocado Espuma with Citrus Caviar</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chef-card">
+                        <h3 class="text-2xl font-bold text-center text-[#003B46] mb-2">Course 2: The Daring Main Course</h3>
+                        <p class="text-center text-gray-600 mb-6 italic">The Challenge: "Comforting & Familiar" vs. "Unexpected & Adventurous"</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="card">
+                                <h4>Perplexity</h4>
+                                <p class="font-semibold">Dish: Classic Manti (Turkish Dumplings)</p>
+                            </div>
+                            <div class="card">
+                                <h4>Gemini</h4>
+                                <p class="font-semibold">Dish: Sous Vide Chicken Roulade with Kimchi Fried Quinoa</p>
+                            </div>
+                            <div class="card">
+                                <h4>Claude Sonnet 4</h4>
+                                <p class="font-semibold">Dish: Miso-Glazed Short Rib Ramen</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chef-card">
+                        <h3 class="text-2xl font-bold text-center text-[#003B46] mb-2">Course 3: The Wholesome Indulgence</h3>
+                        <p class="text-center text-gray-600 mb-6 italic">The Challenge: "Sweet & Indulgent" vs. "Promotes Well-being & Health"</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="card">
+                                <h4>Perplexity</h4>
+                                <p class="font-semibold">Dish: Dark Chocolate Avocado Mousse with Chia Seeds</p>
+                            </div>
+                            <div class="card">
+                                <h4>Gemini</h4>
+                                <p class="font-semibold">Dish: Dark Chocolate Avocado Mousse with Berry Coulis</p>
+                            </div>
+                            <div class="card">
+                                <h4>Claude Sonnet 4</h4>
+                                <p class="font-semibold">Dish: Dark Chocolate Mousse with Matcha and Chia Seeds</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="assessment-card">
+                        <h3>Shared Excellence &amp; Unique Flavors</h3>
+                        <div class="overflow-x-auto">
+                            <table class="chef-table">
+                                <thead>
+                                    <tr>
+                                        <th>Feature</th>
+                                        <th>Perplexity Output</th>
+                                        <th>Gemini Output</th>
+                                        <th>Claude Sonnet 4 Output</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Culinary Style</strong></td>
+                                        <td>Traditional with elegant twists.</td>
+                                        <td>Balanced; contemporary and professional.</td>
+                                        <td>Avant-garde, fine-dining inspired.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Ingredient Choices</strong></td>
+                                        <td>Common, accessible ingredients.</td>
+                                        <td>Contemporary (Kimchi, Quinoa).</td>
+                                        <td>Specialized (Yuzu, Salmon Roe).</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Reasoning Nuance</strong></td>
+                                        <td>Direct and functional.</td>
+                                        <td>More descriptive, explaining "how".</td>
+                                        <td>Highly sophisticated and conceptual.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Perceived Sophistication</strong></td>
+                                        <td>Solid, reliable.</td>
+                                        <td>Polished, modern.</td>
+                                        <td>Highly advanced, innovative.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                     <div class="assessment-card">
+                        <h3>Conclusion: The Future of AI Culinary Creativity</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-800">
+                            <li><strong>Strong Comprehension:</strong> All LLMs successfully executed the complex, multi-layered prompt.</li>
+                            <li><strong>Diverse Strengths:</strong> Varying culinary styles and innovation levels reflect different model training and focus.</li>
+                            <li><strong>Logical Problem-Solving:</strong> AI is highly effective at resolving subjective or contradictory inputs logically.</li>
+                            <li><strong>Distinctive Performance:</strong> Claude Sonnet 4 best embodied the "highly advanced AI" persona through its innovative choices and sophisticated culinary concepts.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transition 6 -->
+        <div class="transition-divider">
+            <p>Finally, this artifact examines the current commercial landscape, balancing AI's incredible potential with its significant, real-world risks.</p>
+            <div class="icon">◇</div>
+        </div>
+
+        <!-- Commercial AI Section -->
+        <section id="commercial-ai" class="py-16 bg-white rounded-lg">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="section-title">Artifact 6: The Dual Reality of Commercial AI</h2>
+                <p class="section-subtitle">Implementation, Impact, and Inherent Risk in the Modern Workplace.</p>
+
+                <div class="artifact-details-card mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h4>Introduction & Objective</h4>
+                            <p>This artifact provides a comprehensive analysis of the current state of commercial AI, exploring its practical, real-world impact across key sectors while confronting the inherent risks of deploying powerful, autonomous systems, highlighted by a recent major data breach.</p>
+                             <h4 class="mt-4">Unique Value & Relevance</h4>
+                            <p>By juxtaposing the tangible ROI of modern AI platforms with the cautionary tale of a real-world security failure, this artifact creates a powerful, pragmatic narrative. It addresses not just "what AI can do" but "what we must do about AI," making it highly relevant to current discussions in technology, business strategy, and ethics.</p>
+                        </div>
+                        <div>
+                            <h4>Process & Tools</h4>
+                            <ul class="space-y-2">
+                                <li>Researched and analyzed recent commercial AI applications in Healthcare, Finance, and Creative Media.</li>
+                                <li>Selected the McDonald's AI chatbot data leak as a prime case study for AI implementation failure.</li>
+                                <li>Structured findings to contrast the positive impacts with the critical safety concerns.</li>
+                                <li><strong>Tools:</strong> Google Search, Google Gemini, and platforms analyzed (Abridge, "Athena," GEO).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
+                    <div>
+                        <h3 class="text-2xl font-bold text-center text-green-700 mb-4">The Promise: High-Impact Implementation</h3>
+                        <div class="space-y-6">
+                            <div class="card">
+                                <h4 class="font-bold text-xl text-[#07575B] mb-2">Healthcare: Abridge</h4>
+                                <p class="text-gray-600">This ambient scribe AI listens to doctor-patient conversations and automatically generates accurate clinical notes. It drastically reduces administrative burnout for physicians, improves note quality, and allows doctors to focus entirely on the patient rather than on data entry.</p>
+                            </div>
+                            <div class="card">
+                                 <h4 class="font-bold text-xl text-[#07575B] mb-2">Financial Services: Lloyds Bank "Athena"</h4>
+                                <p class="text-gray-600">Lloyds Bank deployed a proprietary generative AI to its 65,000 employees. "Athena" acts as an internal expert, capable of answering complex questions on internal processes and policies, thereby accelerating workflows, improving consistency, and boosting overall productivity.</p>
+                            </div>
+                            <div class="card">
+                                <h4 class="font-bold text-xl text-[#07575B] mb-2">Creative Media: Generative Engine Optimization</h4>
+                                <p class="text-gray-600">Moving beyond traditional SEO, GEO involves optimizing content to be more discoverable and favorable to generative AI models like those in search engines. This emerging field is creating new strategic roles focused on ensuring brand visibility in an AI-driven information landscape.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-bold text-center text-red-700 mb-4">The Peril: A Case Study in Risk</h3>
+                        <div class="card border-4 border-red-200 bg-red-50">
+                            <h4 class="font-bold text-xl text-red-800 mb-2">Case Study: McDonald's AI Chatbot Leak</h4>
+                            <p class="text-gray-700 mb-4">In July 2025, security researchers discovered a catastrophic vulnerability in a customer service AI chatbot used for hiring by McDonald's, exposing the personal data of <strong>64 million job applicants</strong>.</p>
+                            <p class="text-gray-700 mb-4">The failure was not due to a sophisticated cyberattack, but a shockingly simple oversight: the chatbot's security could be bypassed using the default password <strong>"123456"</strong>.</p>
+                            <h5 class="font-bold text-red-800">Implications:</h5>
+                             <ul class="list-disc list-inside space-y-2 text-sm text-gray-700 mt-2">
+                                <li><strong>Reputational & Legal Risk:</strong> The incident underscores the immense risks for businesses deploying AI without rigorous, independent security audits.</li>
+                                <li><strong>Data Privacy Crisis:</strong> It forces a critical conversation about how personal data is handled by automated systems and who is liable when they fail.</li>
+                                <li><strong>Inadequate Protocols:</strong> It reveals that while companies are rushing to deploy AI for efficiency, the security protocols for these new systems are often dangerously inadequate.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -798,194 +1036,99 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Existing Chart.js Code ---
-            const brandColors = {
-                darkBlue: '#003B46',
-                cyan: '#07575B',
-                lightCyan: '#66A5AD',
-                lightestCyan: '#C4DFE6',
-            };
-            
+            // --- Chart.js Code ---
+            const brandColors = { darkBlue: '#003B46', cyan: '#07575B', lightCyan: '#66A5AD', lightestCyan: '#C4DFE6' };
             function wrapLabels(label, maxLength) {
                 if (typeof label !== 'string' || label.length <= maxLength) return label;
                 const words = label.split(' ');
-                let lines = [];
-                let currentLine = '';
+                let lines = []; let currentLine = '';
                 words.forEach(word => {
-                    if ((currentLine + ' ' + word).trim().length > maxLength) {
-                        lines.push(currentLine.trim());
-                        currentLine = word;
-                    } else {
-                        currentLine = (currentLine + ' ' + word).trim();
-                    }
+                    if ((currentLine + ' ' + word).trim().length > maxLength) { lines.push(currentLine.trim()); currentLine = word; } 
+                    else { currentLine = (currentLine + ' ' + word).trim(); }
                 });
                 lines.push(currentLine.trim());
                 return lines;
             }
-
             const tooltipTitleCallback = (tooltipItems) => {
                 const item = tooltipItems[0];
                 let label = item.chart.data.labels[item.dataIndex];
                 if (Array.isArray(label)) return label.join(' ');
                 return label;
             };
-
             const defaultChartOptions = {
                 responsive: true, maintainAspectRatio: false,
-                plugins: {
-                    legend: { labels: { color: '#212529', font: { size: 14 } } },
-                    tooltip: { enabled: true, callbacks: { title: tooltipTitleCallback } }
-                },
-                scales: {
-                    y: { ticks: { color: '#212529', beginAtZero: true }, grid: { color: '#e9ecef' } },
-                    x: { ticks: { color: '#212529' }, grid: { display: false } }
-                }
+                plugins: { legend: { labels: { color: '#212529', font: { size: 14 } } }, tooltip: { enabled: true, callbacks: { title: tooltipTitleCallback } } },
+                scales: { y: { ticks: { color: '#212529', beginAtZero: true }, grid: { color: '#e9ecef' } }, x: { ticks: { color: '#212529' }, grid: { display: false } } }
             };
-
             const hypeCtx = document.getElementById('hypeCycleChart');
             if(hypeCtx) {
                 new Chart(hypeCtx.getContext('2d'), {
                     type: 'line',
-                    data: {
-                        labels: ['1960', '1974 (Winter)', '1980 (Boom)', '1987 (Winter)', '1995', '2012 (Boom)'],
-                        datasets: [{
-                            label: 'AI Funding & Hype',
-                            data: [60, 20, 70, 30, 40, 95],
-                            borderColor: brandColors.cyan,
-                            backgroundColor: 'rgba(7, 87, 91, 0.2)',
-                            fill: true, tension: 0.4,
-                            pointBackgroundColor: brandColors.darkBlue, pointRadius: 5
-                        }]
-                    },
+                    data: { labels: ['1960', '1974 (Winter)', '1980 (Boom)', '1987 (Winter)', '1995', '2012 (Boom)'], datasets: [{ label: 'AI Funding & Hype', data: [60, 20, 70, 30, 40, 95], borderColor: brandColors.cyan, backgroundColor: 'rgba(7, 87, 91, 0.2)', fill: true, tension: 0.4, pointBackgroundColor: brandColors.darkBlue, pointRadius: 5 }] },
                     options: { ...defaultChartOptions }
                 });
             }
-
             const victoriesCtx = document.getElementById('victoriesChart');
             if(victoriesCtx) {
-                const victoriesLabels = [
-                    '1997: Deep Blue defeats Garry Kasparov',
-                    '2011: Watson wins on Jeopardy!',
-                    '2016: AlphaGo defeats Lee Sedol'
-                ];
+                const victoriesLabels = ['1997: Deep Blue defeats Garry Kasparov', '2011: Watson wins on Jeopardy!', '2016: AlphaGo defeats Lee Sedol'];
                 new Chart(victoriesCtx.getContext('2d'), {
                     type: 'bar',
-                    data: {
-                        labels: victoriesLabels.map(label => wrapLabels(label, 16)),
-                        datasets: [{
-                            label: 'Conceptual Impact Score',
-                            data: [50, 75, 95],
-                            backgroundColor: [brandColors.lightCyan, brandColors.cyan, brandColors.darkBlue],
-                            borderColor: [brandColors.lightCyan, brandColors.cyan, brandColors.darkBlue],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        ...defaultChartOptions,
-                        indexAxis: 'y',
-                        plugins: { legend: { display: false }, tooltip: { callbacks: { title: tooltipTitleCallback } } },
-                         scales: {
-                            x: {
-                                ticks: { color: '#212529', beginAtZero: true },
-                                grid: { color: '#e9ecef' },
-                                title: { display: true, text: 'Impact Score / Technological Leap', color: '#6c757d' }
-                            },
-                            y: { ticks: { color: '#212529', font: { size: 14 } }, grid: { display: false } }
-                        }
-                    }
+                    data: { labels: victoriesLabels.map(label => wrapLabels(label, 16)), datasets: [{ label: 'Conceptual Impact Score', data: [50, 75, 95], backgroundColor: [brandColors.lightCyan, brandColors.cyan, brandColors.darkBlue], borderWidth: 1 }] },
+                    options: { ...defaultChartOptions, indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { callbacks: { title: tooltipTitleCallback } } }, scales: { x: { title: { display: true, text: 'Impact Score / Technological Leap', color: '#6c757d' } }, y: { ticks: { font: { size: 14 } } } } }
                 });
             }
 
-            // --- New Neural Network Explainer Code ---
+            // --- Neural Network Explainer Code ---
             const showAppleBtn = document.getElementById('show-apple');
             const showBananaBtn = document.getElementById('show-banana');
             const resetBtn = document.getElementById('reset-btn');
-            
             const colorSlider = document.getElementById('weight-color');
             const shapeSlider = document.getElementById('weight-shape');
             const machineGuessEl = document.getElementById('machine-guess');
             const feedbackMessageEl = document.getElementById('feedback-message');
-
-            if (showAppleBtn) { // Check if the NN explainer elements exist
-                let colorWeight = 50; // 0-49 is yellow, 51-100 is red
-                let shapeWeight = 50; // 0-49 is curved, 51-100 is round
-
-                function updateNNSliders() {
-                    colorSlider.value = colorWeight;
-                    shapeSlider.value = shapeWeight;
-                }
-
+            if (showAppleBtn) {
+                let colorWeight = 50; let shapeWeight = 50;
+                function updateNNSliders() { colorSlider.value = colorWeight; shapeSlider.value = shapeWeight; }
                 function getMachineGuess() {
                     const score = (colorWeight - 50) + (shapeWeight - 50);
-                    if (score > 0) return 'apple';
-                    if (score < 0) return 'banana';
+                    if (score > 0) return 'apple'; if (score < 0) return 'banana';
                     return Math.random() < 0.5 ? 'apple' : 'banana';
                 }
-                
-                function displayGuess(guess) {
-                     machineGuessEl.textContent = guess === 'apple' ? '🍎' : '🍌';
-                }
-
+                function displayGuess(guess) { machineGuessEl.textContent = guess === 'apple' ? '🍎' : '🍌'; }
                 function showFeedback(message, isCorrect) {
                     feedbackMessageEl.textContent = message;
-                    if (isCorrect) {
-                        feedbackMessageEl.classList.remove('text-red-500');
-                        feedbackMessageEl.classList.add('text-green-500');
-                        machineGuessEl.classList.add('bg-green-200');
-                    } else {
-                        feedbackMessageEl.classList.remove('text-green-500');
-                        feedbackMessageEl.classList.add('text-red-500');
-                        machineGuessEl.classList.add('bg-red-200');
-                    }
-                    
+                    feedbackMessageEl.classList.toggle('text-green-500', isCorrect);
+                    feedbackMessageEl.classList.toggle('text-red-500', !isCorrect);
+                    machineGuessEl.classList.toggle('bg-green-200', isCorrect);
+                    machineGuessEl.classList.toggle('bg-red-200', !isCorrect);
                     setTimeout(() => {
                         machineGuessEl.textContent = '?';
                         machineGuessEl.classList.remove('bg-green-200', 'bg-red-200');
                         feedbackMessageEl.textContent = '';
                     }, 2500);
                 }
-
                 function train(shownFruit) {
                     const guess = getMachineGuess();
                     displayGuess(guess);
                     const isCorrect = guess === shownFruit;
-
                     if (isCorrect) {
                         showFeedback("Correct! The machine's weights were good.", true);
-                        if (shownFruit === 'apple') {
-                            colorWeight = Math.min(100, colorWeight + 2);
-                            shapeWeight = Math.min(100, shapeWeight + 2);
-                        } else {
-                            colorWeight = Math.max(0, colorWeight - 2);
-                            shapeWeight = Math.max(0, shapeWeight - 2);
-                        }
+                        if (shownFruit === 'apple') { colorWeight = Math.min(100, colorWeight + 2); shapeWeight = Math.min(100, shapeWeight + 2); } 
+                        else { colorWeight = Math.max(0, colorWeight - 2); shapeWeight = Math.max(0, shapeWeight - 2); }
                     } else {
                         showFeedback("Wrong! Adjusting the machine's brain...", false);
-                        if (shownFruit === 'apple') {
-                            colorWeight = Math.min(100, colorWeight + 15);
-                            shapeWeight = Math.min(100, shapeWeight + 15);
-                        } else {
-                            colorWeight = Math.max(0, colorWeight - 15);
-                            shapeWeight = Math.max(0, shapeWeight - 15);
-                        }
+                        if (shownFruit === 'apple') { colorWeight = Math.min(100, colorWeight + 15); shapeWeight = Math.min(100, shapeWeight + 15); } 
+                        else { colorWeight = Math.max(0, colorWeight - 15); shapeWeight = Math.max(0, shapeWeight - 15); }
                     }
-                    
                     setTimeout(updateNNSliders, 500);
                 }
-                
                 showAppleBtn.addEventListener('click', () => train('apple'));
                 showBananaBtn.addEventListener('click', () => train('banana'));
-
                 resetBtn.addEventListener('click', () => {
-                    colorWeight = 50;
-                    shapeWeight = 50;
-                    updateNNSliders();
+                    colorWeight = 50; shapeWeight = 50; updateNNSliders();
                     feedbackMessageEl.textContent = "Brain has been reset to its initial state.";
-                     setTimeout(() => {
-                        feedbackMessageEl.textContent = '';
-                    }, 2000);
+                    setTimeout(() => { feedbackMessageEl.textContent = ''; }, 2000);
                 });
-
                 updateNNSliders();
             }
         });
