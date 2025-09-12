@@ -3,1135 +3,353 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Professional Portfolio</title>
+    <title>Case Study: RAG System for the Food & Beverage Industry</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@400;700&display=swap');
+        
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #F8F9FA;
-            color: #212529;
+            font-family: 'Lato', sans-serif;
         }
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 5rem; /* Offset for sticky header */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Merriweather', serif;
         }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 400px;
+        .page-break {
+            page-break-before: always;
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 400px;
-            }
+        .diagram-component {
+            transition: all 0.3s ease-in-out;
         }
-        .section-title {
-            font-weight: 900;
-            font-size: 2.25rem;
-            line-height: 2.5rem;
-            text-align: center;
-            margin-bottom: 1rem;
-            color: #003B46;
-        }
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.125rem;
-            line-height: 1.75rem;
-            color: #6c757d;
-            max-width: 48rem;
-            margin: 0 auto 3rem auto;
-        }
-        .card {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            padding: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
-        }
-        .artifact-summary-card {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            padding: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        .artifact-summary-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
-        }
-        .artifact-summary-card .artifact-number {
-            display: inline-block;
-            background-color: #07575B;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            align-self: flex-start;
-        }
-        .artifact-summary-card .artifact-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #003B46;
-            margin-bottom: 0.5rem;
-        }
-        .artifact-summary-card .artifact-description {
-            font-size: 0.9rem;
-            line-height: 1.4;
-            color: #6c757d;
-            flex-grow: 1;
-            margin-bottom: 1rem;
-        }
-        .artifact-summary-card .artifact-icon {
-            margin-top: auto;
-            text-align: right;
-            font-size: 2.5rem;
-            color: #C4DFE6;
-            line-height: 1;
-        }
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 11px;
-            top: 20px;
-            bottom: -20px;
-            width: 4px;
-            background-color: #C4DFE6;
-        }
-        .timeline-item:last-child::before {
-            display: none;
-        }
-        .timeline-dot {
-            position: absolute;
-            left: 0;
-            top: 20px;
-            height: 28px;
-            width: 28px;
-            border: 4px solid #C4DFE6;
-            background-color: #07575B;
-            border-radius: 9999px;
-            z-index: 10;
-        }
-        .assessment-card {
-             background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            padding: 2rem;
-        }
-        .assessment-card h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #07575B;
-            margin-bottom: 0.75rem;
-            border-bottom: 2px solid #C4DFE6;
-            padding-bottom: 0.5rem;
-        }
-         .assessment-card ul {
-            list-style-position: inside;
-            padding-left: 0.5rem;
-        }
-        .assessment-card li {
-            margin-bottom: 0.75rem;
-        }
-        .transition-divider {
-            text-align: center;
-            padding: 4rem 1rem;
-        }
-        .transition-divider p {
-            font-style: italic;
-            color: #6c757d;
-            max-width: 40rem;
-            margin: 0 auto 1rem auto;
-        }
-        .transition-divider .icon {
-            font-size: 1.5rem;
-            color: #C4DFE6;
-        }
-        .nn-card {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            padding: 2rem;
-        }
-        .step-number {
-            background-color: #4f46e5;
-            color: white;
-            border-radius: 9999px;
-            width: 3rem;
-            height: 3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.25rem;
-            flex-shrink: 0;
-        }
-        .fruit-item {
-            width: 100px;
-            height: 100px;
-            font-size: 4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 0.5rem;
-            border: 2px solid #e2e8f0;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .fruit-item:hover {
+        .diagram-component:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.10);
         }
-        .weight-slider {
-            -webkit-appearance: none; appearance: none;
-            width: 100%; height: 8px;
-            background: #d1d5db; border-radius: 5px;
-            outline: none; opacity: 0.7;
-            transition: opacity .2s;
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
-        .weight-slider:hover { opacity: 1; }
-        .weight-slider::-webkit-slider-thumb {
-            -webkit-appearance: none; appearance: none;
-            width: 20px; height: 20px;
-            background: #4f46e5; cursor: pointer;
-            border-radius: 50%;
+        .has-tooltip:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
         }
-        .weight-slider::-moz-range-thumb {
-            width: 20px; height: 20px;
-            background: #4f46e5; cursor: pointer;
-            border-radius: 50%;
-        }
-        #feedback-message { transition: all 0.5s ease-in-out; }
-        .chef-card {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            padding: 2rem;
-            text-align: left;
-        }
-        .chef-card h4 {
-            color: #003B46;
-            font-size: 1.5em;
-            margin-top: 0;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #66A5AD;
-            padding-bottom: 5px;
-        }
-        .chef-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 2rem;
-            background-color: #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .chef-table th, .chef-table td {
-            padding: 15px 20px;
-            border: 1px solid #ecf0f1;
-            text-align: left;
-        }
-        .chef-table th {
-            background-color: #07575B;
-            color: white;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-        .chef-table tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-        /* Artifact Detail Styles */
-        .artifact-details-card {
-            background-color: #e9ecef;
-            border-left: 5px solid #07575B;
-            padding: 2rem;
-            border-radius: 0.75rem;
-        }
-        .artifact-details-card h4 {
-            font-weight: 700;
-            color: #003B46;
-            margin-bottom: 0.5rem;
-        }
-        .artifact-details-card p, .artifact-details-card ul {
-            font-size: 0.95rem;
-            color: #495057;
-        }
-        .artifact-details-card ul {
-            list-style-type: disc;
-            padding-left: 1.25rem;
+        .connector-arrow {
+            position: relative;
+            z-index: 1;
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="bg-gray-200">
 
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold text-[#003B46]">My Portfolio</div>
-            <div class="flex-wrap justify-center hidden md:flex">
-                <a href="#about" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">About Me</a>
-                <a href="#portfolio" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">My Artifacts</a>
-                <a href="#assessment" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">Self-Assessment</a>
-                <a href="#timeline" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">AI Timeline</a>
-                <a href="#ml-vs-dl" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">ML Case Study</a>
-                <a href="#nn-explainer" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">NN Explainer</a>
-                <a href="#chef-challenge" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">Robotic Chef Challenge</a>
-                <a href="#commercial-ai" class="text-gray-600 hover:text-[#07575B] px-3 py-2 rounded-md text-sm font-medium">Commercial AI</a>
-            </div>
-        </nav>
-    </header>
-
-    <main class="container mx-auto p-4 md:p-8">
-
-        <!-- About Me Section -->
-        <section id="about" class="py-16">
-            <h2 class="section-title">About Me</h2>
-            <p class="section-subtitle">Bridging Software Engineering with Data Intelligence</p>
-            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-8">
-                <div class="md:col-span-3">
-                    <div class="assessment-card h-full">
-                        <p class="text-lg text-gray-800 leading-relaxed">
-                            As a .NET Full Stack Developer with a Bachelor's degree in Computer Engineering, I build robust, scalable applications by structuring logic and managing data flow. This experience has given me a deep appreciation for the architecture that underpins technology and has ignited my passion to move closer to the data itself—to not only manage it, but to uncover the stories and intelligence it holds.
-                        </p>
-                        <p class="mt-4 text-lg text-gray-800 leading-relaxed">
-                            This portfolio marks a pivotal step in my transition into the world of Data Analysis and Machine Learning. The following artifacts are the culmination of a comprehensive course designed to build a holistic understanding of AI. Throughout this journey, I've leveraged modern tools, including collaborative AI assistants, to research, synthesize, and visualize complex topics, transforming theoretical knowledge into tangible, professional work.
-                        </p>
-                    </div>
-                </div>
-                <div class="md:col-span-2">
-                     <div class="assessment-card h-full">
-                        <h3>Core Competencies Explored</h3>
-                        <ul class="mt-4 space-y-2 text-gray-700 list-disc">
-                            <li><strong>Machine Learning Concepts:</strong> Understanding core models, training methods, and the development lifecycle.</li>
-                            <li><strong>Data Challenges:</strong> Analyzing the impact of data labeling, sources, and bias on model integrity.</li>
-                            <li><strong>Deep Learning & Neural Nets:</strong> Exploring recent developments and their commercial applications.</li>
-                            <li><strong>Ethical AI:</strong> Applying biblical and ethical principles to ensure responsible innovation.</li>
-                        </ul>
-                    </div>
+    <main class="container mx-auto p-4 sm:p-8">
+        <!-- Cover Page -->
+        <div class="bg-white p-12 shadow-2xl min-h-screen flex flex-col justify-center">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-6xl font-bold text-gray-800">Generative AI Strategic Initiative</h1>
+                <p class="text-2xl text-gray-600 mt-4">A Case Study for Implementing a Retrieval-Augmented Generation (RAG) System in the Food & Beverage Industry</p>
+                <div class="mt-12 border-t pt-4">
+                    <p class="text-lg text-gray-700"><strong>Project Proposal</strong></p>
+                    <p class="text-md text-gray-500">Date: September 12, 2025</p>
                 </div>
             </div>
-        </section>
-
-        <!-- Artifacts Summary Section -->
-        <section id="portfolio" class="py-16 bg-gray-100 rounded-lg">
-            <h2 class="section-title">My Artifacts</h2>
-            <p class="section-subtitle">A collection of projects demonstrating my journey into AI and Data Analysis. Each artifact represents a key area of study, from self-assessment and historical context to practical application and creative problem-solving. Click on any card to explore.</p>
-            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
-                <a href="#assessment" class="block rounded-lg no-underline text-current">
-                    <div class="artifact-summary-card">
-                        <span class="artifact-number">Artifact 1</span>
-                        <h3 class="artifact-title">Personal Self-Assessment</h3>
-                        <p class="artifact-description">An analysis of my leadership strengths and growth areas in the context of AI/ML integration, based on formal assessment tools.</p>
-                        <div class="artifact-icon">📊</div>
-                    </div>
-                </a>
-
-                <a href="#timeline" class="block rounded-lg no-underline text-current">
-                    <div class="artifact-summary-card">
-                        <span class="artifact-number">Artifact 2</span>
-                        <h3 class="artifact-title">The Cycles of AI</h3>
-                        <p class="artifact-description">A visual history tracing the key milestones, figures, and cyclical "seasons" of AI development from its inception to the modern day.</p>
-                        <div class="artifact-icon">⏳</div>
-                    </div>
-                </a>
-
-                <a href="#ml-vs-dl" class="block rounded-lg no-underline text-current">
-                    <div class="artifact-summary-card">
-                        <span class="artifact-number">Artifact 3</span>
-                        <h3 class="artifact-title">ML vs. Deep Learning</h3>
-                        <p class="artifact-description">A practical case study comparing traditional Machine Learning and Deep Learning to illustrate the principle of choosing the right tool for the job.</p>
-                        <div class="artifact-icon">⚖️</div>
-                    </div>
-                </a>
-
-                <a href="#nn-explainer" class="block rounded-lg no-underline text-current">
-                    <div class="artifact-summary-card">
-                        <span class="artifact-number">Artifact 4</span>
-                        <h3 class="artifact-title">Neural Network Explainer</h3>
-                        <p class="artifact-description">An interactive artifact designed to communicate the core concepts of a neural network in a simple, intuitive, and hands-on way.</p>
-                        <div class="artifact-icon">🧠</div>
-                    </div>
-                </a>
-                
-                <a href="#chef-challenge" class="block rounded-lg no-underline text-current">
-                    <div class="artifact-summary-card">
-                        <span class="artifact-number">Artifact 5</span>
-                        <h3 class="artifact-title">Robotic Chef Challenge</h3>
-                        <p class="artifact-description">A comparative analysis of different LLMs tasked with a complex, creative challenge, revealing their unique problem-solving "personalities."</p>
-                        <div class="artifact-icon">🤖</div>
-                    </div>
-                </a>
-                
-                <a href="#commercial-ai" class="block rounded-lg no-underline text-current">
-                    <div class="artifact-summary-card">
-                        <span class="artifact-number">Artifact 6</span>
-                        <h3 class="artifact-title">The Dual Reality of AI</h3>
-                        <p class="artifact-description">An analysis of commercial AI's real-world impact and inherent risks, highlighted by a major data breach case study.</p>
-                        <div class="artifact-icon">⚠️</div>
-                    </div>
-                </a>
-            </div>
-        </section>
-
-        <!-- Transition 1 -->
-        <div class="transition-divider">
-            <p>My journey into AI begins with a clear understanding of my own capabilities and growth areas.</p>
-            <div class="icon">◇</div>
         </div>
 
-        <!-- Personal Assessment Section -->
-        <section id="assessment" class="py-16 bg-white rounded-lg">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="section-title">Artifact 1: Personal Self-Assessment</h2>
-                <p class="section-subtitle">An inward look to establish a baseline for professional growth in the AI landscape.</p>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                    <div class="artifact-details-card">
-                        <h4>Introduction</h4>
-                        <p>Effective professional growth begins with honest self-reflection. This artifact documents a structured analysis of my current skills, establishing a clear baseline from which to measure my development as I transition into the field of AI and Machine Learning.</p>
-                        <h4 class="mt-4">Objective</h4>
-                        <p>To identify and understand my core strengths and primary areas for improvement regarding the leadership and management skills required to successfully implement AI/ML technologies.</p>
-                        <h4 class="mt-4">Process</h4>
-                        <ul class="space-y-2">
-                            <li>Completed two formal questionnaires: the "Change Management Skills Self-Assessment" and the "AI/ML Integration Leadership Skills Self-Assessment."</li>
-                            <li>Analyzed results to distill my top three strengths and three most significant areas for improvement.</li>
-                            <li>Critically evaluated the assessment tools, proposing revisions to enhance their applicability.</li>
-                        </ul>
-                        <h4 class="mt-4">Tools & Technologies</h4>
-                        <ul class="space-y-2">
-                            <li>Self-Assessment Frameworks</li>
-                            <li>Critical Thinking & Analysis</li>
-                        </ul>
-                        <h4 class="mt-4">Unique Value & Relevance</h4>
-                        <p>This artifact demonstrates a proactive and methodical approach to personal development, showing a commitment to cultivating the self-awareness and strategic thinking necessary for leadership in a tech-driven environment.</p>
-                    </div>
+        <!-- Milestone 1 -->
+        <div class="page-break bg-white p-8 md:p-12 shadow-2xl min-h-screen">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-600 pb-4 mb-8">Milestone 1: Use Case Definition</h2>
+            
+            <div class="space-y-6 text-gray-700 text-base leading-relaxed">
+                <p><strong>Introduction:</strong> To maintain a competitive advantage in the dynamic food and beverage sector, our organization must harness its most valuable asset: information. A Retrieval-Augmented Generation (RAG) system represents a strategic leap forward, transforming our disparate data sources into a cohesive intelligence engine. This system will empower our teams by providing instant, accurate, and contextually-aware answers to complex business queries, directly addressing key operational bottlenecks and unlocking new avenues for growth.</p>
 
-                    <div class="assessment-card">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
+                <h3 class="text-2xl font-bold text-gray-800 pt-6">Primary Business Use Cases</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-blue-500">
+                        <h4 class="font-bold text-lg text-gray-900">1. Supply Chain Resilience & Optimization</h4>
+                        <p class="mt-2">Enable proactive responses to supply chain disruptions. Logistics and procurement managers can ask complex, multi-faceted questions like, <em>"Given the current drought in Spain, what are our top three alternative olive oil suppliers in Italy and Greece? Compare their current spot prices, lead times, and quality certifications from our internal supplier database."</em> This transforms a multi-day research task into an instant, data-backed decision.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-blue-500">
+                        <h4 class="font-bold text-lg text-gray-900">2. Accelerated Product Innovation</h4>
+                        <p class="mt-2">Drastically reduce R&D cycles. A food scientist can query, <em>"Summarize recent patents and scientific literature on plant-based emulsifiers suitable for a clean-label, high-protein beverage. Cross-reference with our internal experimental data to identify any potential formulation conflicts."</em> The system synthesizes vast amounts of unstructured text from patents, journals, and internal reports, highlighting opportunities and risks.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-blue-500">
+                        <h4 class="font-bold text-lg text-gray-900">3. Proactive Regulatory & Compliance Management</h4>
+                        <p class="mt-2">Navigate the complex web of global food safety and labeling laws. A compliance officer can ask, <em>"What are the specific changes in the European Union's regulations regarding allergen labeling for tree nuts that come into effect in the next six months, and which of our current product lines sold in Germany are impacted?"</em> This allows for proactive adjustments, mitigating the risk of costly recalls or fines.</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-blue-500">
+                        <h4 class="font-bold text-lg text-gray-900">4. Enhanced Customer & Market Intelligence</h4>
+                        <p class="mt-2">Equip marketing and sales teams with deep, actionable insights. A brand manager could query, <em>"Analyze customer feedback from the last quarter and summarize the most common complaints and praises for our new organic snack line. How does this sentiment compare to social media trends for our top two competitors?"</em> This provides a unified view of the market landscape, guiding strategic marketing decisions.</p>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-bold text-gray-800 pt-6">Key Stakeholders & Business Objectives</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border">
+                        <thead class="bg-gray-800 text-white">
+                            <tr>
+                                <th class="py-3 px-4 text-left">Stakeholder Group</th>
+                                <th class="py-3 px-4 text-left">Specific Business Objectives</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="py-4 px-4 font-semibold">Executive Leadership</td>
+                                <td class="py-4 px-4">Improve strategic decision-making speed; Increase overall operational agility; Foster a data-first culture.</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-4 font-semibold">Supply Chain & Procurement</td>
+                                <td class="py-4 px-4">Reduce issue resolution time by 50%; Mitigate risks from single-supplier dependency; Decrease costs through better sourcing options.</td>
+                            </tr>
+                             <tr>
+                                <td class="py-4 px-4 font-semibold">Research & Development</td>
+                                <td class="py-4 px-4">Reduce new product research phase by 30%; Increase discovery of novel ingredients; Ensure 100% compliance of formulations.</td>
+                            </tr>
+                             <tr>
+                                <td class="py-4 px-4 font-semibold">Compliance & Quality Assurance</td>
+                                <td class="py-4 px-4">Eliminate non-compliance risks; Automate regulatory change monitoring; Improve speed and accuracy of quality audits.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Milestone 2 -->
+        <div class="page-break bg-white p-8 md:p-12 shadow-2xl min-h-screen">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-600 pb-4 mb-8">Milestone 2: System Architecture Design</h2>
+            <p class="mb-10 text-gray-700">The proposed system is built on a secure, modular, and scalable architecture designed to integrate seamlessly with our existing data infrastructure. Each component is clearly defined to ensure a robust and efficient flow of information from query to answer. (Hover over components for details).</p>
+            
+            <div class="bg-slate-100 p-8 rounded-xl border border-slate-200">
+                <div class="flex flex-col items-center justify-center space-y-6">
+
+                    <!-- User Interface -->
+                    <div class="has-tooltip relative diagram-component w-3/4 max-w-lg bg-white p-4 rounded-lg shadow-lg border-2 border-blue-500">
+                         <div class="flex items-center space-x-4">
+                            <svg class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                             <div>
-                                <h3 class="text-green-700 border-green-200">Top 3 Strengths</h3>
-                                <ul class="mt-4 space-y-4 text-gray-800">
-                                    <li><strong>Flexibility & Adaptability:</strong> Highly open to new ideas and willing to adjust plans.</li>
-                                    <li><strong>Communication & Engagement:</strong> Strong ability to listen, align, and build trust.</li>
-                                    <li><strong>Continuous Learning & Ethics:</strong> Committed to staying current and understanding ethical considerations.</li>
-                                </ul>
-                            </div>
-                             <div>
-                                <h3 class="text-red-700 border-red-200">Top 3 Areas for Improvement</h3>
-                                <ul class="mt-4 space-y-4 text-gray-800">
-                                    <li><strong>AI/ML Project Management:</strong> Coordinating teams and handling budgets.</li>
-                                    <li><strong>Planning & Risk Management:</strong> Creating detailed plans and mitigation strategies.</li>
-                                    <li><strong>Change Readiness:</strong> Identifying and addressing skill gaps for AI adoption.</li>
-                                </ul>
+                                <h4 class="font-bold text-lg text-gray-800">User Interface Layer</h4>
+                                <p class="text-sm text-gray-600">Secure portal for query input.</p>
                             </div>
                         </div>
+                        <div class="tooltip absolute bottom-full mb-2 w-full left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 text-center z-10">Secure, role-based web portal where users ask questions in natural language.</div>
                     </div>
-                </div>
-            </div>
-        </section>
+                    
+                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
 
-        <!-- Transition 2 -->
-        <div class="transition-divider">
-            <p>Grounded in this self-awareness, I delved into the history of the field itself.</p>
-            <div class="icon">◇</div>
-        </div>
+                    <!-- Core RAG Engine -->
+                    <div class="w-full p-6 bg-slate-200 rounded-xl border border-slate-300">
+                        <h4 class="text-center font-bold text-lg text-gray-800 mb-4">Core RAG Engine</h4>
+                        <div class="flex flex-col md:flex-row justify-around items-center space-y-4 md:space-y-0 md:space-x-4">
 
-        <!-- AI Timeline Section -->
-        <div id="timeline" class="pt-16">
-            <div class="max-w-6xl mx-auto mb-8">
-                <div class="artifact-details-card">
-                    <h2 class="section-title mt-0 text-left">Artifact 2: The Cycles of AI</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <h4>Introduction & Objective</h4>
-                            <p>To understand where a field is going, one must first understand where it has been. This artifact researches, synthesizes, and visually represents the key milestones, technological shifts, and cyclical patterns of AI history.</p>
-                            <h4 class="mt-4">Unique Value & Relevance</h4>
-                            <p>This artifact showcases the ability to distill a broad, complex subject into an engaging narrative and use data visualization to communicate key insights, which is vital for understanding current trends.</p>
-                        </div>
-                        <div>
-                            <h4>Process & Tools</h4>
-                            <ul class="space-y-2">
-                                <li>Conducted extensive research into AI history.</li>
-                                <li>Organized data into a chronological narrative of thematic eras.</li>
-                                <li>Designed and developed two data visualizations using <strong>Chart.js</strong>.</li>
-                                <li>Wrote detailed descriptions to create a cohesive story.</li>
-                                <li><strong>Tools:</strong> Historical Research, HTML, TailwindCSS, JavaScript.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <header class="bg-gradient-to-br from-[#003B46] to-[#07575B] text-white py-20 px-4 rounded-t-lg">
-                <div class="container mx-auto text-center">
-                    <h1 class="text-4xl md:text-6xl font-black mb-4 tracking-tight">The Cycles of AI</h1>
-                    <p class="text-xl md:text-2xl font-light text-[#C4DFE6] max-w-3xl mx-auto">A visual history tracing the turbulent journey of Artificial Intelligence from symbolic logic to generative learning.</p>
-                </div>
-            </header>
-
-            <div class="bg-white shadow-lg rounded-b-lg">
-                <section id="foundations" class="py-16 px-4">
-                    <h2 class="section-title">The Seeds of Thought: Pre-1956 Foundations</h2>
-                    <p class="section-subtitle">Before AI had a name, the theoretical groundwork was laid by pioneers in mathematics, logic, and neuroscience, establishing the core questions and concepts that would define the field.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                        <div class="card">
-                            <h3 class="font-bold text-xl text-center text-[#07575B] mb-3">1950: The Turing Test</h3>
-                            <p class="text-gray-600">In his seminal paper "Computing Machinery and Intelligence," Alan Turing proposes the "Imitation Game." It sidesteps the philosophical debate of "Can machines think?" by proposing an operational test: If a machine can hold a conversation indistinguishable from a human's, it is intelligent for all practical purposes. This establishes the foundational goal of the field.</p>
-                        </div>
-                        <div class="card">
-                            <h3 class="font-bold text-xl text-center text-[#07575B] mb-3">1956: The Birth of a Field</h3>
-                            <p class="text-gray-600">At the Dartmouth Summer Research Project, John McCarthy coins the term "Artificial Intelligence." The conference brings together the field's founding fathers and is built on the conjecture "that every aspect of learning or any other feature of intelligence can in principle be so precisely described that a machine can be made to simulate it."</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="golden-age" class="py-16 bg-gray-50 px-4">
-                    <h2 class="section-title">1956-1974: The Golden Age of Symbolic AI</h2>
-                    <p class="section-subtitle">An era of extraordinary optimism where researchers, funded by agencies like DARPA, believed intelligent machines were imminent. The dominant approach, Symbolic AI, treated intelligence as a process of manipulating symbols according to logical rules.</p>
-                    <div class="card md:col-span-2 max-w-5xl mx-auto">
-                        <h3 class="text-2xl font-bold text-[#003B46] mb-6 text-center">Key Milestones of an Optimistic Era</h3>
-                        <div class="relative pl-12 space-y-10">
-                            <div class="timeline-item relative">
-                                <div class="timeline-dot"></div>
-                                <div class="pl-10">
-                                    <h4 class="font-bold text-xl text-[#07575B]">1958: The Language of AI</h4>
-                                    <p class="text-gray-600">John McCarthy invents LISP, a high-level programming language that becomes the lingua franca of AI research for decades due to its powerful list-processing capabilities.</p>
-                                </div>
-                            </div>
-                             <div class="timeline-item relative">
-                                <div class="timeline-dot"></div>
-                                <div class="pl-10">
-                                    <h4 class="font-bold text-xl text-[#07575B]">1966: The First Chatbot</h4>
-                                    <p class="text-gray-600">Joseph Weizenbaum creates ELIZA at MIT. The program simulates a psychotherapist using pattern matching, captivating users and sparking debate about human-computer interaction.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item relative">
-                                <div class="timeline-dot"></div>
-                                <div class="pl-10">
-                                    <h4 class="font-bold text-xl text-[#07575B]">1967: Algorithmic Foundations</h4>
-                                    <p class="text-gray-600">The Nearest Neighbor algorithm is conceived, providing a simple but powerful method for classification. This foundational algorithm forms the basis for more complex pattern recognition systems used today.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item relative">
-                                <div class="timeline-dot"></div>
-                                <div class="pl-10">
-                                    <h4 class="font-bold text-xl text-[#07575B]">1972: The First Intelligent Robot</h4>
-                                    <p class="text-gray-600">Shakey the Robot at SRI demonstrates a landmark integration of perception, reasoning, and action. It can navigate rooms, perceive its environment, and execute complex commands.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="ai-winters" class="py-16 px-4">
-                    <h2 class="section-title">1974-1993: The AI Winters</h2>
-                    <p class="section-subtitle">Promises failed to materialize as techniques from simple "micro-worlds" could not scale to real-world complexity. This led to two periods of disillusionment, criticism, and severe funding cuts.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-6xl mx-auto">
-                        <div class="card h-full">
-                            <h3 class="text-2xl font-bold text-[#003B46] mb-4 text-center">The Hype Cycle Falters</h3>
-                            <p class="text-gray-600 mb-4">This chart visualizes the cyclical nature of AI research funding and public hype. The initial optimism of the Golden Age gave way to the "First AI Winter," triggered by failures to meet grandiose promises. A brief thaw occurred with the commercial success of Expert Systems in the 1980s, but their brittleness and high cost led to the "Second AI Winter" when the market collapsed.</p>
-                            <div class="chart-container">
-                                <canvas id="hypeCycleChart"></canvas>
-                            </div>
-                        </div>
-                        <div class="space-y-6">
-                            <div class="card">
-                                <h4 class="font-bold text-xl text-[#07575B] mb-2">🧊 First Winter (1974-1980)</h4>
-                                <p class="text-gray-600">Triggered by the Lighthill Report in the UK and the Mansfield Amendment in the US, which demanded immediate, practical results that AI couldn't deliver. The "combinatorial explosion" proved that symbolic AI couldn't scale.</p>
-                            </div>
-                            <div class="card">
-                                 <h4 class="font-bold text-xl text-[#07575B] mb-2">🔥 Brief Thaw: Expert Systems (1980-1987)</h4>
-                                <p class="text-gray-600">Pragmatic "Expert Systems" like XCON (which configured computer orders for DEC) created a commercial boom, proving AI could provide real business value in narrow domains.</p>
-                            </div>
-                            <div class="card">
-                                <h4 class="font-bold text-xl text-[#07575B] mb-2">🧊 Second Winter (1987-1993)</h4>
-                                <p class="text-gray-600">The specialized, expensive "Lisp Machine" market collapsed as desktop PCs became powerful. Expert systems proved too brittle and difficult to maintain, causing the investment bubble to burst.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="machine-learning" class="py-16 bg-gray-50 px-4">
-                    <h2 class="section-title">1990s-2010s: The Quiet Revolution</h2>
-                    <p class="section-subtitle">While mainstream AI was in a deep freeze, a paradigm shift occurred. Researchers moved away from hand-crafted rules toward systems that learn from data. This era culminated in high-profile victories that restored AI's credibility.</p>
-                    <div class="card max-w-5xl mx-auto">
-                         <h3 class="text-2xl font-bold text-[#003B46] mb-4 text-center">Landmark Victories: Man vs. Machine</h3>
-                         <p class="text-gray-600 mb-6 text-center max-w-3xl mx-auto">A series of high-profile contests demonstrated AI's growing power, each showcasing a different technological leap. This chart compares the conceptual impact of these victories, from the raw computational power of Deep Blue to the human-like learning and intuition of AlphaGo, marking the definitive arrival of modern AI.</p>
-                        <div class="chart-container h-96">
-                            <canvas id="victoriesChart"></canvas>
-                        </div>
-                    </div>
-                </section>
-                
-                <section id="deep-learning" class="py-16 px-4">
-                    <h2 class="section-title">2012-Present: The Deep Learning Explosion</h2>
-                    <p class="section-subtitle">A "perfect storm" of big data, powerful hardware, and mature algorithms unleashed the full potential of deep learning, kicking off the current AI summer and a corporate arms race for technological supremacy.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-5xl mx-auto">
-                         <div class="card bg-gradient-to-br from-[#003B46] to-[#07575B] text-white p-8 flex flex-col justify-center">
-                            <h3 class="text-3xl font-bold text-center mb-4">The "ImageNet Moment"</h3>
-                            <p class="text-center text-[#C4DFE6]">In 2012, a deep learning model called **AlexNet** dominated the ImageNet image recognition challenge. Its success, powered by GPUs and massive data, was the "big bang" of the modern AI era, proving the superiority of the deep learning approach and starting the current AI boom.</p>
-                        </div>
-                        <div class="card">
-                            <h3 class="text-2xl font-bold text-[#003B46] mb-4 text-center">The Three Pillars of Modern AI</h3>
-                            <div class="space-y-4">
-                                <div class="flex items-center"><div class="text-4xl mr-4">🗃️</div><div><h4 class="font-bold text-[#07575B]">Big Data</h4><p class="text-gray-600 text-sm">Vast datasets like ImageNet provided the essential training fuel.</p></div></div>
-                                <div class="flex items-center"><div class="text-4xl mr-4">🖥️</div><div><h4 class="font-bold text-[#07575B]">Big Compute</h4><p class="text-gray-600 text-sm">GPUs and Cloud Computing provided the necessary parallel processing power.</p></div></div>
-                                <div class="flex items-center"><div class="text-4xl mr-4">💡</div><div><h4 class="font-bold text-[#07575B]">Better Algorithms</h4><p class="text-gray-600 text-sm">Mature deep learning techniques like CNNs and backpropagation were ready to scale.</p></div></div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="generative-age" class="py-16 bg-gray-50 px-4">
-                    <h2 class="section-title">The Generative Age: Language Takes Center Stage</h2>
-                    <p class="section-subtitle">The invention of new architectures unlocked the ability for AI to not just classify, but create. This led to an explosion in Natural Language Processing and the mainstream phenomenon of Generative AI.</p>
-                    <div class="card md:col-span-2 max-w-5xl mx-auto">
-                        <div class="relative pl-12 space-y-10">
-                            <div class="timeline-item relative">
-                                <div class="timeline-dot"></div>
-                                <div class="pl-10">
-                                    <h4 class="font-bold text-xl text-[#07575B]">2017: The Transformer Architecture</h4>
-                                    <p class="text-gray-600">Google's "Attention Is All You Need" paper introduces the Transformer. Its "self-attention" mechanism revolutionizes how models handle sequential data, paving the way for large language models.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item relative">
-                                <div class="timeline-dot"></div>
-                                <div class="pl-10">
-                                    <h4 class="font-bold text-xl text-[#07575B]">2018: BERT's Breakthrough</h4>
-                                    <p class="text-gray-600">Google's BERT (Bidirectional Encoder Representations from Transformers) achieves state-of-the-art results on NLP tasks by learning to understand the context of a word from both sides of a sentence, a major leap in language understanding.</p>
-                                </div>
-                            </div>
-                             <div class="timeline-item relative">
-                                <div class="timeline-dot"></div>
-                                <div class="pl-10">
-                                    <h4 class="font-bold text-xl text-[#07575B]">2020-2023: The GPT Era</h4>
-                                    <p class="text-gray-600">OpenAI releases its series of powerful Generative Pre-trained Transformer (GPT) models. The public launch of ChatGPT in late 2022 makes generative AI a global phenomenon, accessible to millions.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="governance" class="py-16 px-4">
-                    <h2 class="section-title">Building Guardrails: Ethical & Governance Milestones</h2>
-                    <p class="section-subtitle">As AI's power grows, so does the global effort to ensure its responsible and ethical use. These milestones signal a vital shift towards accountability and human-centric governance.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                        <div class="card">
-                            <h3 class="font-bold text-xl text-center text-[#07575B] mb-3">2018: GDPR Takes Effect</h4>
-                            <p class="text-gray-600">The EU's General Data Protection Regulation (GDPR) sets a new global standard for data privacy. It includes provisions on automated decision-making and the "right to explanation," directly impacting how AI systems that use personal data can be deployed.</p>
-                        </div>
-                        <div class="card">
-                            <h3 class="font-bold text-xl text-center text-[#07575B] mb-3">2021: UNESCO AI Ethics Recommendation</h4>
-                            <p class="text-gray-600">UNESCO's member states adopt the first-ever global agreement on the Ethics of Artificial Intelligence. It provides a normative framework based on values like human rights, transparency, and fairness to guide the construction of legal AI infrastructure.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="future" class="py-16 bg-gray-50 px-4">
-                    <h2 class="section-title">The Next Horizon: Emerging Trends</h2>
-                    <p class="section-subtitle">The field continues to accelerate, focusing on making AI more transparent, beneficial, and capable, while wrestling with the ultimate goal of general intelligence.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                        <div class="card text-center">
-                            <h3 class="font-bold text-xl text-[#07575B] mb-3">Explainable AI (XAI)</h3>
-                            <p class="text-gray-600">A critical area of research focused on developing techniques that allow humans to understand and trust the results and output created by machine learning algorithms. XAI aims to open the "black box" of complex models.</p>
-                        </div>
-                        <div class="card text-center">
-                            <h3 class="font-bold text-xl text-[#07575B] mb-3">AI for Social Good</h3>
-                            <p class="text-gray-600">A growing movement to apply AI to humanity's greatest challenges. This includes using AI for drug discovery in healthcare, optimizing energy grids for climate science, and improving agricultural yields.</p>
-                        </div>
-                        <div class="card text-center">
-                            <h3 class="font-bold text-xl text-[#07575B] mb-3">The Quest for AGI</h3>
-                            <p class="text-gray-600">The pursuit of Artificial General Intelligence—a machine that can perform any intellectual task a human can—remains the field's "holy grail" and is now the stated primary mission of leading research labs.</p>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-
-        <!-- Transition 3 -->
-        <div class="transition-divider">
-            <p>Having explored the history, the next step is to apply these concepts to practical scenarios.</p>
-            <div class="icon">◇</div>
-        </div>
-
-        <!-- ML vs DL Case Study Section -->
-        <section id="ml-vs-dl" class="py-16 bg-gray-100 rounded-lg">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="section-title">Artifact 3: ML vs. Deep Learning Case Study</h2>
-                <p class="section-subtitle">A practical analysis of choosing the right tool for the right problem.</p>
-                
-                <div class="artifact-details-card mb-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <h4>Introduction & Objective</h4>
-                            <p>Success in data science hinges on selecting the most appropriate tool. This case study illustrates the critical thinking involved in choosing between traditional ML and Deep Learning based on problem characteristics.</p>
-                            <h4 class="mt-4">Unique Value & Relevance</h4>
-                            <p>This artifact showcases the practical decision-making skills required in any data-focused role. It proves an ability to make sound, reasoned technical choices that align with project goals—a core competency for an effective data professional.</p>
-                        </div>
-                        <div>
-                            <h4>Process & Tools</h4>
-                            <ul class="space-y-2">
-                                <li>Selected two contrasting problems: House Price Prediction (structured data) and Facial Recognition (unstructured data).</li>
-                                <li>Analyzed the core requirements of each problem (data type, feature engineering, explainability).</li>
-                                <li>Authored a concise rationale for the best-fit paradigm for each case.</li>
-                                <li>Designed a clear, side-by-side visual layout for intuitive comparison.</li>
-                                <li><strong>Tools:</strong> Conceptual Analysis, HTML, TailwindCSS.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="card">
-                        <h3 class="text-xl font-bold text-[#003B46] text-center mb-4">Application: House Price Prediction</h3>
-                        <div class="text-center text-5xl mb-4">🏠</div>
-                        <div class="bg-green-100 text-green-800 p-3 rounded-lg mb-4">
-                            <h4 class="font-bold">Best Fit: Traditional Machine Learning</h4>
-                            <p class="text-sm">e.g., Linear Regression</p>
-                        </div>
-                        <h4 class="font-bold text-gray-800 mb-2">Why it Works:</h4>
-                        <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
-                            <li><strong>Structured Data:</strong> Ideal for well-defined, tabular data.</li>
-                            <li><strong>High Interpretability:</strong> Logic is clear and explainable, crucial for business trust.</li>
-                            <li><strong>Efficiency:</strong> Computationally inexpensive and effective on smaller datasets.</li>
-                        </ul>
-                    </div>
-                    <div class="card">
-                        <h3 class="text-xl font-bold text-[#003B46] text-center mb-4">Application: Facial Recognition</h3>
-                        <div class="text-center text-5xl mb-4">👤</div>
-                        <div class="bg-blue-100 text-blue-800 p-3 rounded-lg mb-4">
-                            <h4 class="font-bold">Best Fit: Deep Learning</h4>
-                            <p class="text-sm">e.g., Convolutional Neural Network (CNN)</p>
-                        </div>
-                        <h4 class="font-bold text-gray-800 mb-2">Why it Works:</h4>
-                        <ul class="list-disc list-inside space-y-2 text-sm text-gray-700">
-                            <li><strong>Unstructured Data:</strong> Excels at processing raw pixel data from images.</li>
-                            <li><strong>Automatic Feature Learning:</strong> Automatically learns complex, hierarchical features of a face.</li>
-                            <li><strong>Robustness:</strong> Accurately identifies faces under varied conditions.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Transition 4 -->
-        <div class="transition-divider">
-            <p>To bring these concepts to life, the next artifact is an interactive demonstration of a neural network's core principles.</p>
-            <div class="icon">◇</div>
-        </div>
-
-        <!-- Neural Network Explainer Section -->
-        <section id="nn-explainer" class="py-16">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="section-title">Artifact 4: The Neural Network Explainer</h2>
-                <p class="section-subtitle">An interactive tool for demystifying the "black box" of neural networks.</p>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                    <div class="artifact-details-card">
-                        <h4>Introduction</h4>
-                        <p>One of the greatest challenges in AI is making its complex mechanisms understandable to a broader audience. This artifact tackles that challenge head-on by creating an interactive experience that teaches the fundamentals of a neural network through a simple, hands-on analogy.</p>
-                        <h4 class="mt-4">Objective</h4>
-                        <p>To design and build a functional web application that explains the core concepts of a neural network (inputs, weights, training, and prediction) in an intuitive and engaging way, without requiring any prior technical knowledge from the user.</p>
-                        <h4 class="mt-4">Process</h4>
-                        <ul class="space-y-2">
-                            <li>Conceived the "Sorting Machine" analogy to represent a neural network.</li>
-                            <li>Designed a simple user flow to guide the user through the learning process.</li>
-                            <li>Developed the interactive training module using vanilla JavaScript to simulate the "learning" process.</li>
-                        </ul>
-                        <h4 class="mt-4">Tools & Technologies</h4>
-                        <ul class="space-y-2">
-                            <li>HTML & TailwindCSS</li>
-                            <li>JavaScript (DOM Manipulation)</li>
-                            <li>Instructional & UI/UX Design</li>
-                        </ul>
-                        <h4 class="mt-4">Unique Value & Relevance</h4>
-                        <p>This project demonstrates a unique blend of technical skill (front-end development) and communication prowess. The ability to explain complex technical topics to non-technical stakeholders is a critical and highly valued skill in the industry.</p>
-                    </div>
-
-                    <div class="space-y-8">
-                        <div class="nn-card">
-                            <h3 class="text-2xl font-bold text-slate-800 mb-3">The "Sorting Machine" Analogy</h3>
-                            <p class="text-lg text-slate-600 leading-relaxed">
-                                Think of a neural network as a smart **"sorting machine"** that learns by example. We'll teach it to tell the difference between an apple 🍎 and a banana 🍌.
-                            </p>
-                        </div>
-                         <div class="nn-card">
-                            <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-                                    <div class="text-center">
-                                        <h4 class="font-bold text-lg mb-4">1. Choose a Fruit</h4>
-                                        <div class="flex justify-center gap-4">
-                                            <button type="button" id="show-apple" class="fruit-item bg-red-100 border-red-200" aria-label="Train with an apple">🍎</button>
-                                            <button type="button" id="show-banana" class="fruit-item bg-yellow-100 border-yellow-200" aria-label="Train with a banana">🍌</button>
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <h4 class="font-bold text-lg mb-4">2. The Machine's "Brain"</h4>
-                                        <div class="space-y-4 text-sm">
-                                            <div>
-                                                <label for="weight-color" class="font-semibold text-slate-700">Importance of Color</label>
-                                                <input type="range" min="0" max="100" value="50" class="weight-slider" id="weight-color" disabled>
-                                                <div class="flex justify-between text-xs text-slate-500"><span>Yellow</span><span>Red</span></div>
-                                            </div>
-                                            <div>
-                                                <label for="weight-shape" class="font-semibold text-slate-700">Importance of Shape</label>
-                                                <input type="range" min="0" max="100" value="50" class="weight-slider" id="weight-shape" disabled>
-                                                <div class="flex justify-between text-xs text-slate-500"><span>Curved</span><span>Round</span></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <h4 class="font-bold text-lg mb-4">3. The Machine's Guess</h4>
-                                        <div id="machine-guess" class="text-6xl p-4 rounded-lg bg-slate-200 h-[100px] flex items-center justify-center">?</div>
-                                        <div id="feedback-message" class="mt-2 h-10 text-slate-600 font-semibold flex items-center justify-center"></div>
+                            <!-- Retriever -->
+                            <div class="has-tooltip relative diagram-component w-full md:w-1/2 bg-white p-4 rounded-lg shadow-md border-2 border-green-500">
+                                <div class="flex items-center space-x-3">
+                                    <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                    <div>
+                                        <h5 class="font-bold">Retriever</h5>
+                                        <p class="text-sm text-gray-600">Finds relevant documents.</p>
                                     </div>
                                 </div>
-                                 <div class="text-center mt-6">
-                                    <button id="reset-btn" class="text-sm bg-slate-200 text-slate-600 hover:bg-slate-300 px-4 py-2 rounded-md transition-colors">Reset Brain</button>
+                                <div class="tooltip absolute bottom-full mb-2 w-full left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 text-center z-10">Uses semantic search to scan the Knowledge Base and fetch the most relevant data snippets.</div>
+                            </div>
+                            
+                            <div class="text-2xl font-bold text-gray-500 transform md:rotate-0 rotate-90">&harr;</div>
+
+                            <!-- Generative Model -->
+                             <div class="has-tooltip relative diagram-component w-full md:w-1/2 bg-white p-4 rounded-lg shadow-md border-2 border-purple-500">
+                                <div class="flex items-center space-x-3">
+                                    <svg class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                    <div>
+                                        <h5 class="font-bold">Generative Model</h5>
+                                        <p class="text-sm text-gray-600">Synthesizes the answer.</p>
+                                    </div>
                                 </div>
+                                <div class="tooltip absolute bottom-full mb-2 w-full left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 text-center z-10">A large language model that composes a human-readable answer based ONLY on the context provided by the Retriever.</div>
                             </div>
                         </div>
                     </div>
+
+                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+
+                    <!-- Knowledge Base -->
+                    <div class="has-tooltip relative diagram-component w-3/4 max-w-lg bg-white p-4 rounded-lg shadow-lg border-2 border-red-500">
+                         <div class="flex items-center space-x-4">
+                            <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7l8-4 8 4m-8 4v10"></path></svg>
+                            <div>
+                                <h4 class="font-bold text-lg text-gray-800">Unified Knowledge Base</h4>
+                                <p class="text-sm text-gray-600">Internal & External Data Sources.</p>
+                            </div>
+                        </div>
+                        <div class="tooltip absolute top-full mt-2 w-full left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 text-center z-10">The indexed repository of all trusted data: ERP systems, R&D docs, patents, regulatory updates, market reports, etc.</div>
+                    </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Transition 5 -->
-        <div class="transition-divider">
-            <p>This final case study explores the creative and logical limits of modern AI models.</p>
-            <div class="icon">◇</div>
         </div>
-
-        <!-- Robotic Chef Challenge Section -->
-        <section id="chef-challenge" class="py-16 bg-gray-100 rounded-lg">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="section-title">Artifact 5: The Robotic Chef Challenge</h2>
-                <p class="section-subtitle">A comparative analysis of how different LLMs tackle a complex, contradictory creative challenge.</p>
+        
+        <!-- Milestone 3 -->
+        <div class="page-break bg-white p-8 md:p-12 shadow-2xl min-h-screen">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-600 pb-4 mb-8">Milestone 3: Simulated Workflow</h2>
+            <p class="mb-10 text-gray-700">The following diagram illustrates the step-by-step process of how the RAG system handles a sample query from an R&D team member, ensuring a response that is both accurate and grounded in verified data.</p>
+            
+            <div class="space-y-4">
+                <div class="text-center p-4 bg-gray-100 rounded-lg">
+                    <p class="font-semibold text-gray-800">Sample Query:</p>
+                    <p class="text-lg italic text-blue-800">"Summarize the latest findings on using high-pressure processing (HPP) to extend the shelf life of cold-pressed juices, and list any associated impacts on nutritional content."</p>
+                </div>
                 
-                 <div class="artifact-details-card mb-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <h4>Introduction & Objective</h4>
-                            <p>Modern LLMs have unique strengths and "personalities." This experiment probes these differences by giving multiple AIs the same complex and creative task: design a three-course menu that resolves contradictory culinary requirements.</p>
-                            <h4 class="mt-4">Unique Value & Relevance</h4>
-                            <p>This project demonstrates an advanced understanding of the current AI landscape. It moves beyond simply using AI to actively testing and analyzing its capabilities, showcasing cutting-edge skills in prompt engineering and comparative model analysis.</p>
-                        </div>
-                        <div>
-                            <h4>Process & Tools</h4>
-                            <ul class="space-y-2">
-                                <li>Engineered a detailed prompt for a "Robotic Chef" persona with specific constraints.</li>
-                                <li>Submitted the identical prompt to three different LLMs for a fair comparison.</li>
-                                <li>Conducted a qualitative analysis, comparing outputs on style, creativity, and reasoning.</li>
-                                <li>Synthesized the findings into a clear comparative table and conclusion.</li>
-                                <li><strong>Tools:</strong> Prompt Engineering, LLMs (Perplexity, Gemini, Claude), HTML.</li>
-                            </ul>
-                        </div>
+                <div class="flex flex-col items-center">
+                    <!-- Step 1 -->
+                    <div class="w-full max-w-2xl bg-white p-4 border-l-4 border-cyan-500 rounded-lg shadow-md my-2 diagram-component">
+                        <h4 class="font-bold text-cyan-700">Step 1: Query Input & Semantic Analysis</h4>
+                        <p class="text-sm text-gray-600">The user enters the query. The system breaks it down into core concepts: 'HPP', 'shelf life', 'cold-pressed juice', and 'nutritional impact'.</p>
                     </div>
-                </div>
-
-                <div class="space-y-12">
-                     <div class="chef-card">
-                        <h3 class="text-2xl font-bold text-center text-[#003B46] mb-2">Course 1: The Enigmatic Starter</h3>
-                        <p class="text-center text-gray-600 mb-6 italic">The Challenge: "Light & Refreshing" vs. "Satisfying & Complex"</p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="card">
-                                <h4>Perplexity</h4>
-                                <p class="font-semibold">Dish: Melon, Mozzarella, and Parma Ham Tartines</p>
-                            </div>
-                            <div class="card">
-                                <h4>Gemini</h4>
-                                <p class="font-semibold">Dish: Chilled Avocado and Lime Soup with Toasted Pepita Crumble</p>
-                            </div>
-                            <div class="card">
-                                <h4>Claude Sonnet 4</h4>
-                                <p class="font-semibold">Dish: Chilled Avocado Espuma with Citrus Caviar</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chef-card">
-                        <h3 class="text-2xl font-bold text-center text-[#003B46] mb-2">Course 2: The Daring Main Course</h3>
-                        <p class="text-center text-gray-600 mb-6 italic">The Challenge: "Comforting & Familiar" vs. "Unexpected & Adventurous"</p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="card">
-                                <h4>Perplexity</h4>
-                                <p class="font-semibold">Dish: Classic Manti (Turkish Dumplings)</p>
-                            </div>
-                            <div class="card">
-                                <h4>Gemini</h4>
-                                <p class="font-semibold">Dish: Sous Vide Chicken Roulade with Kimchi Fried Quinoa</p>
-                            </div>
-                            <div class="card">
-                                <h4>Claude Sonnet 4</h4>
-                                <p class="font-semibold">Dish: Miso-Glazed Short Rib Ramen</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chef-card">
-                        <h3 class="text-2xl font-bold text-center text-[#003B46] mb-2">Course 3: The Wholesome Indulgence</h3>
-                        <p class="text-center text-gray-600 mb-6 italic">The Challenge: "Sweet & Indulgent" vs. "Promotes Well-being & Health"</p>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="card">
-                                <h4>Perplexity</h4>
-                                <p class="font-semibold">Dish: Dark Chocolate Avocado Mousse with Chia Seeds</p>
-                            </div>
-                            <div class="card">
-                                <h4>Gemini</h4>
-                                <p class="font-semibold">Dish: Dark Chocolate Avocado Mousse with Berry Coulis</p>
-                            </div>
-                            <div class="card">
-                                <h4>Claude Sonnet 4</h4>
-                                <p class="font-semibold">Dish: Dark Chocolate Mousse with Matcha and Chia Seeds</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="assessment-card">
-                        <h3>Shared Excellence &amp; Unique Flavors</h3>
-                        <div class="overflow-x-auto">
-                            <table class="chef-table">
-                                <thead>
-                                    <tr>
-                                        <th>Feature</th>
-                                        <th>Perplexity Output</th>
-                                        <th>Gemini Output</th>
-                                        <th>Claude Sonnet 4 Output</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><strong>Culinary Style</strong></td>
-                                        <td>Traditional with elegant twists.</td>
-                                        <td>Balanced; contemporary and professional.</td>
-                                        <td>Avant-garde, fine-dining inspired.</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Ingredient Choices</strong></td>
-                                        <td>Common, accessible ingredients.</td>
-                                        <td>Contemporary (Kimchi, Quinoa).</td>
-                                        <td>Specialized (Yuzu, Salmon Roe).</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Reasoning Nuance</strong></td>
-                                        <td>Direct and functional.</td>
-                                        <td>More descriptive, explaining "how".</td>
-                                        <td>Highly sophisticated and conceptual.</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Perceived Sophistication</strong></td>
-                                        <td>Solid, reliable.</td>
-                                        <td>Polished, modern.</td>
-                                        <td>Highly advanced, innovative.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                     <div class="assessment-card">
-                        <h3>Conclusion: The Future of AI Culinary Creativity</h3>
-                        <ul class="list-disc list-inside space-y-2 text-gray-800">
-                            <li><strong>Strong Comprehension:</strong> All LLMs successfully executed the complex, multi-layered prompt.</li>
-                            <li><strong>Diverse Strengths:</strong> Varying culinary styles and innovation levels reflect different model training and focus.</li>
-                            <li><strong>Logical Problem-Solving:</strong> AI is highly effective at resolving subjective or contradictory inputs logically.</li>
-                            <li><strong>Distinctive Performance:</strong> Claude Sonnet 4 best embodied the "highly advanced AI" persona through its innovative choices and sophisticated culinary concepts.</li>
+                    <div class="text-2xl text-gray-400">&darr;</div>
+                    <!-- Step 2 -->
+                    <div class="w-full max-w-2xl bg-white p-4 border-l-4 border-green-500 rounded-lg shadow-md my-2 diagram-component">
+                        <h4 class="font-bold text-green-700">Step 2: Document Retrieval</h4>
+                        <p class="text-sm text-gray-600">The Retriever scans the Knowledge Base. It identifies and fetches:
+                        <ul class="list-disc pl-6 text-sm text-gray-600 mt-1">
+                            <li>3 internal R&D reports on past HPP trials.</li>
+                            <li>5 peer-reviewed scientific articles on HPP and vitamin degradation.</li>
+                            <li>2 competitor patent filings mentioning HPP for beverages.</li>
                         </ul>
+                        </p>
+                    </div>
+                    <div class="text-2xl text-gray-400">&darr;</div>
+                    <!-- Step 3 -->
+                    <div class="w-full max-w-2xl bg-white p-4 border-l-4 border-purple-500 rounded-lg shadow-md my-2 diagram-component">
+                        <h4 class="font-bold text-purple-700">Step 3: Contextual Augmentation</h4>
+                        <p class="text-sm text-gray-600">The most relevant passages from the retrieved documents are compiled into a single, condensed "context package" and passed to the Generative Model along with the original query.</p>
+                    </div>
+                    <div class="text-2xl text-gray-400">&darr;</div>
+                    <!-- Step 4 -->
+                    <div class="w-full max-w-2xl bg-white p-4 border-l-4 border-yellow-500 rounded-lg shadow-md my-2 diagram-component">
+                        <h4 class="font-bold text-yellow-700">Step 4: Generative Response Generation</h4>
+                        <p class="text-sm text-gray-600">The Generative Model reads the context and synthesizes a coherent answer, strictly adhering to the provided facts. It does not access outside information or "hallucinate."</p>
+                    </div>
+                     <div class="text-2xl text-gray-400">&darr;</div>
+                    <!-- Step 5 -->
+                     <div class="w-full max-w-2xl bg-blue-100 p-4 border-t-4 border-blue-600 rounded-lg shadow-lg my-2">
+                        <h4 class="font-bold text-blue-900">Step 5: Generated Response & Sourcing</h4>
+                        <p class="text-gray-800 text-base leading-relaxed"><em>"High-Pressure Processing (HPP) can extend the shelf life of cold-pressed juices by up to 30-45 days by inactivating spoilage microbes [Source: Internal Report R&D-2024-03]. However, studies show a potential 10-15% degradation of Vitamin C, though levels of other nutrients like Vitamin A remain stable [Source: Journal of Food Science, Vol. 88]. Competitor patents suggest a two-stage pressure application may mitigate some nutritional loss [Source: Patent US-112345]."</em></p>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Transition 6 -->
-        <div class="transition-divider">
-            <p>Finally, this artifact examines the current commercial landscape, balancing AI's incredible potential with its significant, real-world risks.</p>
-            <div class="icon">◇</div>
         </div>
 
-        <!-- Commercial AI Section -->
-        <section id="commercial-ai" class="py-16 bg-white rounded-lg">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="section-title">Artifact 6: The Dual Reality of Commercial AI</h2>
-                <p class="section-subtitle">Implementation, Impact, and Inherent Risk in the Modern Workplace.</p>
+        <!-- Milestone 4 -->
+        <div class="page-break bg-white p-8 md:p-12 shadow-2xl min-h-screen">
+             <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-600 pb-4 mb-8">Milestone 4: Evaluation and Improvement</h2>
+            <p class="mb-8 text-gray-700">The long-term success of the RAG system hinges on a robust framework for continuous evaluation and iterative improvement. This will be driven by direct stakeholder feedback and a proactive focus on core system pillars.</p>
 
-                <div class="artifact-details-card mb-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <h4>Introduction & Objective</h4>
-                            <p>This artifact provides a comprehensive analysis of the current state of commercial AI, exploring its practical, real-world impact across key sectors while confronting the inherent risks of deploying powerful, autonomous systems, highlighted by a recent major data breach.</p>
-                             <h4 class="mt-4">Unique Value & Relevance</h4>
-                            <p>By juxtaposing the tangible ROI of modern AI platforms with the cautionary tale of a real-world security failure, this artifact creates a powerful, pragmatic narrative. It addresses not just "what AI can do" but "what we must do about AI," making it highly relevant to current discussions in technology, business strategy, and ethics.</p>
-                        </div>
-                        <div>
-                            <h4>Process & Tools</h4>
-                            <ul class="space-y-2">
-                                <li>Researched and analyzed recent commercial AI applications in Healthcare, Finance, and Creative Media.</li>
-                                <li>Selected the McDonald's AI chatbot data leak as a prime case study for AI implementation failure.</li>
-                                <li>Structured findings to contrast the positive impacts with the critical safety concerns.</li>
-                                <li><strong>Tools:</strong> Google Search, Google Gemini, and platforms analyzed (Abridge, "Athena," GEO).</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">Analysis of Potential Stakeholder Feedback</h3>
+            <p class="mb-6">Post-launch, we anticipate feedback from key user groups that will be critical for refinement:</p>
+            <ul class="space-y-4">
+                <li class="flex items-start">
+                    <span class="text-red-500 font-bold mr-3">&rarr;</span>
                     <div>
-                        <h3 class="text-2xl font-bold text-center text-green-700 mb-4">The Promise: High-Impact Implementation</h3>
-                        <div class="space-y-6">
-                            <div class="card">
-                                <h4 class="font-bold text-xl text-[#07575B] mb-2">Healthcare: Abridge</h4>
-                                <p class="text-gray-600">This ambient scribe AI listens to doctor-patient conversations and automatically generates accurate clinical notes. It drastically reduces administrative burnout for physicians, improves note quality, and allows doctors to focus entirely on the patient rather than on data entry.</p>
-                            </div>
-                            <div class="card">
-                                 <h4 class="font-bold text-xl text-[#07575B] mb-2">Financial Services: Lloyds Bank "Athena"</h4>
-                                <p class="text-gray-600">Lloyds Bank deployed a proprietary generative AI to its 65,000 employees. "Athena" acts as an internal expert, capable of answering complex questions on internal processes and policies, thereby accelerating workflows, improving consistency, and boosting overall productivity.</p>
-                            </div>
-                            <div class="card">
-                                <h4 class="font-bold text-xl text-[#07575B] mb-2">Creative Media: Generative Engine Optimization</h4>
-                                <p class="text-gray-600">Moving beyond traditional SEO, GEO involves optimizing content to be more discoverable and favorable to generative AI models like those in search engines. This emerging field is creating new strategic roles focused on ensuring brand visibility in an AI-driven information landscape.</p>
-                            </div>
-                        </div>
+                        <strong class="text-gray-900">From Supply Chain Managers:</strong> "The supplier data is a week old; I need real-time shipping updates. The system couldn't find information on a brand new sustainable packaging material I heard about yesterday."
+                        <br><em class="text-gray-600">Implication: Need for higher data freshness and integration with real-time external news feeds.</em>
                     </div>
-
+                </li>
+                <li class="flex items-start">
+                    <span class="text-red-500 font-bold mr-3">&rarr;</span>
                     <div>
-                        <h3 class="text-2xl font-bold text-center text-red-700 mb-4">The Peril: A Case Study in Risk</h3>
-                        <div class="card border-4 border-red-200 bg-red-50">
-                            <h4 class="font-bold text-xl text-red-800 mb-2">Case Study: McDonald's AI Chatbot Leak</h4>
-                            <p class="text-gray-700 mb-4">In July 2025, security researchers discovered a catastrophic vulnerability in a customer service AI chatbot used for hiring by McDonald's, exposing the personal data of <strong>64 million job applicants</strong>.</p>
-                            <p class="text-gray-700 mb-4">The failure was not due to a sophisticated cyberattack, but a shockingly simple oversight: the chatbot's security could be bypassed using the default password <strong>"123456"</strong>.</p>
-                            <h5 class="font-bold text-red-800">Implications:</h5>
-                             <ul class="list-disc list-inside space-y-2 text-sm text-gray-700 mt-2">
-                                <li><strong>Reputational & Legal Risk:</strong> The incident underscores the immense risks for businesses deploying AI without rigorous, independent security audits.</li>
-                                <li><strong>Data Privacy Crisis:</strong> It forces a critical conversation about how personal data is handled by automated systems and who is liable when they fail.</li>
-                                <li><strong>Inadequate Protocols:</strong> It reveals that while companies are rushing to deploy AI for efficiency, the security protocols for these new systems are often dangerously inadequate.</li>
-                            </ul>
-                        </div>
+                        <strong class="text-gray-900">From R&D Scientists:</strong> "The answer was too simplistic. I need the system to understand complex chemical compound names and prioritize peer-reviewed journals over internal memos when I ask scientific questions."
+                        <br><em class="text-gray-600">Implication: The Retriever needs to be fine-tuned to understand domain-specific terminology and weigh sources based on query context.</em>
                     </div>
+                </li>
+                 <li class="flex items-start">
+                    <span class="text-red-500 font-bold mr-3">&rarr;</span>
+                    <div>
+                        <strong class="text-gray-900">From the IT & Security Team:</strong> "When a user asks about sales margins, how do we guarantee the response is only generated from data that their specific role is authorized to see? We need a clear audit trail of what data was used for each answer."
+                        <br><em class="text-gray-600">Implication: Data security and access control are paramount and must be built into the core of the retrieval process.</em>
+                    </div>
+                </li>
+            </ul>
+
+            <h3 class="text-2xl font-bold text-gray-800 mt-10 mb-4">Strategic Areas for System Improvement</h3>
+             <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-gray-50 p-6 rounded-lg border">
+                    <h4 class="font-bold text-xl text-gray-900">1. Data Quality & Governance</h4>
+                    <p class="mt-2 text-gray-700"><strong>Challenge:</strong> The system's output is only as reliable as its input. Stale, inaccurate, or incomplete data in the Knowledge Base will erode user trust and deliver poor results.</p>
+                    <p class="mt-4 font-semibold text-gray-800">Proposed Solutions:</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-1 text-gray-700">
+                        <li><strong>Establish a Data Governance Council:</strong> A cross-functional team to define standards for data ingestion, validation, and archival.</li>
+                        <li><strong>Automate Data Pipelines:</strong> Implement automated connectors to key internal systems (ERP, PLM) and external data providers to ensure freshness.</li>
+                        <li><strong>Implement a "Source Rating" System:</strong> Allow users and administrators to rate the reliability of data sources, which the Retriever can use as a signal for ranking results.</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg border">
+                    <h4 class="font-bold text-xl text-gray-900">2. Data Security & Access Control</h4>
+                    <p class="mt-2 text-gray-700"><strong>Challenge:</strong> The centralized Knowledge Base contains sensitive intellectual property and confidential business data. Preventing unauthorized access is non-negotiable.</p>
+                    <p class="mt-4 font-semibold text-gray-800">Proposed Solutions:</p>
+                    <ul class="list-disc pl-5 mt-2 space-y-1 text-gray-700">
+                        <li><strong>Retrieval-Level Access Control:</strong> Design the Retriever to first check user credentials against an access control list *before* searching a data source. If a user is not authorized, that source is excluded from the search entirely.</li>
+                        <li><strong>Data Anonymization:</strong> For trend analysis, use anonymized datasets to protect personally identifiable information (PII) from both customers and employees.</li>
+                        <li><strong>Comprehensive Audit Trails:</strong> Log every query, the data sources used to generate the answer, and the final response. This ensures full traceability for security and compliance reviews.</li>
+                    </ul>
                 </div>
             </div>
-        </section>
+        </div>
 
+        <!-- Milestone 5 -->
+        <div class="page-break bg-white p-8 md:p-12 shadow-2xl min-h-screen">
+            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-600 pb-4 mb-8">Milestone 5: Comprehensive Case Study</h2>
+            
+            <div class="prose max-w-none text-gray-800 leading-relaxed">
+                <h3 class="text-2xl font-bold">1. Executive Summary: Transforming Data into a Strategic Asset</h3>
+                <p>The modern food and beverage landscape is characterized by unprecedented volatility and complexity. To navigate this environment successfully, our organization requires a fundamental shift from reactive data analysis to proactive, on-demand intelligence. This case study details the strategic imperative and implementation framework for a Retrieval-Augmented Generation (RAG) system—a transformative technology that bridges the gap between our vast data repositories and the decision-makers who need critical insights. By grounding a powerful generative AI in a curated knowledge base of our own trusted information, we can unlock unparalleled efficiency, accelerate innovation, and build a more resilient, intelligent enterprise. This initiative is not merely a technology upgrade; it is a foundational investment in our long-term competitive advantage.</p>
+
+                <h3 class="text-2xl font-bold mt-8">2. Strategic Application and Architectural Vision</h3>
+                <p>The system's value is realized through its direct application to high-impact business challenges. As outlined in Milestone 1, the use cases range from de-risking our global supply chain by identifying alternative suppliers in real-time to cutting R&D cycles by synthesizing complex scientific data instantly. The common thread is the conversion of time-consuming research tasks into immediate, data-driven answers.</p>
+                <p>Our architectural vision, detailed in Milestone 2, supports this mission with a focus on security, scalability, and integration. The system is composed of four primary layers: a secure **User Interface** for query input; a core **RAG Engine** where the Retriever and Generative Model work in tandem; and a comprehensive **Unified Knowledge Base**. This modular design ensures that each component can be independently upgraded. Crucially, the architecture is designed so that the Generative Model is an "inference engine," not a knowledge source. It can only synthesize answers from the factual, verified context provided by the Retriever, which operates securely within our data ecosystem. This prevents data leakage and the "hallucinations" common in consumer-grade AI tools, ensuring that every answer is trustworthy and auditable.</p>
+                
+                <h3 class="text-2xl font-bold mt-8">3. Annotated Diagrams: Visualizing the Flow of Intelligence</h3>
+                <p>The diagrams from Milestones 2 and 3 provide a clear visual narrative of the system's operation. The architecture diagram illustrates the robust separation of concerns, with the RAG Engine acting as a secure intermediary between the user and the foundational data. The workflow diagram demonstrates the "grounding" process in action: a user's query is not sent directly to a black-box AI but is first enriched with hard data. This process is the key to the system's reliability. Each step, from semantic analysis to retrieval and final synthesis, is designed to narrow the scope and increase the factual accuracy of the output, culminating in a response that is not just a probable answer, but a verifiable summary of trusted information, complete with citations.</p>
+
+                <h3 class="text-2xl font-bold mt-8">4. Reflection on Critical Challenges & Strategic Solutions</h3>
+                <p>The implementation of a system this transformative presents significant challenges beyond the technical. Successfully navigating these requires a holistic strategy focused on people, processes, and data governance.</p>
+                
+                <h4 class="text-xl font-bold mt-4">Challenge 1: Data Governance and Integrity</h4>
+                <p>The axiom "garbage in, garbage out" has never been more relevant. The system's utility is wholly dependent on the quality, freshness, and comprehensiveness of the Unified Knowledge Base. A poorly maintained knowledge base will quickly erode user trust and render the system useless.</p>
+                <p><strong>Solution:</strong> We will establish a formal Data Governance Council, a cross-functional body with executive sponsorship. This council's mandate will be to:
+                    <ul class="list-disc pl-6 mt-2">
+                        <li>Define and enforce a data quality framework for all information entering the Knowledge Base.</li>
+                        <li>Prioritize the integration of new data sources based on strategic business needs.</li>
+                        <li>Oversee a "data stewardship" program, assigning ownership of key data domains (e.g., supplier data, R&D data) to specific teams responsible for their accuracy.</li>
+                    </ul>
+                </p>
+
+                <h4 class="text-xl font-bold mt-4">Challenge 2: User Adoption and Change Management</h4>
+                <p>A new technology is only effective if it is embraced by its intended users. Employees accustomed to traditional methods of information retrieval (e.g., searching shared drives, emailing colleagues) may be hesitant to adopt a new system. A lack of adoption is the single greatest risk to realizing the project's ROI.</p>
+                <p><strong>Solution:</strong> A proactive change management plan will be executed, focusing on:
+                    <ul class="list-disc pl-6 mt-2">
+                        <li><strong>Identifying Departmental Champions:</strong> We will recruit influential individuals from each key stakeholder group (Supply Chain, R&D, etc.) to act as early adopters and internal advocates.</li>
+                        <li><strong>Developing Role-Specific Training:</strong> Instead of generic training, we will create targeted workshops that demonstrate how the system solves specific, real-world problems for each team.</li>
+                        <li><strong>Implementing a Feedback Loop:</strong> The user interface will feature an intuitive "Rate this Answer" function, and regular user forums will be held to ensure the system's evolution is guided by user needs.</li>
+                    </ul>
+                </p>
+                
+                 <h4 class="text-xl font-bold mt-4">Challenge 3: Measuring Success and Demonstrating ROI</h4>
+                <p>The investment in this system must be justified by clear, measurable business outcomes. Without a framework for measuring success, the project risks being perceived as a cost center rather than a value driver.</p>
+                <p><strong>Solution:</strong> We will define and track a set of Key Performance Indicators (KPIs) tied directly to the use cases:
+                    <ul class="list-disc pl-6 mt-2">
+                        <li><strong>Efficiency Gains:</strong> Track the average time saved on information retrieval tasks, aiming for a 40% reduction in targeted workflows within the first year.</li>
+                        <li><strong>Innovation Velocity:</strong> Measure the length of the initial research phase for new product development, targeting a 25% decrease.</li>
+                        <li><strong>Risk Mitigation:</strong> Log the number of proactive compliance and supply chain queries, correlating system usage with a reduction in related incidents.</li>
+                    </ul>
+                </p>
+
+                <h3 class="text-2xl font-bold mt-8">5. Future Roadmap and Strategic Outlook</h3>
+                <p>The initial implementation is the foundation. The true long-term value of the RAG system lies in its potential for future expansion. The roadmap includes:
+                    <ul class="list-disc pl-6 mt-2">
+                        <li><strong>Proactive Alerting:</strong> Evolving the system from a reactive Q&A tool to a proactive intelligence agent that can monitor real-time data streams and alert managers to potential supply chain disruptions or emerging market trends before they become critical.</li>
+                        <li><strong>Multi-Modal Capabilities:</strong> Expanding the Knowledge Base to include unstructured data like images of packaging designs or videos from production lines, allowing users to ask questions about visual information.</li>
+                        <li><strong>Workflow Automation:</strong> Integrating the system with other enterprise software to not only answer questions but also initiate workflows, such as automatically generating a draft procurement order for a newly identified alternative supplier.</li>
+                    </ul>
+                <p class="mt-4">In conclusion, the RAG system is more than an advanced search engine; it is a strategic platform for institutionalizing knowledge, democratizing access to insights, and building a more agile, data-driven organization prepared for the challenges and opportunities of the future.</p>
+            </div>
+        </div>
     </main>
-
-    <footer class="bg-[#003B46] text-white py-8 px-4 mt-16">
-        <div class="container mx-auto text-center text-[#C4DFE6]">
-            <p class="text-xs italic">This portfolio and its contents were researched and compiled with the assistance of Google Gemini.</p>
-        </div>
-    </footer>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- Chart.js Code ---
-            const brandColors = { darkBlue: '#003B46', cyan: '#07575B', lightCyan: '#66A5AD', lightestCyan: '#C4DFE6' };
-            function wrapLabels(label, maxLength) {
-                if (typeof label !== 'string' || label.length <= maxLength) return label;
-                const words = label.split(' ');
-                let lines = []; let currentLine = '';
-                words.forEach(word => {
-                    if ((currentLine + ' ' + word).trim().length > maxLength) { lines.push(currentLine.trim()); currentLine = word; } 
-                    else { currentLine = (currentLine + ' ' + word).trim(); }
-                });
-                lines.push(currentLine.trim());
-                return lines;
-            }
-            const tooltipTitleCallback = (tooltipItems) => {
-                const item = tooltipItems[0];
-                let label = item.chart.data.labels[item.dataIndex];
-                if (Array.isArray(label)) return label.join(' ');
-                return label;
-            };
-            const defaultChartOptions = {
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { labels: { color: '#212529', font: { size: 14 } } }, tooltip: { enabled: true, callbacks: { title: tooltipTitleCallback } } },
-                scales: { y: { ticks: { color: '#212529', beginAtZero: true }, grid: { color: '#e9ecef' } }, x: { ticks: { color: '#212529' }, grid: { display: false } } }
-            };
-            const hypeCtx = document.getElementById('hypeCycleChart');
-            if(hypeCtx) {
-                new Chart(hypeCtx.getContext('2d'), {
-                    type: 'line',
-                    data: { labels: ['1960', '1974 (Winter)', '1980 (Boom)', '1987 (Winter)', '1995', '2012 (Boom)'], datasets: [{ label: 'AI Funding & Hype', data: [60, 20, 70, 30, 40, 95], borderColor: brandColors.cyan, backgroundColor: 'rgba(7, 87, 91, 0.2)', fill: true, tension: 0.4, pointBackgroundColor: brandColors.darkBlue, pointRadius: 5 }] },
-                    options: { ...defaultChartOptions }
-                });
-            }
-            const victoriesCtx = document.getElementById('victoriesChart');
-            if(victoriesCtx) {
-                const victoriesLabels = ['1997: Deep Blue defeats Garry Kasparov', '2011: Watson wins on Jeopardy!', '2016: AlphaGo defeats Lee Sedol'];
-                new Chart(victoriesCtx.getContext('2d'), {
-                    type: 'bar',
-                    data: { labels: victoriesLabels.map(label => wrapLabels(label, 16)), datasets: [{ label: 'Conceptual Impact Score', data: [50, 75, 95], backgroundColor: [brandColors.lightCyan, brandColors.cyan, brandColors.darkBlue], borderWidth: 1 }] },
-                    options: { ...defaultChartOptions, indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { callbacks: { title: tooltipTitleCallback } } }, scales: { x: { title: { display: true, text: 'Impact Score / Technological Leap', color: '#6c757d' } }, y: { ticks: { font: { size: 14 } } } } }
-                });
-            }
-
-            // --- Neural Network Explainer Code ---
-            const showAppleBtn = document.getElementById('show-apple');
-            const showBananaBtn = document.getElementById('show-banana');
-            const resetBtn = document.getElementById('reset-btn');
-            const colorSlider = document.getElementById('weight-color');
-            const shapeSlider = document.getElementById('weight-shape');
-            const machineGuessEl = document.getElementById('machine-guess');
-            const feedbackMessageEl = document.getElementById('feedback-message');
-            if (showAppleBtn) {
-                let colorWeight = 50; let shapeWeight = 50;
-                function updateNNSliders() { colorSlider.value = colorWeight; shapeSlider.value = shapeWeight; }
-                function getMachineGuess() {
-                    const score = (colorWeight - 50) + (shapeWeight - 50);
-                    if (score > 0) return 'apple'; if (score < 0) return 'banana';
-                    return Math.random() < 0.5 ? 'apple' : 'banana';
-                }
-                function displayGuess(guess) { machineGuessEl.textContent = guess === 'apple' ? '🍎' : '🍌'; }
-                function showFeedback(message, isCorrect) {
-                    feedbackMessageEl.textContent = message;
-                    feedbackMessageEl.classList.toggle('text-green-500', isCorrect);
-                    feedbackMessageEl.classList.toggle('text-red-500', !isCorrect);
-                    machineGuessEl.classList.toggle('bg-green-200', isCorrect);
-                    machineGuessEl.classList.toggle('bg-red-200', !isCorrect);
-                    setTimeout(() => {
-                        machineGuessEl.textContent = '?';
-                        machineGuessEl.classList.remove('bg-green-200', 'bg-red-200');
-                        feedbackMessageEl.textContent = '';
-                    }, 2500);
-                }
-                function train(shownFruit) {
-                    const guess = getMachineGuess();
-                    displayGuess(guess);
-                    const isCorrect = guess === shownFruit;
-                    if (isCorrect) {
-                        showFeedback("Correct! The machine's weights were good.", true);
-                        if (shownFruit === 'apple') { colorWeight = Math.min(100, colorWeight + 2); shapeWeight = Math.min(100, shapeWeight + 2); } 
-                        else { colorWeight = Math.max(0, colorWeight - 2); shapeWeight = Math.max(0, shapeWeight - 2); }
-                    } else {
-                        showFeedback("Wrong! Adjusting the machine's brain...", false);
-                        if (shownFruit === 'apple') { colorWeight = Math.min(100, colorWeight + 15); shapeWeight = Math.min(100, shapeWeight + 15); } 
-                        else { colorWeight = Math.max(0, colorWeight - 15); shapeWeight = Math.max(0, shapeWeight - 15); }
-                    }
-                    setTimeout(updateNNSliders, 500);
-                }
-                showAppleBtn.addEventListener('click', () => train('apple'));
-                showBananaBtn.addEventListener('click', () => train('banana'));
-                resetBtn.addEventListener('click', () => {
-                    colorWeight = 50; shapeWeight = 50; updateNNSliders();
-                    feedbackMessageEl.textContent = "Brain has been reset to its initial state.";
-                    setTimeout(() => { feedbackMessageEl.textContent = ''; }, 2000);
-                });
-                updateNNSliders();
-            }
-        });
-    </script>
 </body>
 </html>
