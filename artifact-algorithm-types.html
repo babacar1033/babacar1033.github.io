@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artifact: ML Algorithm Types – Visual Framework | Babacar Diouf</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@300;400;700&family=Fira+Code:wght@400;500&display=swap');
+
+        body { font-family: 'Lato', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Merriweather', serif; }
+        code { font-family: 'Fira Code', monospace; }
+
+        /* ── Animated gradient hero ── */
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #1e3a5f 100%);
+        }
+
+        /* ── Glowing grid overlay ── */
+        .grid-overlay {
+            background-image:
+                linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59,130,246,0.06) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* ── Algorithm card ── */
+        .algo-card {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            cursor: default;
+        }
+        .algo-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+        }
+
+        /* ── Domain badge colors ── */
+        .badge-tabular   { background-color: #fef3c7; color: #92400e; }
+        .badge-vision    { background-color: #ede9fe; color: #5b21b6; }
+        .badge-nlp       { background-color: #ccfbf1; color: #115e59; }
+        .badge-genai     { background-color: #fce7f3; color: #9d174d; }
+
+        /* ── Type pill ── */
+        .pill-supervised   { background-color: #dbeafe; color: #1d4ed8; }
+        .pill-unsupervised { background-color: #d1fae5; color: #065f46; }
+
+        /* ── Filter buttons active ── */
+        .filter-btn { transition: all 0.2s; }
+        .filter-btn.active { ring: 2px; }
+
+        /* ── Taxonomy tree ── */
+        .tree-node {
+            border-left: 3px solid #3b82f6;
+            padding-left: 1rem;
+            margin-left: 1rem;
+        }
+
+        /* ── Section divider ── */
+        .section-divider {
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+            border-radius: 9999px;
+        }
+
+        /* ── Stat counters ── */
+        .stat-box {
+            background: linear-gradient(135deg, #1e3a5f, #1e1b4b);
+        }
+
+        /* ── Hide/Show filter ── */
+        .algo-card.hidden-card { display: none; }
+
+        /* ── Scroll fade-in ── */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Domain section headers ── */
+        .domain-header-tabular { border-left: 4px solid #f59e0b; }
+        .domain-header-vision  { border-left: 4px solid #8b5cf6; }
+        .domain-header-nlp     { border-left: 4px solid #14b8a6; }
+        .domain-header-genai   { border-left: 4px solid #ec4899; }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+<!-- ══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<header class="hero-gradient grid-overlay text-white py-20 px-6 relative overflow-hidden">
+    <!-- Decorative orbs -->
+    <div class="absolute top-10 right-16 w-64 h-64 rounded-full opacity-10" style="background: radial-gradient(circle, #6366f1, transparent 70%);"></div>
+    <div class="absolute bottom-0 left-8 w-48 h-48 rounded-full opacity-10" style="background: radial-gradient(circle, #ec4899, transparent 70%);"></div>
+
+    <div class="container mx-auto max-w-5xl relative z-10">
+        <p class="text-blue-400 font-semibold tracking-widest uppercase text-sm mb-3">AIML-501 · Portfolio Artifact</p>
+        <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">
+            Machine Learning<br>
+            <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);">Algorithm Types</span>
+        </h1>
+        <p class="text-slate-300 text-lg md:text-xl max-w-3xl leading-relaxed">
+            A comprehensive visual framework illustrating key ML algorithms, their learning paradigms, application domains, and real-world use cases — from tabular data and computer vision to NLP and generative AI.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+            <span class="bg-blue-600/30 border border-blue-500/40 text-blue-200 px-4 py-1.5 rounded-full text-sm font-medium">12 Algorithms Covered</span>
+            <span class="bg-purple-600/30 border border-purple-500/40 text-purple-200 px-4 py-1.5 rounded-full text-sm font-medium">4 Application Domains</span>
+            <span class="bg-pink-600/30 border border-pink-500/40 text-pink-200 px-4 py-1.5 rounded-full text-sm font-medium">2 Learning Paradigms</span>
+        </div>
+    </div>
+</header>
+
+<main class="container mx-auto max-w-6xl px-4 py-12 space-y-16">
+
+    <!-- ══════════════════════════════════════════
+         ARTIFACT OVERVIEW
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Artifact Overview</h2>
+        <div class="section-divider mb-8"></div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-blue-600 mb-1">Title</h3>
+                    <p class="text-gray-800 font-semibold text-lg">Machine Learning Algorithm Types: A Comprehensive Visual Framework</p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-blue-600 mb-1">Introduction</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Algorithms form the backbone of machine learning, shaping how models interpret data, recognize patterns, and make predictions. As AI continues to permeate every industry — from healthcare to finance, retail to manufacturing — the ability to understand and communicate algorithm types is a foundational professional skill. This artifact bridges theoretical knowledge and practical application by presenting a structured, visual reference of the ML algorithm landscape.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-blue-600 mb-1">Description</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        This interactive visual framework catalogs 12 machine learning algorithms across two primary learning paradigms (Supervised and Unsupervised) and four application domains (Tabular Data, Computer Vision, Natural Language Processing, and Generative AI). For each algorithm, the framework includes its type, domains of application, real-world use cases, and a concise explanation of how it works.
+                    </p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-blue-600 mb-1">Objective</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        To clearly identify and categorize key machine learning algorithms; illustrate their primary application domains through a visually compelling framework; provide practical, real-world use cases; and effectively communicate algorithmic concepts relevant to AI/ML practitioners, hiring managers, and interdisciplinary collaborators.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-blue-600 mb-1">Process</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        I began by reviewing course materials on algorithm taxonomy and consulting supplemental resources on AI/ML model categories. I mapped each algorithm to its learning paradigm and relevant domains, then synthesized real-world application examples. The visual framework was then designed using HTML, CSS (Tailwind), and JavaScript to enable interactive filtering by domain and learning type. The artifact follows the AIML-501 portfolio artifact structure.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-blue-600 mb-1">Tools &amp; Technologies Used</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">HTML5</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">CSS3 / Tailwind</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">JavaScript (Vanilla)</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">GitHub Pages</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">ChatGPT (reference)</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100 rounded-xl p-6">
+            <h3 class="text-sm font-bold uppercase tracking-widest text-blue-600 mb-2">Value Proposition</h3>
+            <p class="text-gray-800 leading-relaxed">
+                <strong>Unique Value:</strong> This artifact demonstrates the ability to synthesize complex technical concepts into a structured, accessible, and visually engaging reference — a skill critical in roles bridging AI engineering and business strategy. Unlike a static document, the interactive design enables audiences with varying technical backgrounds to explore algorithms at their own depth.
+            </p>
+            <p class="text-gray-800 leading-relaxed mt-3">
+                <strong>Relevance to Audience:</strong> For hiring managers in AI/ML, this artifact proves not only algorithmic knowledge but also the ability to communicate it clearly — a differentiator for roles in AI consulting, data science, and product management. For academic evaluators, it demonstrates mastery of core AIML-501 learning objectives: categorization, application mapping, and professional documentation.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         STATS BAR
+    ═══════════════════════════════════════════ -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-in">
+        <div class="stat-box text-white rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-blue-300">12</div>
+            <div class="text-slate-300 text-sm mt-1">Algorithms</div>
+        </div>
+        <div class="stat-box text-white rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-green-300">2</div>
+            <div class="text-slate-300 text-sm mt-1">Learning Paradigms</div>
+        </div>
+        <div class="stat-box text-white rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-purple-300">4</div>
+            <div class="text-slate-300 text-sm mt-1">Application Domains</div>
+        </div>
+        <div class="stat-box text-white rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-pink-300">30+</div>
+            <div class="text-slate-300 text-sm mt-1">Use Cases Mapped</div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         TAXONOMY TREE
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Algorithm Taxonomy</h2>
+        <div class="section-divider mb-8"></div>
+        <p class="text-gray-600 mb-8">Machine learning algorithms are broadly organized by <em>how they learn</em> and <em>what problems they solve</em>. The taxonomy below shows the two primary learning paradigms and the four application domains featured in this framework.</p>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Supervised -->
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">S</div>
+                    <div>
+                        <h3 class="text-lg font-bold text-blue-800">Supervised Learning</h3>
+                        <p class="text-blue-600 text-sm">Learns from labeled training data</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 text-sm leading-relaxed mb-4">The algorithm learns a mapping from input features to known output labels. The goal is to generalize this mapping to unseen data. Problems include classification and regression.</p>
+                <div class="tree-node">
+                    <p class="text-sm font-semibold text-gray-700 mb-1">Algorithms in this framework:</p>
+                    <ul class="text-sm text-gray-600 space-y-1 list-disc list-inside">
+                        <li>Linear Regression</li>
+                        <li>Logistic Regression</li>
+                        <li>Random Forest</li>
+                        <li>Gradient Boosting (XGBoost)</li>
+                        <li>Support Vector Machine (SVM)</li>
+                        <li>Convolutional Neural Network (CNN)</li>
+                        <li>LSTM / Recurrent Neural Network</li>
+                        <li>Transformer (BERT / GPT)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Unsupervised -->
+            <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-6">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-lg">U</div>
+                    <div>
+                        <h3 class="text-lg font-bold text-emerald-800">Unsupervised Learning</h3>
+                        <p class="text-emerald-600 text-sm">Discovers hidden structure in unlabeled data</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 text-sm leading-relaxed mb-4">No labels are provided. The algorithm finds patterns, clusters, or representations autonomously. Includes clustering, dimensionality reduction, and generative modeling.</p>
+                <div class="tree-node border-emerald-500">
+                    <p class="text-sm font-semibold text-gray-700 mb-1">Algorithms in this framework:</p>
+                    <ul class="text-sm text-gray-600 space-y-1 list-disc list-inside">
+                        <li>K-Means Clustering</li>
+                        <li>Principal Component Analysis (PCA)</li>
+                        <li>Autoencoder</li>
+                        <li>Generative Adversarial Network (GAN)</li>
+                        <li>Diffusion Model</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Domain Legend -->
+        <div class="mt-8">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Application Domain Legend</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-lg p-3">
+                    <div class="w-8 h-8 rounded-full bg-amber-400 flex items-center justify-center text-white text-sm">📊</div>
+                    <div>
+                        <div class="font-semibold text-amber-800 text-sm">Tabular Data</div>
+                        <div class="text-amber-600 text-xs">Structured, rows & columns</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 bg-purple-50 border border-purple-200 rounded-lg p-3">
+                    <div class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-sm">👁</div>
+                    <div>
+                        <div class="font-semibold text-purple-800 text-sm">Computer Vision</div>
+                        <div class="text-purple-600 text-xs">Images & video</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 bg-teal-50 border border-teal-200 rounded-lg p-3">
+                    <div class="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center text-white text-sm">💬</div>
+                    <div>
+                        <div class="font-semibold text-teal-800 text-sm">NLP</div>
+                        <div class="text-teal-600 text-xs">Text & language</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 bg-pink-50 border border-pink-200 rounded-lg p-3">
+                    <div class="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center text-white text-sm">✨</div>
+                    <div>
+                        <div class="font-semibold text-pink-800 text-sm">Generative AI</div>
+                        <div class="text-pink-600 text-xs">Content synthesis</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         INTERACTIVE VISUAL FRAMEWORK
+    ═══════════════════════════════════════════ -->
+    <section class="fade-in">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Visual Algorithm Framework</h2>
+                <div class="section-divider"></div>
+            </div>
+            <p class="text-gray-500 text-sm">Filter by domain or learning type</p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="bg-white rounded-xl shadow p-4 mb-6 flex flex-wrap gap-3">
+            <button onclick="filterCards('all')" class="filter-btn active bg-gray-800 text-white px-4 py-2 rounded-full text-sm font-medium" id="btn-all">All Algorithms</button>
+            <button onclick="filterCards('supervised')" class="filter-btn bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-200" id="btn-supervised">Supervised</button>
+            <button onclick="filterCards('unsupervised')" class="filter-btn bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-emerald-200" id="btn-unsupervised">Unsupervised</button>
+            <div class="w-px bg-gray-200 mx-1 hidden md:block"></div>
+            <button onclick="filterCards('tabular')" class="filter-btn bg-amber-100 text-amber-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-amber-200" id="btn-tabular">📊 Tabular Data</button>
+            <button onclick="filterCards('vision')" class="filter-btn bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-200" id="btn-vision">👁 Computer Vision</button>
+            <button onclick="filterCards('nlp')" class="filter-btn bg-teal-100 text-teal-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-teal-200" id="btn-nlp">💬 NLP</button>
+            <button onclick="filterCards('genai')" class="filter-btn bg-pink-100 text-pink-800 px-4 py-2 rounded-full text-sm font-medium hover:bg-pink-200" id="btn-genai">✨ Generative AI</button>
+        </div>
+
+        <!-- Algorithm Cards Grid -->
+        <div id="algo-grid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+            <!-- ── 1. Linear Regression ── -->
+            <div class="algo-card bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col gap-4"
+                 data-type="supervised" data-domains="tabular">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="pill-supervised text-xs font-semibold px-2.5 py-1 rounded-full">Supervised</span>
+                    </div>
+                    <div class="text-3xl">📈</div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">Linear Regression</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Models the linear relationship between input features and a continuous target variable by fitting a line (or hyperplane) that minimizes prediction error.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="badge-tabular text-xs font-medium px-2.5 py-1 rounded-full">📊 Tabular Data</span>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Real-World Use Cases</p>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>House price &amp; sales forecasting</li>
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Financial risk assessment</li>
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Demand planning in supply chain</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ── 2. Logistic Regression ── -->
+            <div class="algo-card bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col gap-4"
+                 data-type="supervised" data-domains="tabular">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="pill-supervised text-xs font-semibold px-2.5 py-1 rounded-full">Supervised</span>
+                    </div>
+                    <div class="text-3xl">🔢</div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">Logistic Regression</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Predicts the probability of a categorical outcome using a sigmoid function. Despite the name, it is a classification algorithm that outputs class probabilities.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="badge-tabular text-xs font-medium px-2.5 py-1 rounded-full">📊 Tabular Data</span>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Real-World Use Cases</p>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Credit risk &amp; fraud detection</li>
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Disease diagnosis (yes/no)</li>
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Email spam classification</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ── 3. Random Forest ── -->
+            <div class="algo-card bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col gap-4"
+                 data-type="supervised" data-domains="tabular">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="pill-supervised text-xs font-semibold px-2.5 py-1 rounded-full">Supervised</span>
+                    </div>
+                    <div class="text-3xl">🌲</div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">Random Forest</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        An ensemble of decision trees trained on random data subsets and feature subsets. Final predictions are made by majority vote (classification) or averaging (regression), reducing overfitting.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="badge-tabular text-xs font-medium px-2.5 py-1 rounded-full">📊 Tabular Data</span>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Real-World Use Cases</p>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Customer churn prediction</li>
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Fraud detection in banking</li>
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Medical diagnosis &amp; feature ranking</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ── 4. Gradient Boosting (XGBoost) ── -->
+            <div class="algo-card bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col gap-4"
+                 data-type="supervised" data-domains="tabular">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="pill-supervised text-xs font-semibold px-2.5 py-1 rounded-full">Supervised</span>
+                    </div>
+                    <div class="text-3xl">⚡</div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">Gradient Boosting <span class="text-gray-400 font-normal text-base">(XGBoost / LightGBM)</span></h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Sequentially builds weak learners (decision trees) where each new tree corrects the residual errors of the previous ensemble. Highly effective on structured data.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="badge-tabular text-xs font-medium px-2.5 py-1 rounded-full">📊 Tabular Data</span>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Real-World Use Cases</p>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Loan default prediction</li>
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Click-through rate (CTR) modeling</li>
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Competitive ML benchmarks (Kaggle)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ── 5. SVM ── -->
+            <div class="algo-card bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col gap-4"
+                 data-type="supervised" data-domains="tabular vision">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="pill-supervised text-xs font-semibold px-2.5 py-1 rounded-full">Supervised</span>
+                    </div>
+                    <div class="text-3xl">⚖️</div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">Support Vector Machine <span class="text-gray-400 font-normal text-base">(SVM)</span></h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Finds the optimal hyperplane that maximizes the margin between classes in high-dimensional space. Kernel functions extend it to non-linear boundaries.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="badge-tabular text-xs font-medium px-2.5 py-1 rounded-full">📊 Tabular Data</span>
+                    <span class="badge-vision text-xs font-medium px-2.5 py-1 rounded-full">👁 Computer Vision</span>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Real-World Use Cases</p>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li class="flex items-start gap-2"><span class="text-purple-500 mt-0.5">▸</span>Handwriting recognition (MNIST)</li>
+                        <li class="flex items-start gap-2"><span class="text-purple-500 mt-0.5">▸</span>Bioinformatics: gene expression</li>
+                        <li class="flex items-start gap-2"><span class="text-purple-500 mt-0.5">▸</span>Text categorization</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ── 6. CNN ── -->
+            <div class="algo-card bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col gap-4"
+                 data-type="supervised" data-domains="vision">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="pill-supervised text-xs font-semibold px-2.5 py-1 rounded-full">Supervised</span>
+                    </div>
+                    <div class="text-3xl">🔍</div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">Convolutional Neural Network <span class="text-gray-400 font-normal text-base">(CNN)</span></h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Applies learnable convolutional filters across an image to extract spatial features hierarchically — from edges and textures to high-level object representations.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="badge-vision text-xs font-medium px-2.5 py-1 rounded-full">👁 Computer Vision</span>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Real-World Use Cases</p>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li class="flex items-start gap-2"><span class="text-purple-500 mt-0.5">▸</span>Object detection (YOLO, ResNet)</li>
+                        <li class="flex items-start gap-2"><span class="text-purple-500 mt-0.5">▸</span>Medical imaging (tumor detection)</li>
+                        <li class="flex items-start gap-2"><span class="text-purple-500 mt-0.5">▸</span>Facial recognition &amp; self-driving cars</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ── 7. LSTM / RNN ── -->
+            <div class="algo-card bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col gap-4"
+                 data-type="supervised" data-domains="nlp tabular">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="pill-supervised text-xs font-semibold px-2.5 py-1 rounded-full">Supervised</span>
+                    </div>
+                    <div class="text-3xl">🔄</div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">LSTM / Recurrent Neural Network <span class="text-gray-400 font-normal text-base">(RNN)</span></h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Processes sequential data by maintaining a hidden state (memory) passed from step to step. LSTM cells use gating mechanisms to learn long-range dependencies and avoid vanishing gradients.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="badge-nlp text-xs font-medium px-2.5 py-1 rounded-full">💬 NLP</span>
+                    <span class="badge-tabular text-xs font-medium px-2.5 py-1 rounded-full">📊 Time Series</span>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Real-World Use Cases</p>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li class="flex items-start gap-2"><span class="text-teal-500 mt-0.5">▸</span>Machine translation &amp; speech-to-text</li>
+                        <li class="flex items-start gap-2"><span class="text-teal-500 mt-0.5">▸</span>Stock price forecasting</li>
+                        <li class="flex items-start gap-2"><span class="text-teal-500 mt-0.5">▸</span>Sentiment analysis</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ── 8. Transformer (BERT/GPT) ── -->
+            <div class="algo-card bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col gap-4"
+                 data-type="supervised" data-domains="nlp genai">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="pill-supervised text-xs font-semibold px-2.5 py-1 rounded-full">Supervised</span>
+                    </div>
+                    <div class="text-3xl">🤖</div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">Transformer <span class="text-gray-400 font-normal text-base">(BERT / GPT)</span></h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Uses self-attention to model relationships between all positions in a sequence simultaneously. Foundation for modern LLMs. BERT focuses on understanding; GPT-style models focus on generation.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="badge-nlp text-xs font-medium px-2.5 py-1 rounded-full">💬 NLP</span>
+                    <span class="badge-genai text-xs font-medium px-2.5 py-1 rounded-full">✨ Generative AI</span>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Real-World Use Cases</p>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li class="flex items-start gap-2"><span class="text-pink-500 mt-0.5">▸</span>ChatGPT, Claude, Gemini (LLMs)</li>
+                        <li class="flex items-start gap-2"><span class="text-pink-500 mt-0.5">▸</span>Code generation &amp; summarization</li>
+                        <li class="flex items-start gap-2"><span class="text-pink-500 mt-0.5">▸</span>Question answering &amp; translation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ── 9. K-Means Clustering ── -->
+            <div class="algo-card bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col gap-4"
+                 data-type="unsupervised" data-domains="tabular">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="pill-unsupervised text-xs font-semibold px-2.5 py-1 rounded-full">Unsupervised</span>
+                    </div>
+                    <div class="text-3xl">🎯</div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">K-Means Clustering</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Partitions data into K clusters by iteratively assigning points to the nearest centroid and recomputing centroids until convergence, minimizing within-cluster variance.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="badge-tabular text-xs font-medium px-2.5 py-1 rounded-full">📊 Tabular Data</span>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Real-World Use Cases</p>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Customer segmentation in marketing</li>
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Document &amp; topic clustering</li>
+                        <li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5">▸</span>Anomaly detection (outlier identification)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ── 10. PCA ── -->
+            <div class="algo-card bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col gap-4"
+                 data-type="unsupervised" data-domains="tabular vision">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="pill-unsupervised text-xs font-semibold px-2.5 py-1 rounded-full">Unsupervised</span>
+                    </div>
+                    <div class="text-3xl">🗜️</div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">Principal Component Analysis <span class="text-gray-400 font-normal text-base">(PCA)</span></h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Reduces dimensionality by projecting data onto orthogonal principal components that capture maximum variance. Removes noise and multicollinearity while preserving structure.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="badge-tabular text-xs font-medium px-2.5 py-1 rounded-full">📊 Tabular Data</span>
+                    <span class="badge-vision text-xs font-medium px-2.5 py-1 rounded-full">👁 Computer Vision</span>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Real-World Use Cases</p>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li class="flex items-start gap-2"><span class="text-purple-500 mt-0.5">▸</span>Eigenface for facial recognition</li>
+                        <li class="flex items-start gap-2"><span class="text-purple-500 mt-0.5">▸</span>Data visualization (2D/3D projections)</li>
+                        <li class="flex items-start gap-2"><span class="text-purple-500 mt-0.5">▸</span>Preprocessing for downstream models</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ── 11. Autoencoder ── -->
+            <div class="algo-card bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col gap-4"
+                 data-type="unsupervised" data-domains="vision genai">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="pill-unsupervised text-xs font-semibold px-2.5 py-1 rounded-full">Unsupervised</span>
+                    </div>
+                    <div class="text-3xl">🔮</div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">Autoencoder</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        A neural network trained to encode inputs into a compressed latent representation and reconstruct the original from it. Learns efficient representations without labels.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="badge-vision text-xs font-medium px-2.5 py-1 rounded-full">👁 Computer Vision</span>
+                    <span class="badge-genai text-xs font-medium px-2.5 py-1 rounded-full">✨ Generative AI</span>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Real-World Use Cases</p>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li class="flex items-start gap-2"><span class="text-pink-500 mt-0.5">▸</span>Image denoising &amp; super-resolution</li>
+                        <li class="flex items-start gap-2"><span class="text-pink-500 mt-0.5">▸</span>Network intrusion anomaly detection</li>
+                        <li class="flex items-start gap-2"><span class="text-pink-500 mt-0.5">▸</span>Variational AEs for image generation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ── 12. GAN ── -->
+            <div class="algo-card bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col gap-4"
+                 data-type="unsupervised" data-domains="genai vision">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="pill-unsupervised text-xs font-semibold px-2.5 py-1 rounded-full">Unsupervised</span>
+                    </div>
+                    <div class="text-3xl">🎨</div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">Generative Adversarial Network <span class="text-gray-400 font-normal text-base">(GAN)</span></h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Two networks compete: a <em>Generator</em> creates synthetic data while a <em>Discriminator</em> distinguishes real from fake. This adversarial dynamic drives the generator toward increasingly realistic outputs.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="badge-genai text-xs font-medium px-2.5 py-1 rounded-full">✨ Generative AI</span>
+                    <span class="badge-vision text-xs font-medium px-2.5 py-1 rounded-full">👁 Computer Vision</span>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Real-World Use Cases</p>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li class="flex items-start gap-2"><span class="text-pink-500 mt-0.5">▸</span>Photorealistic image synthesis (StyleGAN)</li>
+                        <li class="flex items-start gap-2"><span class="text-pink-500 mt-0.5">▸</span>Data augmentation for rare events</li>
+                        <li class="flex items-start gap-2"><span class="text-pink-500 mt-0.5">▸</span>Video deepfake &amp; digital art generation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ── 13. Diffusion Model ── -->
+            <div class="algo-card bg-white rounded-xl shadow-md border border-gray-100 p-6 flex flex-col gap-4 md:col-span-2 xl:col-span-1"
+                 data-type="unsupervised" data-domains="genai vision">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="pill-unsupervised text-xs font-semibold px-2.5 py-1 rounded-full">Unsupervised</span>
+                    </div>
+                    <div class="text-3xl">🌊</div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">Diffusion Model</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Learns to reverse a gradual noising process: noise is progressively added to training data, and the model learns to denoise step-by-step. At inference, it starts from pure noise and reconstructs high-quality samples.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="badge-genai text-xs font-medium px-2.5 py-1 rounded-full">✨ Generative AI</span>
+                    <span class="badge-vision text-xs font-medium px-2.5 py-1 rounded-full">👁 Computer Vision</span>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Real-World Use Cases</p>
+                    <ul class="text-sm text-gray-700 space-y-1">
+                        <li class="flex items-start gap-2"><span class="text-pink-500 mt-0.5">▸</span>Stable Diffusion, DALL-E 3, Sora</li>
+                        <li class="flex items-start gap-2"><span class="text-pink-500 mt-0.5">▸</span>AI-assisted drug molecule design</li>
+                        <li class="flex items-start gap-2"><span class="text-pink-500 mt-0.5">▸</span>Audio &amp; music synthesis</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div><!-- /algo-grid -->
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         DOMAIN-BY-DOMAIN VIEW
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Domain-by-Domain Breakdown</h2>
+        <div class="section-divider mb-8"></div>
+
+        <div class="space-y-8">
+
+            <!-- Tabular Data -->
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-6 domain-header-tabular">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-3xl">📊</span>
+                    <div>
+                        <h3 class="text-xl font-bold text-amber-900">Tabular Data</h3>
+                        <p class="text-amber-700 text-sm">Structured, row-column data from databases, spreadsheets, and CSVs</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-3">
+                    <div class="bg-white rounded-lg p-3 border border-amber-100">
+                        <div class="font-semibold text-sm text-gray-800">Linear Regression</div>
+                        <div class="text-xs text-gray-500 mt-1">Continuous output prediction</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-amber-100">
+                        <div class="font-semibold text-sm text-gray-800">Logistic Regression</div>
+                        <div class="text-xs text-gray-500 mt-1">Binary classification</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-amber-100">
+                        <div class="font-semibold text-sm text-gray-800">Random Forest</div>
+                        <div class="text-xs text-gray-500 mt-1">Ensemble classification &amp; regression</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-amber-100">
+                        <div class="font-semibold text-sm text-gray-800">Gradient Boosting</div>
+                        <div class="text-xs text-gray-500 mt-1">High-accuracy structured predictions</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-amber-100">
+                        <div class="font-semibold text-sm text-gray-800">SVM</div>
+                        <div class="text-xs text-gray-500 mt-1">High-dimensional classification</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-amber-100">
+                        <div class="font-semibold text-sm text-gray-800">K-Means / PCA</div>
+                        <div class="text-xs text-gray-500 mt-1">Clustering &amp; dimensionality reduction</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Computer Vision -->
+            <div class="bg-purple-50 border border-purple-200 rounded-xl p-6 domain-header-vision">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-3xl">👁</span>
+                    <div>
+                        <h3 class="text-xl font-bold text-purple-900">Computer Vision</h3>
+                        <p class="text-purple-700 text-sm">Image and video understanding, recognition, and generation</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-3">
+                    <div class="bg-white rounded-lg p-3 border border-purple-100">
+                        <div class="font-semibold text-sm text-gray-800">CNN</div>
+                        <div class="text-xs text-gray-500 mt-1">Core architecture for image tasks</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-purple-100">
+                        <div class="font-semibold text-sm text-gray-800">SVM</div>
+                        <div class="text-xs text-gray-500 mt-1">Feature-based image classification</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-purple-100">
+                        <div class="font-semibold text-sm text-gray-800">Autoencoder</div>
+                        <div class="text-xs text-gray-500 mt-1">Image denoising &amp; compression</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-purple-100">
+                        <div class="font-semibold text-sm text-gray-800">GAN</div>
+                        <div class="text-xs text-gray-500 mt-1">Photorealistic image synthesis</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-purple-100">
+                        <div class="font-semibold text-sm text-gray-800">Diffusion Model</div>
+                        <div class="text-xs text-gray-500 mt-1">Text-to-image generation</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-purple-100">
+                        <div class="font-semibold text-sm text-gray-800">PCA</div>
+                        <div class="text-xs text-gray-500 mt-1">Dimensionality reduction for images</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NLP -->
+            <div class="bg-teal-50 border border-teal-200 rounded-xl p-6 domain-header-nlp">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-3xl">💬</span>
+                    <div>
+                        <h3 class="text-xl font-bold text-teal-900">Natural Language Processing</h3>
+                        <p class="text-teal-700 text-sm">Text understanding, generation, translation, and summarization</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-3">
+                    <div class="bg-white rounded-lg p-3 border border-teal-100">
+                        <div class="font-semibold text-sm text-gray-800">Transformer (BERT/GPT)</div>
+                        <div class="text-xs text-gray-500 mt-1">Foundation of modern NLP</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-teal-100">
+                        <div class="font-semibold text-sm text-gray-800">LSTM / RNN</div>
+                        <div class="text-xs text-gray-500 mt-1">Sequential text modeling</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-teal-100">
+                        <div class="font-semibold text-sm text-gray-800">Logistic Regression</div>
+                        <div class="text-xs text-gray-500 mt-1">Text classification (bag-of-words)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generative AI -->
+            <div class="bg-pink-50 border border-pink-200 rounded-xl p-6 domain-header-genai">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="text-3xl">✨</span>
+                    <div>
+                        <h3 class="text-xl font-bold text-pink-900">Generative AI</h3>
+                        <p class="text-pink-700 text-sm">Synthesis of new content — text, images, audio, code, and more</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-3">
+                    <div class="bg-white rounded-lg p-3 border border-pink-100">
+                        <div class="font-semibold text-sm text-gray-800">Transformer (GPT)</div>
+                        <div class="text-xs text-gray-500 mt-1">LLMs for text/code generation</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-pink-100">
+                        <div class="font-semibold text-sm text-gray-800">GAN</div>
+                        <div class="text-xs text-gray-500 mt-1">Adversarial image &amp; video synthesis</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-pink-100">
+                        <div class="font-semibold text-sm text-gray-800">Diffusion Model</div>
+                        <div class="text-xs text-gray-500 mt-1">DALL-E, Stable Diffusion, Sora</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-pink-100">
+                        <div class="font-semibold text-sm text-gray-800">Autoencoder (VAE)</div>
+                        <div class="text-xs text-gray-500 mt-1">Latent space generation</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         SUPERVISED vs UNSUPERVISED COMPARISON
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Supervised vs. Unsupervised: Key Differences</h2>
+        <div class="section-divider mb-8"></div>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-sm">
+                <thead>
+                    <tr class="bg-gray-900 text-white">
+                        <th class="px-6 py-4 text-left font-semibold rounded-tl-lg">Dimension</th>
+                        <th class="px-6 py-4 text-left font-semibold text-blue-300">Supervised Learning</th>
+                        <th class="px-6 py-4 text-left font-semibold text-emerald-300 rounded-tr-lg">Unsupervised Learning</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 font-semibold text-gray-700">Training Data</td>
+                        <td class="px-6 py-4 text-gray-600">Requires labeled examples (input → output pairs)</td>
+                        <td class="px-6 py-4 text-gray-600">No labels — learns from raw, unlabeled data</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 font-semibold text-gray-700">Goal</td>
+                        <td class="px-6 py-4 text-gray-600">Predict or classify new inputs</td>
+                        <td class="px-6 py-4 text-gray-600">Discover structure, patterns, or representations</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 font-semibold text-gray-700">Feedback Mechanism</td>
+                        <td class="px-6 py-4 text-gray-600">Minimizes error vs. known ground truth</td>
+                        <td class="px-6 py-4 text-gray-600">Optimizes internal objective (e.g., cluster cohesion)</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 font-semibold text-gray-700">Data Annotation Cost</td>
+                        <td class="px-6 py-4 text-gray-600">High — labeling can be expensive &amp; slow</td>
+                        <td class="px-6 py-4 text-gray-600">Low — no human labeling required</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 font-semibold text-gray-700">Interpretability</td>
+                        <td class="px-6 py-4 text-gray-600">Relatively straightforward (clear output labels)</td>
+                        <td class="px-6 py-4 text-gray-600">Can be harder to interpret (latent structure)</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 rounded-b-lg">
+                        <td class="px-6 py-4 font-semibold text-gray-700 rounded-bl-lg">Examples</td>
+                        <td class="px-6 py-4 text-gray-600">Linear Reg., CNN, Transformer, SVM, Random Forest</td>
+                        <td class="px-6 py-4 text-gray-600 rounded-br-lg">K-Means, PCA, GAN, Autoencoder, Diffusion Model</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         REFERENCES
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">References</h2>
+        <div class="section-divider mb-8"></div>
+        <ul class="space-y-4 text-gray-700 text-sm">
+            <li class="flex gap-3">
+                <span class="text-blue-600 font-bold shrink-0">[1]</span>
+                <span>Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016). <em>Deep Learning</em>. MIT Press. <a href="https://www.deeplearningbook.org" target="_blank" class="text-blue-600 hover:underline">https://www.deeplearningbook.org</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-blue-600 font-bold shrink-0">[2]</span>
+                <span>Vaswani, A., et al. (2017). Attention Is All You Need. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>. <a href="https://arxiv.org/abs/1706.03762" target="_blank" class="text-blue-600 hover:underline">arXiv:1706.03762</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-blue-600 font-bold shrink-0">[3]</span>
+                <span>Goodfellow, I., et al. (2014). Generative Adversarial Networks. <em>NeurIPS</em>. <a href="https://arxiv.org/abs/1406.2661" target="_blank" class="text-blue-600 hover:underline">arXiv:1406.2661</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-blue-600 font-bold shrink-0">[4]</span>
+                <span>Ho, J., Jain, A., &amp; Abbeel, P. (2020). Denoising Diffusion Probabilistic Models. <em>NeurIPS</em>. <a href="https://arxiv.org/abs/2006.11239" target="_blank" class="text-blue-600 hover:underline">arXiv:2006.11239</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-blue-600 font-bold shrink-0">[5]</span>
+                <span>Chen, T., &amp; Guestrin, C. (2016). XGBoost: A Scalable Tree Boosting System. <em>ACM SIGKDD</em>. <a href="https://arxiv.org/abs/1603.02754" target="_blank" class="text-blue-600 hover:underline">arXiv:1603.02754</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-blue-600 font-bold shrink-0">[6]</span>
+                <span>Géron, A. (2022). <em>Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow</em> (3rd ed.). O'Reilly Media.</span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-blue-600 font-bold shrink-0">[7]</span>
+                <span>Indiana Wesleyan University – AIML-501 Course Materials: "Unraveling the Differences Between AI, ML, DL, and GenAI" (2026).</span>
+            </li>
+        </ul>
+    </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="hero-gradient text-slate-400 py-8 px-6 text-center mt-16">
+    <p class="text-sm">Babacar Diouf · AIML-501 Professional Portfolio · Indiana Wesleyan University · 2026</p>
+    <p class="text-xs mt-1 text-slate-500">Artifact: Machine Learning Algorithm Types – Visual Framework</p>
+</footer>
+
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+    // ── Filter logic ──────────────────────────────────────
+    function filterCards(filter) {
+        const cards = document.querySelectorAll('.algo-card');
+        cards.forEach(card => {
+            const type    = card.dataset.type;
+            const domains = card.dataset.domains.split(' ');
+            if (filter === 'all') {
+                card.style.display = '';
+            } else if (filter === 'supervised' || filter === 'unsupervised') {
+                card.style.display = (type === filter) ? '' : 'none';
+            } else {
+                card.style.display = domains.includes(filter) ? '' : 'none';
+            }
+        });
+
+        // Update active button
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('bg-gray-800', 'text-white', 'ring-2', 'ring-offset-2');
+        });
+        const activeBtn = document.getElementById('btn-' + filter);
+        if (activeBtn) {
+            activeBtn.classList.add('bg-gray-800', 'text-white');
+        }
+    }
+
+    // ── Scroll fade-in ──────────────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
