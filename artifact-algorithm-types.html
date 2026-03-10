@@ -12,12 +12,17 @@
         h1, h2, h3, h4, h5, h6 { font-family: 'Merriweather', serif; }
         code { font-family: 'Fira Code', monospace; }
 
-        /* ── Animated gradient hero ── */
+        /* ── Dark hero with grid overlay (combined to avoid background-image conflict) ── */
         .hero-gradient {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #1e3a5f 100%);
+            background-color: #0f172a;
+            background-image:
+                linear-gradient(rgba(59,130,246,0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59,130,246,0.07) 1px, transparent 1px),
+                linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #1e3a5f 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
         }
 
-        /* ── Glowing grid overlay ── */
+        /* ── Glowing grid overlay (kept for other uses) ── */
         .grid-overlay {
             background-image:
                 linear-gradient(rgba(59,130,246,0.06) 1px, transparent 1px),
@@ -94,7 +99,7 @@
 <!-- ══════════════════════════════════════════
      HERO
 ═══════════════════════════════════════════ -->
-<header class="hero-gradient grid-overlay text-white py-20 px-6 relative overflow-hidden">
+<header class="hero-gradient text-white py-20 px-6 relative overflow-hidden">
     <!-- Decorative orbs -->
     <div class="absolute top-10 right-16 w-64 h-64 rounded-full opacity-10" style="background: radial-gradient(circle, #6366f1, transparent 70%);"></div>
     <div class="absolute bottom-0 left-8 w-48 h-48 rounded-full opacity-10" style="background: radial-gradient(circle, #ec4899, transparent 70%);"></div>
