@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artifact 2: Neural Network Components | Babacar Diouf</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@300;400;700&family=Fira+Code:wght@400;500&display=swap');
+
+        body { font-family: 'Lato', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Merriweather', serif; }
+        code { font-family: 'Fira Code', monospace; }
+
+        /* ── Dark hero (same technique as Artifact 1) ── */
+        .hero-gradient {
+            background-color: #0f172a;
+            background-image:
+                linear-gradient(rgba(139,92,246,0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139,92,246,0.07) 1px, transparent 1px),
+                linear-gradient(135deg, #0f172a 0%, #2d1b69 40%, #1e1b4b 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+        }
+
+        /* ── Portfolio Nav ── */
+        .portfolio-nav {
+            background: #0f172a;
+            border-bottom: 1px solid rgba(139,92,246,0.25);
+        }
+
+        /* ── Section divider ── */
+        .section-divider {
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #6366f1, #ec4899);
+            border-radius: 9999px;
+        }
+
+        /* ── Stat box ── */
+        .stat-box {
+            background: linear-gradient(135deg, #2d1b69, #1e1b4b);
+        }
+
+        /* ── Component card ── */
+        .component-card {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .component-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        /* ── Neural Network SVG diagram ── */
+        .nn-node {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .nn-node:hover { filter: brightness(1.3); }
+
+        .nn-connection {
+            stroke-opacity: 0.35;
+            transition: stroke-opacity 0.3s;
+        }
+
+        /* ── Activation function pills ── */
+        .act-relu    { background: #dbeafe; color: #1e40af; }
+        .act-sigmoid { background: #fce7f3; color: #9d174d; }
+        .act-tanh    { background: #d1fae5; color: #065f46; }
+        .act-softmax { background: #fef3c7; color: #92400e; }
+
+        /* ── Scroll fade-in ── */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Animated data-flow pulse ── */
+        @keyframes flow-pulse {
+            0%   { stroke-opacity: 0.15; }
+            50%  { stroke-opacity: 0.6; }
+            100% { stroke-opacity: 0.15; }
+        }
+        .nn-connection.active { animation: flow-pulse 2s infinite; }
+
+        /* ── Tooltip ── */
+        .tooltip-box {
+            display: none;
+            position: absolute;
+            z-index: 50;
+            background: #1e1b4b;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            max-width: 220px;
+            pointer-events: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+<!-- ══════════════════════════════════════════
+     PORTFOLIO NAV
+═══════════════════════════════════════════ -->
+<nav class="portfolio-nav text-white px-6 py-3 sticky top-0 z-50">
+    <div class="container mx-auto max-w-6xl flex items-center justify-between flex-wrap gap-3">
+        <span class="text-purple-300 text-xs font-semibold tracking-widest uppercase">AIML-501 Portfolio · Babacar Diouf</span>
+        <div class="flex gap-2 flex-wrap">
+            <a href="artifact-algorithm-types.html"
+               class="bg-blue-600/30 border border-blue-500/40 text-blue-200 hover:bg-blue-600/50 px-4 py-1.5 rounded-full text-xs font-medium transition">
+                Artifact 1: ML Algorithm Types
+            </a>
+            <a href="artifact-neural-network.html"
+               class="bg-purple-600/60 border border-purple-400/60 text-purple-100 px-4 py-1.5 rounded-full text-xs font-medium">
+                Artifact 2: Neural Networks &#10003;
+            </a>
+        </div>
+    </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<header class="hero-gradient text-white py-20 px-6 relative overflow-hidden">
+    <!-- Decorative orbs -->
+    <div class="absolute top-10 right-16 w-64 h-64 rounded-full opacity-10"
+         style="background: radial-gradient(circle, #a78bfa, transparent 70%);"></div>
+    <div class="absolute bottom-0 left-8 w-48 h-48 rounded-full opacity-10"
+         style="background: radial-gradient(circle, #f472b6, transparent 70%);"></div>
+
+    <div class="container mx-auto max-w-5xl relative z-10">
+        <p class="text-purple-400 font-semibold tracking-widest uppercase text-sm mb-3">AIML-501 · Portfolio Artifact 2</p>
+        <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">
+            Neural Network<br>
+            <span class="text-transparent bg-clip-text"
+                  style="background-image: linear-gradient(90deg, #a78bfa, #818cf8, #f472b6);">Components</span>
+        </h1>
+        <p class="text-slate-300 text-lg md:text-xl max-w-3xl leading-relaxed">
+            A visual framework defining the core building blocks of neural networks: layers, neurons, weights, activation functions, loss functions, and optimization algorithms — illustrated through the lens of the Neural Network Playground.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+            <span class="bg-purple-600/30 border border-purple-500/40 text-purple-200 px-4 py-1.5 rounded-full text-sm font-medium">6 Core Components</span>
+            <span class="bg-indigo-600/30 border border-indigo-500/40 text-indigo-200 px-4 py-1.5 rounded-full text-sm font-medium">4 Activation Functions</span>
+            <span class="bg-pink-600/30 border border-pink-500/40 text-pink-200 px-4 py-1.5 rounded-full text-sm font-medium">Interactive Diagram</span>
+        </div>
+    </div>
+</header>
+
+
+<main class="container mx-auto max-w-6xl px-4 py-12 space-y-16">
+
+    <!-- ══════════════════════════════════════════
+         ARTIFACT OVERVIEW
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Artifact Overview</h2>
+        <div class="section-divider mb-8"></div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-purple-600 mb-1">Title</h3>
+                    <p class="text-gray-800 font-semibold text-lg">Neural Network Components: A Visual Presentation</p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-purple-600 mb-1">Introduction</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Neural networks are powerful tools that have revolutionized artificial intelligence, enabling computers to recognize patterns, classify images, understand language, and predict outcomes. Yet their inner workings remain opaque to many practitioners. This artifact demystifies neural networks by providing precise definitions and visual explanations of their six core components, grounded in hands-on exploration using TensorFlow's Neural Network Playground.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-purple-600 mb-1">Description</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        This visual presentation defines and illustrates six foundational neural network components: Layer, Neuron, Weight, Activation Function, Loss Function, and Optimization Algorithm. It includes an interactive architecture diagram showing how data flows from input through hidden layers to output, accompanied by component explanations and a summary of key insights gained from experimenting with the Neural Network Playground.
+                    </p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-purple-600 mb-1">Objective</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        To clearly define and describe key neural network components; visually illustrate neural network elements and their functions; communicate complex concepts concisely and effectively; and connect theoretical definitions to practical, observable behavior in the Neural Network Playground.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-purple-600 mb-1">Process</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        I began by exploring the TensorFlow Neural Network Playground, experimenting with different datasets (circle, XOR, Gaussian, spiral), varying the number of hidden layers and neurons, and observing how activation functions and learning rates affected convergence. I then synthesized definitions from course materials and primary literature, designed the architecture diagram using SVG, and built the interactive visual framework using HTML, CSS (Tailwind), and JavaScript.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-purple-600 mb-1">Tools &amp; Technologies Used</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">HTML5 / SVG</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">CSS3 / Tailwind</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">JavaScript (Vanilla)</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">TensorFlow Playground</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">GitHub Pages</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-100 rounded-xl p-6">
+            <h3 class="text-sm font-bold uppercase tracking-widest text-purple-600 mb-2">Value Proposition</h3>
+            <p class="text-gray-800 leading-relaxed">
+                <strong>Unique Value:</strong> This artifact bridges abstract theory and interactive experimentation. By anchoring each component definition to observable behavior in the Neural Network Playground, it demonstrates the kind of applied, intuition-first learning that distinguishes strong AI/ML practitioners from those who only memorize formulas.
+            </p>
+            <p class="text-gray-800 leading-relaxed mt-3">
+                <strong>Relevance to Audience:</strong> For hiring managers, this artifact demonstrates both conceptual depth and the ability to communicate technical ideas visually, a key skill in AI consulting, data science leadership, and cross-functional product roles. For academic evaluators, it directly addresses AIML-501 learning outcomes: defining components, illustrating structure, and communicating concepts effectively.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         STATS BAR
+    ═══════════════════════════════════════════ -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-in">
+        <div class="stat-box text-white rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-purple-300">6</div>
+            <div class="text-slate-300 text-sm mt-1">Core Components</div>
+        </div>
+        <div class="stat-box text-white rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-indigo-300">3</div>
+            <div class="text-slate-300 text-sm mt-1">Layer Types</div>
+        </div>
+        <div class="stat-box text-white rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-pink-300">4</div>
+            <div class="text-slate-300 text-sm mt-1">Activation Functions</div>
+        </div>
+        <div class="stat-box text-white rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-violet-300">∞</div>
+            <div class="text-slate-300 text-sm mt-1">Configurations</div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         NEURAL NETWORK ARCHITECTURE DIAGRAM
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in" id="diagram-section">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Neural Network Architecture</h2>
+        <div class="section-divider mb-6"></div>
+        <p class="text-gray-600 mb-8">
+            The diagram below illustrates how data flows through a neural network — from raw input features, through two hidden layers of neurons, to a final output prediction. Hover over any neuron to see its role. Click a layer label to highlight its connections.
+        </p>
+
+        <!-- SVG Diagram -->
+        <div class="relative overflow-x-auto">
+            <svg id="nn-diagram" viewBox="0 0 800 420" class="w-full max-w-3xl mx-auto" style="min-width:340px;">
+                <!-- Definitions -->
+                <defs>
+                    <radialGradient id="node-input" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#60a5fa"/>
+                        <stop offset="100%" stop-color="#2563eb"/>
+                    </radialGradient>
+                    <radialGradient id="node-hidden1" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#a78bfa"/>
+                        <stop offset="100%" stop-color="#7c3aed"/>
+                    </radialGradient>
+                    <radialGradient id="node-hidden2" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#f472b6"/>
+                        <stop offset="100%" stop-color="#be185d"/>
+                    </radialGradient>
+                    <radialGradient id="node-output" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#34d399"/>
+                        <stop offset="100%" stop-color="#059669"/>
+                    </radialGradient>
+                    <filter id="glow">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                </defs>
+
+                <!-- Background -->
+                <rect width="800" height="420" rx="16" fill="#0f172a"/>
+
+                <!-- Layer x-positions: Input=120, H1=290, H2=470, Output=640 -->
+
+                <!-- ── Connections Input → H1 ── -->
+                <g class="connections-input-h1" stroke="#60a5fa">
+                    <!-- 3 input nodes × 4 h1 nodes = 12 lines -->
+                    <line x1="120" y1="120" x2="290" y2="90"  class="nn-connection active" stroke-width="1"/>
+                    <line x1="120" y1="120" x2="290" y2="180" class="nn-connection active" stroke-width="1"/>
+                    <line x1="120" y1="120" x2="290" y2="270" class="nn-connection active" stroke-width="1"/>
+                    <line x1="120" y1="120" x2="290" y2="360" class="nn-connection active" stroke-width="1"/>
+                    <line x1="120" y1="210" x2="290" y2="90"  class="nn-connection active" stroke-width="1"/>
+                    <line x1="120" y1="210" x2="290" y2="180" class="nn-connection active" stroke-width="1"/>
+                    <line x1="120" y1="210" x2="290" y2="270" class="nn-connection active" stroke-width="1"/>
+                    <line x1="120" y1="210" x2="290" y2="360" class="nn-connection active" stroke-width="1"/>
+                    <line x1="120" y1="300" x2="290" y2="90"  class="nn-connection active" stroke-width="1"/>
+                    <line x1="120" y1="300" x2="290" y2="180" class="nn-connection active" stroke-width="1"/>
+                    <line x1="120" y1="300" x2="290" y2="270" class="nn-connection active" stroke-width="1"/>
+                    <line x1="120" y1="300" x2="290" y2="360" class="nn-connection active" stroke-width="1"/>
+                </g>
+
+                <!-- ── Connections H1 → H2 ── -->
+                <g class="connections-h1-h2" stroke="#a78bfa">
+                    <line x1="290" y1="90"  x2="470" y2="120" class="nn-connection" stroke-width="1"/>
+                    <line x1="290" y1="90"  x2="470" y2="210" class="nn-connection" stroke-width="1"/>
+                    <line x1="290" y1="90"  x2="470" y2="300" class="nn-connection" stroke-width="1"/>
+                    <line x1="290" y1="180" x2="470" y2="120" class="nn-connection" stroke-width="1"/>
+                    <line x1="290" y1="180" x2="470" y2="210" class="nn-connection" stroke-width="1"/>
+                    <line x1="290" y1="180" x2="470" y2="300" class="nn-connection" stroke-width="1"/>
+                    <line x1="290" y1="270" x2="470" y2="120" class="nn-connection" stroke-width="1"/>
+                    <line x1="290" y1="270" x2="470" y2="210" class="nn-connection" stroke-width="1"/>
+                    <line x1="290" y1="270" x2="470" y2="300" class="nn-connection" stroke-width="1"/>
+                    <line x1="290" y1="360" x2="470" y2="120" class="nn-connection" stroke-width="1"/>
+                    <line x1="290" y1="360" x2="470" y2="210" class="nn-connection" stroke-width="1"/>
+                    <line x1="290" y1="360" x2="470" y2="300" class="nn-connection" stroke-width="1"/>
+                </g>
+
+                <!-- ── Connections H2 → Output ── -->
+                <g class="connections-h2-out" stroke="#f472b6">
+                    <line x1="470" y1="120" x2="640" y2="175" class="nn-connection" stroke-width="1"/>
+                    <line x1="470" y1="120" x2="640" y2="245" class="nn-connection" stroke-width="1"/>
+                    <line x1="470" y1="210" x2="640" y2="175" class="nn-connection" stroke-width="1"/>
+                    <line x1="470" y1="210" x2="640" y2="245" class="nn-connection" stroke-width="1"/>
+                    <line x1="470" y1="300" x2="640" y2="175" class="nn-connection" stroke-width="1"/>
+                    <line x1="470" y1="300" x2="640" y2="245" class="nn-connection" stroke-width="1"/>
+                </g>
+
+                <!-- ── Input Layer nodes ── -->
+                <g id="layer-input">
+                    <circle cx="120" cy="120" r="22" fill="url(#node-input)" filter="url(#glow)" class="nn-node" data-label="Input Neuron: receives raw feature X1"/>
+                    <circle cx="120" cy="210" r="22" fill="url(#node-input)" filter="url(#glow)" class="nn-node" data-label="Input Neuron: receives raw feature X2"/>
+                    <circle cx="120" cy="300" r="22" fill="url(#node-input)" filter="url(#glow)" class="nn-node" data-label="Input Neuron: receives raw feature X3"/>
+                    <text x="120" y="124" text-anchor="middle" fill="white" font-size="11" font-weight="bold">X1</text>
+                    <text x="120" y="214" text-anchor="middle" fill="white" font-size="11" font-weight="bold">X2</text>
+                    <text x="120" y="304" text-anchor="middle" fill="white" font-size="11" font-weight="bold">X3</text>
+                </g>
+
+                <!-- ── Hidden Layer 1 nodes ── -->
+                <g id="layer-h1">
+                    <circle cx="290" cy="90"  r="22" fill="url(#node-hidden1)" filter="url(#glow)" class="nn-node" data-label="Hidden neuron: applies weights + ReLU activation"/>
+                    <circle cx="290" cy="180" r="22" fill="url(#node-hidden1)" filter="url(#glow)" class="nn-node" data-label="Hidden neuron: applies weights + ReLU activation"/>
+                    <circle cx="290" cy="270" r="22" fill="url(#node-hidden1)" filter="url(#glow)" class="nn-node" data-label="Hidden neuron: applies weights + ReLU activation"/>
+                    <circle cx="290" cy="360" r="22" fill="url(#node-hidden1)" filter="url(#glow)" class="nn-node" data-label="Hidden neuron: applies weights + ReLU activation"/>
+                    <text x="290" y="94"  text-anchor="middle" fill="white" font-size="10">H1</text>
+                    <text x="290" y="184" text-anchor="middle" fill="white" font-size="10">H2</text>
+                    <text x="290" y="274" text-anchor="middle" fill="white" font-size="10">H3</text>
+                    <text x="290" y="364" text-anchor="middle" fill="white" font-size="10">H4</text>
+                </g>
+
+                <!-- ── Hidden Layer 2 nodes ── -->
+                <g id="layer-h2">
+                    <circle cx="470" cy="120" r="22" fill="url(#node-hidden2)" filter="url(#glow)" class="nn-node" data-label="Hidden neuron: deeper feature abstraction"/>
+                    <circle cx="470" cy="210" r="22" fill="url(#node-hidden2)" filter="url(#glow)" class="nn-node" data-label="Hidden neuron: deeper feature abstraction"/>
+                    <circle cx="470" cy="300" r="22" fill="url(#node-hidden2)" filter="url(#glow)" class="nn-node" data-label="Hidden neuron: deeper feature abstraction"/>
+                    <text x="470" y="124" text-anchor="middle" fill="white" font-size="10">H5</text>
+                    <text x="470" y="214" text-anchor="middle" fill="white" font-size="10">H6</text>
+                    <text x="470" y="304" text-anchor="middle" fill="white" font-size="10">H7</text>
+                </g>
+
+                <!-- ── Output Layer nodes ── -->
+                <g id="layer-output">
+                    <circle cx="640" cy="175" r="22" fill="url(#node-output)" filter="url(#glow)" class="nn-node" data-label="Output neuron: class probability (Softmax)"/>
+                    <circle cx="640" cy="245" r="22" fill="url(#node-output)" filter="url(#glow)" class="nn-node" data-label="Output neuron: class probability (Softmax)"/>
+                    <text x="640" y="179" text-anchor="middle" fill="white" font-size="10">Y1</text>
+                    <text x="640" y="249" text-anchor="middle" fill="white" font-size="10">Y2</text>
+                </g>
+
+                <!-- ── Layer Labels ── -->
+                <text x="120" y="365" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="bold">INPUT</text>
+                <text x="120" y="378" text-anchor="middle" fill="#93c5fd" font-size="10">3 neurons</text>
+
+                <text x="290" y="400" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="bold">HIDDEN 1</text>
+                <text x="290" y="413" text-anchor="middle" fill="#c4b5fd" font-size="10">4 neurons</text>
+
+                <text x="470" y="365" text-anchor="middle" fill="#f472b6" font-size="12" font-weight="bold">HIDDEN 2</text>
+                <text x="470" y="378" text-anchor="middle" fill="#f9a8d4" font-size="10">3 neurons</text>
+
+                <text x="640" y="300" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">OUTPUT</text>
+                <text x="640" y="313" text-anchor="middle" fill="#6ee7b7" font-size="10">2 neurons</text>
+
+                <!-- ── Data flow arrow ── -->
+                <defs>
+                    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                        <polygon points="0 0, 8 3, 0 6" fill="#64748b"/>
+                    </marker>
+                </defs>
+                <line x1="45" y1="210" x2="85" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="4 3"/>
+                <text x="25" y="205" fill="#94a3b8" font-size="10" text-anchor="middle">Data</text>
+                <text x="25" y="218" fill="#94a3b8" font-size="10" text-anchor="middle">In</text>
+
+                <line x1="680" y1="210" x2="755" y2="210" stroke="#64748b" stroke-width="2" marker-end="url(#arrowhead)" stroke-dasharray="4 3"/>
+                <text x="772" y="205" fill="#94a3b8" font-size="10" text-anchor="middle">Pred-</text>
+                <text x="772" y="218" fill="#94a3b8" font-size="10" text-anchor="middle">iction</text>
+            </svg>
+
+            <!-- Tooltip -->
+            <div id="nn-tooltip" class="tooltip-box"></div>
+        </div>
+
+        <!-- Diagram Legend -->
+        <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-5 h-5 rounded-full bg-blue-500 shrink-0"></div>
+                <span class="text-gray-700">Input Layer</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="w-5 h-5 rounded-full bg-violet-500 shrink-0"></div>
+                <span class="text-gray-700">Hidden Layer 1</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="w-5 h-5 rounded-full bg-pink-500 shrink-0"></div>
+                <span class="text-gray-700">Hidden Layer 2</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="w-5 h-5 rounded-full bg-emerald-500 shrink-0"></div>
+                <span class="text-gray-700">Output Layer</span>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         6 CORE COMPONENTS
+    ═══════════════════════════════════════════ -->
+    <section class="fade-in">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">Core Components</h2>
+            <div class="section-divider"></div>
+            <p class="text-gray-600 mt-4">Each component plays a distinct and critical role in how a neural network learns. The definitions below are paired with the behavior observed in the Neural Network Playground.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+
+            <!-- ── 1. Layer ── -->
+            <div class="component-card bg-white rounded-2xl shadow-md border border-gray-100 p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-3xl shrink-0">&#127931;</div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-blue-500">Component 1</span>
+                        <h3 class="text-xl font-bold text-gray-900">Layer</h3>
+                    </div>
+                </div>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    A <strong>layer</strong> is a collection of neurons that process data at the same level of abstraction. Neural networks are organized into three types:
+                </p>
+                <div class="space-y-3">
+                    <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-3">
+                        <div class="font-semibold text-blue-800 text-sm">Input Layer</div>
+                        <div class="text-gray-600 text-sm mt-1">Receives raw input features (pixels, numbers, embeddings). No computation occurs here — neurons simply pass values forward. One neuron per input feature.</div>
+                    </div>
+                    <div class="bg-violet-50 border-l-4 border-violet-500 rounded-lg p-3">
+                        <div class="font-semibold text-violet-800 text-sm">Hidden Layer(s)</div>
+                        <div class="text-gray-600 text-sm mt-1">Intermediate layers that transform input into progressively more abstract representations. In the Playground, adding more hidden layers allowed the model to solve more complex datasets (e.g., the spiral).</div>
+                    </div>
+                    <div class="bg-emerald-50 border-l-4 border-emerald-500 rounded-lg p-3">
+                        <div class="font-semibold text-emerald-800 text-sm">Output Layer</div>
+                        <div class="text-gray-600 text-sm mt-1">Produces the final prediction. For binary classification, one output neuron with sigmoid activation gives a probability between 0 and 1.</div>
+                    </div>
+                </div>
+                <div class="mt-4 bg-gray-50 rounded-lg p-3 text-xs text-gray-500 flex items-start gap-2">
+                    <span class="text-blue-500 font-bold shrink-0">Playground Insight:</span>
+                    Increasing from 1 to 3 hidden layers dramatically improved the network's ability to classify the spiral dataset, confirming that depth enables hierarchical feature learning.
+                </div>
+            </div>
+
+            <!-- ── 2. Neuron ── -->
+            <div class="component-card bg-white rounded-2xl shadow-md border border-gray-100 p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-violet-100 flex items-center justify-center text-3xl shrink-0">&#9711;</div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-violet-500">Component 2</span>
+                        <h3 class="text-xl font-bold text-gray-900">Neuron</h3>
+                    </div>
+                </div>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    A <strong>neuron</strong> (or node) is the fundamental processing unit of a neural network. It receives weighted inputs, sums them with a bias term, and passes the result through an activation function.
+                </p>
+                <div class="bg-gray-900 rounded-xl p-4 font-mono text-sm text-green-300 mb-4">
+                    <div class="text-gray-500 text-xs mb-1"># Neuron computation</div>
+                    z = (w1*x1 + w2*x2 + ... + wn*xn) + b<br>
+                    output = activation(z)
+                </div>
+                <div class="space-y-2 text-sm text-gray-700">
+                    <div class="flex items-start gap-2"><span class="text-violet-500 font-bold shrink-0">w</span> = weight (learned connection strength)</div>
+                    <div class="flex items-start gap-2"><span class="text-violet-500 font-bold shrink-0">x</span> = input value from previous layer</div>
+                    <div class="flex items-start gap-2"><span class="text-violet-500 font-bold shrink-0">b</span> = bias (learnable offset term)</div>
+                    <div class="flex items-start gap-2"><span class="text-violet-500 font-bold shrink-0">z</span> = weighted sum (pre-activation)</div>
+                </div>
+                <div class="mt-4 bg-gray-50 rounded-lg p-3 text-xs text-gray-500 flex items-start gap-2">
+                    <span class="text-violet-500 font-bold shrink-0">Playground Insight:</span>
+                    Adding more neurons per layer widened the network's capacity to learn decision boundaries, though too many neurons without regularization caused overfitting on noisy datasets.
+                </div>
+            </div>
+
+            <!-- ── 3. Weight ── -->
+            <div class="component-card bg-white rounded-2xl shadow-md border border-gray-100 p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-indigo-100 flex items-center justify-center text-3xl shrink-0">&#9878;</div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-indigo-500">Component 3</span>
+                        <h3 class="text-xl font-bold text-gray-900">Weight</h3>
+                    </div>
+                </div>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    <strong>Weights</strong> are the learnable numerical parameters that determine the strength and direction of the connection between two neurons. They encode what the network has learned. A large positive weight amplifies a signal; a large negative weight suppresses it.
+                </p>
+                <div class="grid grid-cols-3 gap-3 mb-4 text-center text-sm">
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                        <div class="text-red-700 font-bold text-lg">-1.8</div>
+                        <div class="text-red-500 text-xs mt-1">Strong inhibitory</div>
+                    </div>
+                    <div class="bg-gray-100 border border-gray-200 rounded-lg p-3">
+                        <div class="text-gray-600 font-bold text-lg">0.0</div>
+                        <div class="text-gray-400 text-xs mt-1">No influence</div>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-3">
+                        <div class="text-green-700 font-bold text-lg">+2.1</div>
+                        <div class="text-green-500 text-xs mt-1">Strong excitatory</div>
+                    </div>
+                </div>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Weights are initialized randomly and then updated during each training iteration via <strong>backpropagation</strong>: the gradient of the loss with respect to each weight is computed, and the weight is adjusted in the direction that reduces the loss.
+                </p>
+                <div class="mt-4 bg-gray-50 rounded-lg p-3 text-xs text-gray-500 flex items-start gap-2">
+                    <span class="text-indigo-500 font-bold shrink-0">Playground Insight:</span>
+                    In the Playground, the color intensity of each connection line represents the magnitude of its weight. After training, high-magnitude connections (thick colored lines) indicate the features the network relies on most.
+                </div>
+            </div>
+
+            <!-- ── 4. Activation Function ── -->
+            <div class="component-card bg-white rounded-2xl shadow-md border border-gray-100 p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-100 flex items-center justify-center text-3xl shrink-0">&#9889;</div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-pink-500">Component 4</span>
+                        <h3 class="text-xl font-bold text-gray-900">Activation Function</h3>
+                    </div>
+                </div>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    An <strong>activation function</strong> introduces non-linearity into the network, enabling it to learn complex, non-linear patterns. Without it, stacking layers would collapse to a single linear transformation regardless of depth.
+                </p>
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div class="act-relu rounded-xl p-4">
+                        <div class="font-bold text-sm mb-1">ReLU</div>
+                        <code class="text-xs">f(x) = max(0, x)</code>
+                        <p class="text-xs mt-2 text-blue-700">Most common. Fast convergence. Eliminates vanishing gradient in positive range.</p>
+                    </div>
+                    <div class="act-sigmoid rounded-xl p-4">
+                        <div class="font-bold text-sm mb-1">Sigmoid</div>
+                        <code class="text-xs">f(x) = 1/(1+e&#8315;&#8339;)</code>
+                        <p class="text-xs mt-2 text-pink-700">Squashes output to (0,1). Used in output layer for binary classification probability.</p>
+                    </div>
+                    <div class="act-tanh rounded-xl p-4">
+                        <div class="font-bold text-sm mb-1">Tanh</div>
+                        <code class="text-xs">f(x) = (e&#8339;-e&#8315;&#8339;)/(e&#8339;+e&#8315;&#8339;)</code>
+                        <p class="text-xs mt-2 text-emerald-700">Output range (-1,1). Zero-centered, often better than sigmoid for hidden layers.</p>
+                    </div>
+                    <div class="act-softmax rounded-xl p-4">
+                        <div class="font-bold text-sm mb-1">Softmax</div>
+                        <code class="text-xs">f(xi) = e&#8339;&#8317;/&#x3A3;e&#8319;&#8318;</code>
+                        <p class="text-xs mt-2 text-amber-700">Converts logits to a probability distribution. Used in multi-class output layers.</p>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 text-xs text-gray-500 flex items-start gap-2">
+                    <span class="text-pink-500 font-bold shrink-0">Playground Insight:</span>
+                    Switching from Sigmoid to ReLU as the hidden-layer activation significantly accelerated training on complex datasets. Tanh produced similar results but with slightly smoother decision boundaries.
+                </div>
+            </div>
+
+            <!-- ── 5. Loss Function ── -->
+            <div class="component-card bg-white rounded-2xl shadow-md border border-gray-100 p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-100 flex items-center justify-center text-3xl shrink-0">&#128200;</div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-amber-600">Component 5</span>
+                        <h3 class="text-xl font-bold text-gray-900">Loss Function</h3>
+                    </div>
+                </div>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    The <strong>loss function</strong> (also called cost or objective function) quantifies how far the network's predictions are from the true labels. Training is the process of minimizing this value by adjusting weights through backpropagation.
+                </p>
+                <div class="space-y-4">
+                    <div class="border border-amber-200 bg-amber-50 rounded-xl p-4">
+                        <div class="font-bold text-amber-800 text-sm mb-1">Mean Squared Error (MSE)</div>
+                        <code class="text-xs text-amber-700">L = (1/n) &#x3A3;(y&#7522; - y&#770;&#7522;)&#178;</code>
+                        <p class="text-gray-600 text-xs mt-2">Used for regression problems. Penalizes large errors heavily due to squaring.</p>
+                    </div>
+                    <div class="border border-rose-200 bg-rose-50 rounded-xl p-4">
+                        <div class="font-bold text-rose-800 text-sm mb-1">Cross-Entropy Loss</div>
+                        <code class="text-xs text-rose-700">L = -&#x3A3; y&#7522; log(y&#770;&#7522;)</code>
+                        <p class="text-gray-600 text-xs mt-2">Used for classification. Measures the divergence between predicted probabilities and true labels. Strongly penalizes confident wrong predictions.</p>
+                    </div>
+                </div>
+                <div class="mt-4 bg-gray-50 rounded-lg p-3 text-xs text-gray-500 flex items-start gap-2">
+                    <span class="text-amber-500 font-bold shrink-0">Playground Insight:</span>
+                    The Playground displays training and test loss in real time. I observed that a steep initial drop in loss followed by plateauing indicated the learning rate was appropriate — too high caused oscillation; too low caused painfully slow convergence.
+                </div>
+            </div>
+
+            <!-- ── 6. Optimization Algorithm ── -->
+            <div class="component-card bg-white rounded-2xl shadow-md border border-gray-100 p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-100 flex items-center justify-center text-3xl shrink-0">&#127919;</div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-teal-600">Component 6</span>
+                        <h3 class="text-xl font-bold text-gray-900">Optimization Algorithm</h3>
+                    </div>
+                </div>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    The <strong>optimization algorithm</strong> determines how the network's weights are updated after each forward pass, using the gradients computed by backpropagation. Its goal is to find the set of weights that minimizes the loss function efficiently.
+                </p>
+                <div class="space-y-3">
+                    <div class="border border-teal-200 bg-teal-50 rounded-xl p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-teal-800 text-sm">Stochastic Gradient Descent (SGD)</div>
+                            <span class="text-xs bg-teal-200 text-teal-800 px-2 py-0.5 rounded-full">Classic</span>
+                        </div>
+                        <p class="text-gray-600 text-xs mt-2">Updates weights using gradient from a single sample (or mini-batch). Simple but sensitive to learning rate. Core formula: <code>w = w - lr * &#x2207;L</code></p>
+                    </div>
+                    <div class="border border-indigo-200 bg-indigo-50 rounded-xl p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-indigo-800 text-sm">Adam (Adaptive Moment Estimation)</div>
+                            <span class="text-xs bg-indigo-200 text-indigo-800 px-2 py-0.5 rounded-full">Most Popular</span>
+                        </div>
+                        <p class="text-gray-600 text-xs mt-2">Combines momentum (smoothing past gradients) and adaptive learning rates per parameter. Converges faster and is more robust to hyperparameter choices. Default choice for most modern networks.</p>
+                    </div>
+                </div>
+                <div class="mt-4 bg-gray-50 rounded-lg p-3 text-xs text-gray-500 flex items-start gap-2">
+                    <span class="text-teal-500 font-bold shrink-0">Playground Insight:</span>
+                    Learning rate is the most impactful hyperparameter. A rate of 0.03 with SGD converged smoothly on the circle dataset. Higher rates (0.1+) caused the loss to oscillate, visually confirming the importance of this single parameter.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         HOW COMPONENTS WORK TOGETHER
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">How the Components Work Together</h2>
+        <div class="section-divider mb-8"></div>
+        <p class="text-gray-600 mb-8">A single training step (one forward + one backward pass) involves all six components working in sequence.</p>
+
+        <div class="relative">
+            <!-- Step flow -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
+                <!-- Step 1 -->
+                <div class="flex flex-col items-center text-center p-6 relative">
+                    <div class="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xl mb-3 z-10 relative">1</div>
+                    <div class="absolute top-0 left-1/2 right-0 h-px bg-gray-200 top-10 hidden md:block"></div>
+                    <h4 class="font-bold text-gray-800 mb-2">Forward Pass</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">Input data flows through each <strong>layer</strong>. Each <strong>neuron</strong> computes a weighted sum of its inputs (using <strong>weights</strong> and a bias), then applies the <strong>activation function</strong>.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="flex flex-col items-center text-center p-6 relative">
+                    <div class="w-14 h-14 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-xl mb-3 z-10 relative">2</div>
+                    <h4 class="font-bold text-gray-800 mb-2">Loss Computation</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">The output layer's prediction is compared to the true label. The <strong>loss function</strong> computes a scalar value representing prediction error.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="flex flex-col items-center text-center p-6 relative">
+                    <div class="w-14 h-14 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xl mb-3 z-10 relative">3</div>
+                    <h4 class="font-bold text-gray-800 mb-2">Backward Pass + Update</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">Backpropagation computes the gradient of the loss with respect to each <strong>weight</strong>. The <strong>optimization algorithm</strong> uses these gradients to update all weights, reducing future errors.</p>
+                </div>
+            </div>
+
+            <!-- Connecting arrows (desktop) -->
+            <div class="hidden md:flex absolute top-10 left-0 right-0 items-center justify-center pointer-events-none">
+                <div class="flex items-center w-full px-24">
+                    <div class="flex-1 h-px bg-gradient-to-r from-blue-300 to-amber-300"></div>
+                    <svg width="16" height="16" class="shrink-0"><polygon points="0,4 12,8 0,12" fill="#f59e0b"/></svg>
+                    <div class="flex-1 h-px bg-gradient-to-r from-amber-300 to-emerald-300"></div>
+                    <svg width="16" height="16" class="shrink-0"><polygon points="0,4 12,8 0,12" fill="#10b981"/></svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-gradient-to-r from-slate-800 to-slate-900 rounded-xl p-6 text-white">
+            <h4 class="font-bold text-purple-300 mb-3 text-sm uppercase tracking-widest">Training = Repeating this cycle thousands of times</h4>
+            <p class="text-slate-300 text-sm leading-relaxed">
+                Each epoch passes the entire dataset through the network once. Over many epochs, the <strong>weights</strong> gradually converge to values that minimize the <strong>loss</strong>, guided by the <strong>optimizer</strong>. The <strong>layers</strong> learn increasingly abstract features, each <strong>neuron</strong> specializing through its <strong>activation</strong>, until the network can generalize well to unseen data.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         SUMMARY
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Summary: Key Insights</h2>
+        <div class="section-divider mb-8"></div>
+
+        <p class="text-gray-600 mb-6 leading-relaxed">
+            Visualizing neural networks through the Playground transformed abstract concepts into observable phenomena. The following insights summarize what this exercise revealed about how neural networks actually learn.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-gradient-to-br from-blue-50 to-violet-50 border border-blue-100 rounded-xl p-6">
+                <div class="text-2xl mb-3">&#127970;</div>
+                <h4 class="font-bold text-gray-800 mb-2">Architecture Determines Capacity</h4>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                    Simple datasets (circle, Gaussian) required only 1-2 hidden layers and a handful of neurons. The spiral dataset required 3+ layers with 4+ neurons per layer, confirming that network depth and width directly govern the complexity of decision boundaries a model can learn.
+                </p>
+            </div>
+            <div class="bg-gradient-to-br from-pink-50 to-rose-50 border border-pink-100 rounded-xl p-6">
+                <div class="text-2xl mb-3">&#9889;</div>
+                <h4 class="font-bold text-gray-800 mb-2">Activation Functions Shape Boundaries</h4>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                    ReLU produced sharp, angular decision boundaries. Tanh and Sigmoid produced smoother, curved boundaries. The choice of activation function is not just mathematical: it visibly changes the geometric shape of what the network can represent.
+                </p>
+            </div>
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 rounded-xl p-6">
+                <div class="text-2xl mb-3">&#128200;</div>
+                <h4 class="font-bold text-gray-800 mb-2">Learning Rate is the Most Sensitive Knob</h4>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                    A learning rate that is too large caused the loss to oscillate wildly or diverge. Too small, and training became impractically slow. The sweet spot (0.01-0.03 for SGD) produced smooth convergence, illustrating why learning rate tuning is the first step in any practical training workflow.
+                </p>
+            </div>
+            <div class="bg-gradient-to-br from-teal-50 to-emerald-50 border border-teal-100 rounded-xl p-6">
+                <div class="text-2xl mb-3">&#128272;</div>
+                <h4 class="font-bold text-gray-800 mb-2">Weights Encode What the Network Learns</h4>
+                <p class="text-gray-700 text-sm leading-relaxed">
+                    The Playground's color-coded weight visualization made it clear that strong connections form between neurons that co-activate on the same patterns. After training, the weights effectively encode a compressed, learned representation of the input distribution.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         REFERENCES
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">References</h2>
+        <div class="section-divider mb-8"></div>
+        <ul class="space-y-4 text-gray-700 text-sm">
+            <li class="flex gap-3">
+                <span class="text-purple-600 font-bold shrink-0">[1]</span>
+                <span>Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016). <em>Deep Learning</em>. MIT Press. <a href="https://www.deeplearningbook.org" target="_blank" class="text-purple-600 hover:underline">https://www.deeplearningbook.org</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-purple-600 font-bold shrink-0">[2]</span>
+                <span>Google Brain / TensorFlow. (2016). <em>Neural Network Playground</em>. <a href="https://playground.tensorflow.org" target="_blank" class="text-purple-600 hover:underline">https://playground.tensorflow.org</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-purple-600 font-bold shrink-0">[3]</span>
+                <span>Kingma, D. P., &amp; Ba, J. (2015). Adam: A Method for Stochastic Optimization. <em>ICLR</em>. <a href="https://arxiv.org/abs/1412.6980" target="_blank" class="text-purple-600 hover:underline">arXiv:1412.6980</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-purple-600 font-bold shrink-0">[4]</span>
+                <span>He, K., Zhang, X., Ren, S., &amp; Sun, J. (2015). Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification. <em>ICCV</em>. <a href="https://arxiv.org/abs/1502.01852" target="_blank" class="text-purple-600 hover:underline">arXiv:1502.01852</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-purple-600 font-bold shrink-0">[5]</span>
+                <span>Géron, A. (2022). <em>Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow</em> (3rd ed.). O'Reilly Media.</span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-purple-600 font-bold shrink-0">[6]</span>
+                <span>Indiana Wesleyan University – AIML-501 Course Materials: Workshop 2.4 "Neural Network Components" (2026).</span>
+            </li>
+        </ul>
+    </section>
+
+</main>
+
+
+<!-- Footer -->
+<footer class="hero-gradient text-slate-400 py-8 px-6 text-center mt-16">
+    <p class="text-sm">Babacar Diouf · AIML-501 Professional Portfolio · Indiana Wesleyan University · 2026</p>
+    <p class="text-xs mt-1 text-slate-500">Artifact 2: Neural Network Components – Visual Presentation</p>
+    <div class="mt-4 flex justify-center gap-4">
+        <a href="artifact-algorithm-types.html" class="text-purple-400 hover:text-purple-300 text-xs transition">Artifact 1: ML Algorithm Types</a>
+        <span class="text-slate-600">|</span>
+        <a href="artifact-neural-network.html" class="text-purple-300 text-xs">Artifact 2: Neural Network Components</a>
+    </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+    // ── Scroll fade-in ────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ── SVG Neuron tooltip ───────────────────
+    const tooltip = document.getElementById('nn-tooltip');
+    const diagramSection = document.getElementById('diagram-section');
+
+    document.querySelectorAll('.nn-node').forEach(node => {
+        node.addEventListener('mouseenter', (e) => {
+            const label = node.getAttribute('data-label');
+            if (!label) return;
+            tooltip.textContent = label;
+            tooltip.style.display = 'block';
+        });
+        node.addEventListener('mousemove', (e) => {
+            const rect = diagramSection.getBoundingClientRect();
+            tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+            tooltip.style.top  = (e.clientY - rect.top - 10) + 'px';
+        });
+        node.addEventListener('mouseleave', () => {
+            tooltip.style.display = 'none';
+        });
+    });
+</script>
+
+</body>
+</html>

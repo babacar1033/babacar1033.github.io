@@ -12,6 +12,12 @@
         h1, h2, h3, h4, h5, h6 { font-family: 'Merriweather', serif; }
         code { font-family: 'Fira Code', monospace; }
 
+        /* ── Portfolio Nav ── */
+        .portfolio-nav {
+            background: #0f172a;
+            border-bottom: 1px solid rgba(59,130,246,0.25);
+        }
+
         /* ── Dark hero with grid overlay (combined to avoid background-image conflict) ── */
         .hero-gradient {
             background-color: #0f172a;
@@ -95,6 +101,26 @@
     </style>
 </head>
 <body class="bg-slate-50">
+
+<!-- ══════════════════════════════════════════
+     PORTFOLIO NAV
+═══════════════════════════════════════════ -->
+<nav class="portfolio-nav text-white px-6 py-3 sticky top-0 z-50">
+    <div class="container mx-auto max-w-6xl flex items-center justify-between flex-wrap gap-3">
+        <span class="text-blue-300 text-xs font-semibold tracking-widest uppercase">AIML-501 Portfolio · Babacar Diouf</span>
+        <div class="flex gap-2 flex-wrap">
+            <a href="artifact-algorithm-types.html"
+               class="bg-blue-600/60 border border-blue-400/60 text-blue-100 px-4 py-1.5 rounded-full text-xs font-medium">
+                Artifact 1: ML Algorithm Types &#10003;
+            </a>
+            <a href="artifact-neural-network.html"
+               class="bg-purple-600/30 border border-purple-500/40 text-purple-200 hover:bg-purple-600/50 px-4 py-1.5 rounded-full text-xs font-medium transition">
+                Artifact 2: Neural Networks
+            </a>
+        </div>
+    </div>
+</nav>
+
 
 <!-- ══════════════════════════════════════════
      HERO
@@ -944,7 +970,12 @@
 <!-- Footer -->
 <footer class="hero-gradient text-slate-400 py-8 px-6 text-center mt-16">
     <p class="text-sm">Babacar Diouf · AIML-501 Professional Portfolio · Indiana Wesleyan University · 2026</p>
-    <p class="text-xs mt-1 text-slate-500">Artifact: Machine Learning Algorithm Types – Visual Framework</p>
+    <p class="text-xs mt-1 text-slate-500">Artifact 1: Machine Learning Algorithm Types – Visual Framework</p>
+    <div class="mt-4 flex justify-center gap-4">
+        <a href="artifact-algorithm-types.html" class="text-blue-300 text-xs">Artifact 1: ML Algorithm Types</a>
+        <span class="text-slate-600">|</span>
+        <a href="artifact-neural-network.html" class="text-purple-400 hover:text-purple-300 text-xs transition">Artifact 2: Neural Networks</a>
+    </div>
 </footer>
 
 
