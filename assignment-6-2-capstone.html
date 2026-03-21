@@ -23,10 +23,13 @@
 
     html, body {
       height: 100%;
+      max-height: 100vh;
       overflow: hidden;
       font-family: 'Segoe UI', Arial, sans-serif;
       background: #0a1628;
       color: var(--text);
+      display: flex;
+      flex-direction: column;
     }
 
     /* ── PROGRESS BAR ── */
@@ -42,9 +45,10 @@
     /* ── SLIDE WRAPPER ── */
     #deck {
       width: 100vw;
-      height: 100vh;
+      flex: 1;
       position: relative;
       overflow: hidden;
+      min-height: 0;
     }
 
     .slide {
@@ -324,13 +328,14 @@
     /* ── SPEAKER SCRIPT ── */
     #script-bar {
       flex-shrink: 0;
-      background: var(--navy);
+      background: #0d1f3c;
       color: rgba(255,255,255,0.85);
-      padding: 10px 64px;
+      padding: 12px 48px;
       display: flex;
       align-items: flex-start;
       gap: 14px;
-      min-height: 72px;
+      min-height: 80px;
+      border-top: 2px solid var(--teal);
     }
     #script-toggle {
       flex-shrink: 0;
@@ -348,12 +353,22 @@
     }
     #script-toggle:hover { border-color: var(--teal2); color: var(--teal2); }
     #script-text {
-      font-size: 0.82rem;
-      line-height: 1.6;
-      color: rgba(255,255,255,0.82);
+      font-size: 0.84rem;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.9);
       flex: 1;
     }
     #script-text.hidden { display: none; }
+    #script-label {
+      font-size: 0.65rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--teal2);
+      font-weight: 700;
+      white-space: nowrap;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
     .script-icon {
       font-size: 1rem;
       margin-top: 3px;
@@ -366,7 +381,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 64px;
+      padding: 8px 48px;
       background: var(--white);
       border-top: 1px solid var(--border);
     }
@@ -761,8 +776,8 @@
      SPEAKER SCRIPT BAR
 ══════════════════════════════════════════════════════════════ -->
 <div id="script-bar">
-  <span class="script-icon">🎤</span>
-  <div id="script-text"></div>
+  <span id="script-label">🎤 Script</span>
+  <div id="script-text">Loading script…</div>
   <button id="script-toggle">Hide Script</button>
 </div>
 
@@ -776,7 +791,7 @@
     <span id="counter-text">1 / 8</span>
   </div>
   <div style="display:flex;gap:10px;align-items:center;">
-    <a class="nav-btn demo" href="claramed-demo.html" target="_blank" id="demo-link" style="display:none;">🤖 Live Demo</a>
+    <a class="nav-btn demo" href="claramed-demo.html" target="_blank" id="demo-link">🤖 Live Demo</a>
     <button class="nav-btn" id="btn-next">Next Slide →</button>
   </div>
 </div>
@@ -825,8 +840,7 @@
     btnNext.textContent = current === total - 1 ? '✓ End' : 'Next Slide →';
     // script
     scriptText.textContent = slides[current].dataset.script || '';
-    // demo link only on last slide
-    demoLink.style.display = current === total - 1 ? 'flex' : 'none';
+    // demo link always visible
   }
 
   btnPrev.addEventListener('click', () => goTo(current - 1));
