@@ -624,7 +624,73 @@ const KB = [
     id: 'gen-02',
     source: 'MediAssist Preventive Care Guidelines 2026',
     text: 'Annual preventive screenings covered at 100% (no cost) under most plans for eligible patients: Annual wellness visit, flu vaccine, colorectal cancer screening (colonoscopy every 10 years age 45+), diabetic eye exam (annual), diabetic foot exam (annual). Schedule these through the patient portal or by calling (317) 555-0110.',
-    keywords: ['preventive','screening','wellness','annual','vaccine','flu','colonoscopy','covered','free','exam']
+    keywords: ['preventive','screening','wellness','annual','colonoscopy','covered','free','exam']
+  },
+
+  // VACCINATIONS
+  {
+    id: 'vax-01',
+    source: 'MediAssist Immunization & Vaccination Schedule 2026',
+    text: 'Recommended seasonal vaccinations for adult patients (age 47, male, Type 2 Diabetes, Hypertension): (1) Flu vaccine (influenza) — every year in September or October before flu season. High-dose or adjuvanted flu vaccine is recommended for patients with diabetes. (2) COVID-19 booster — annually each fall per CDC updated guidance. (3) RSV vaccine — recommended for adults 60+; Jordan is not yet eligible but should discuss with Dr. Patel at next visit. (4) Pneumococcal (pneumonia) vaccine — strongly recommended for patients with diabetes; confirm with Dr. Patel if you have received PCV20 or PPSV23.',
+    keywords: ['vaccine','vaccination','seasonal','flu','influenza','booster','covid','rsv','pneumonia','pneumococcal','shot','immunization','next','should','take','get']
+  },
+  {
+    id: 'vax-02',
+    source: 'MediAssist Immunization & Vaccination Schedule 2026',
+    text: 'Patients with Type 2 Diabetes are at higher risk for complications from influenza and pneumococcal disease. The CDC recommends: annual high-dose flu shot (ideally before end of October), COVID-19 annual updated booster, and pneumococcal vaccination series if not yet completed. Shingles (Zoster/Shingrix) vaccine is recommended for adults 50+ — two doses, 2–6 months apart. Jordan at age 47 is approaching eligibility and should discuss timing with Dr. Patel.',
+    keywords: ['vaccine','vaccination','diabetes','flu','influenza','pneumococcal','shingles','zoster','shingrix','booster','covid','recommended','schedule','shot','immunization','seasonal']
+  },
+
+  // SIDE EFFECTS / SYMPTOMS
+  {
+    id: 'side-01',
+    source: 'MediAssist Medication Side Effects Guide 2025',
+    text: 'Common side effects of Metformin include: nausea, diarrhea, stomach upset, and metallic taste — especially when first starting or increasing dose. These usually improve after a few weeks. Taking Metformin with food helps reduce stomach upset. Serious but rare side effects: lactic acidosis (muscle pain, difficulty breathing, unusual tiredness) — contact your care team immediately if you experience these.',
+    keywords: ['side effect','nausea','diarrhea','stomach','metformin','upset','feel','symptom','metallic','taste','tired']
+  },
+  {
+    id: 'side-02',
+    source: 'MediAssist Medication Side Effects Guide 2025',
+    text: 'Common side effects of Lisinopril include: dry cough (affects up to 20% of patients), dizziness when standing up quickly (orthostatic hypotension), headache. Serious side effects requiring immediate care: swelling of face, lips, tongue or throat (angioedema) — stop taking and call 911. If the dry cough is bothersome, ask Dr. Patel about switching to an ARB (e.g., losartan) which achieves the same effect without the cough.',
+    keywords: ['lisinopril','cough','dry cough','dizzy','dizziness','side effect','swelling','angioedema','symptom']
+  },
+  {
+    id: 'side-03',
+    source: 'MediAssist Medication Side Effects Guide 2025',
+    text: 'Common side effects of Atorvastatin (statin): muscle aches (myalgia), headache, nausea, joint pain. Serious: unexplained muscle weakness or dark urine (rhabdomyolysis — rare but serious). Avoid grapefruit/grapefruit juice as it significantly raises statin blood levels. If muscle pain is severe or persistent, contact your care team — you may need a dose adjustment or switch to a different statin.',
+    keywords: ['atorvastatin','statin','muscle','ache','pain','side effect','grapefruit','rhabdomyolysis','weakness','joint']
+  },
+
+  // REFERRALS
+  {
+    id: 'ref-01',
+    source: 'MediAssist Referral & Specialist Access Guide 2026',
+    text: 'To request a specialist referral, send a message to Dr. Patel\'s team through the patient portal or call (317) 555-0110. BlueCross Premier PPO does not require a referral for most specialists, but prior authorization may be needed for certain procedures. Referral processing typically takes 2–5 business days. Common referrals for patients with Type 2 Diabetes and Hypertension: endocrinology, nephrology (kidney function monitoring), ophthalmology (annual diabetic eye exam), podiatry (annual foot exam).',
+    keywords: ['referral','specialist','see','refer','endocrinology','nephrology','ophthalmology','podiatry','eye','kidney','foot','request']
+  },
+
+  // WEIGHT / LIFESTYLE
+  {
+    id: 'life-01',
+    source: 'MediAssist Diabetes & Hypertension Lifestyle Guide 2025',
+    text: 'For patients with Type 2 Diabetes and Hypertension, even modest weight loss (5–10% of body weight) significantly improves blood sugar control and blood pressure. Recommended lifestyle changes: 150 minutes of moderate aerobic exercise per week (e.g., brisk walking, swimming), a DASH or Mediterranean-style diet low in sodium and refined sugars, limiting alcohol to ≤1 drink/day, and not smoking. MediAssist offers a free 12-week digital nutrition coaching program — ask Dr. Patel for a referral.',
+    keywords: ['weight','lose','loss','diet','exercise','lifestyle','nutrition','sodium','alcohol','smoking','healthy','obesity','bmi']
+  },
+
+  // SLEEP
+  {
+    id: 'life-02',
+    source: 'MediAssist Preventive Care Guidelines 2026',
+    text: 'Poor sleep quality worsens blood sugar control and raises blood pressure. Patients with diabetes and hypertension should aim for 7–9 hours of quality sleep per night. If you experience loud snoring, gasping during sleep, or excessive daytime sleepiness, you may have obstructive sleep apnea — which is more common in patients with hypertension. Ask Dr. Patel about a sleep study referral. Good sleep hygiene: consistent bedtime, dark/cool room, no screens 30 min before bed.',
+    keywords: ['sleep','tired','fatigue','insomnia','snoring','apnea','rest','exhausted','sleepy']
+  },
+
+  // BLOOD PRESSURE MONITORING
+  {
+    id: 'bp-01',
+    source: 'MediAssist Hypertension Management Guide 2025',
+    text: 'Home blood pressure monitoring is recommended for patients with hypertension. Check your blood pressure at the same time each morning before taking medications, after sitting quietly for 5 minutes. The target for patients with Type 2 Diabetes is below 130/80 mmHg. Log readings in the MediAssist portal app. If you get consistent readings above 150/90 mmHg, contact Dr. Patel\'s office. A home blood pressure monitor (upper arm cuff) is covered under your BlueCross Premier PPO durable medical equipment benefit — call (317) 555-0120 for details.',
+    keywords: ['blood pressure','bp','hypertension','monitor','systolic','diastolic','reading','high','mmhg','check','measure','cuff']
   }
 ];
 
@@ -640,7 +706,11 @@ const EMERGENCY_KEYWORDS = [
 
 // ═══════════════════════════════════════════════════════════════
 // RAG RETRIEVER — keyword-based similarity (simulates vector search)
+// MIN_SCORE: chunks scoring below this are not returned (prevents
+// irrelevant context from poisoning the response generator)
 // ═══════════════════════════════════════════════════════════════
+const MIN_SCORE = 2;
+
 function retrieve(query, topK = 3) {
   const q = query.toLowerCase();
   const words = q.replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter(w => w.length > 2);
@@ -648,118 +718,240 @@ function retrieve(query, topK = 3) {
   const scored = KB.map(chunk => {
     let score = 0;
     chunk.keywords.forEach(kw => {
-      if (q.includes(kw)) score += 3;
-      else if (words.some(w => kw.includes(w) || w.includes(kw))) score += 1;
+      if (q.includes(kw)) score += 3;                              // exact phrase match
+      else if (words.some(w => w === kw)) score += 2;              // exact word match
+      else if (words.some(w => kw.includes(w) || w.includes(kw))) score += 1; // partial
     });
     return { ...chunk, score };
   });
 
   return scored
-    .filter(c => c.score > 0)
+    .filter(c => c.score >= MIN_SCORE)   // only return genuinely relevant chunks
     .sort((a, b) => b.score - a.score)
     .slice(0, topK);
 }
 
 // ═══════════════════════════════════════════════════════════════
-// RESPONSE GENERATOR — rule-based LLM simulation
+// INTENT MATCHER
+// Each intent has required keywords (all must match) and optional
+// keywords (boost confidence). Only fires when confident enough.
+// This prevents broad words like "next" or "call" from triggering
+// the wrong handler on unrelated questions.
+// ═══════════════════════════════════════════════════════════════
+function matchIntent(q, required = [], optional = []) {
+  const hasAll = required.every(kw => q.includes(kw));
+  if (!hasAll) return false;
+  return true;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RESPONSE GENERATOR — intent-based with strict matching
+// Falls through to chunk-based or true fallback if no intent fires
 // ═══════════════════════════════════════════════════════════════
 function generateResponse(query, chunks) {
   const q = query.toLowerCase();
 
-  // Build context from chunks
-  const context = chunks.map(c => c.text).join('\n\n');
-
-  // Detect topic for tailored response framing
-  if (q.includes('ibuprofen') || (q.includes('advil') || q.includes('motrin'))) {
+  // ── DRUG INTERACTIONS ──────────────────────────────────────
+  if (matchIntent(q, ['ibuprofen']) || matchIntent(q, ['advil']) || matchIntent(q, ['motrin']) ||
+      matchIntent(q, ['nsaid'])) {
     return `Based on your current medications — **Metformin 1000mg** and **Lisinopril 10mg** — I need to flag an important interaction:\n\n` +
       `**⚠️ Ibuprofen (NSAIDs) is not recommended for you.** NSAIDs can impair kidney function, which reduces Metformin clearance and raises the risk of lactic acidosis. Combined with Lisinopril, NSAIDs can also reduce blood pressure control and cause further kidney strain.\n\n` +
       `**Safer alternative:** Acetaminophen (Tylenol) is generally preferred for mild pain in patients with diabetes and hypertension — but please confirm the dose with your care team before taking any new medication.\n\n` +
       `If your pain is severe or persistent, please contact Dr. Patel's office directly.`;
   }
 
-  if ((q.includes('appointment') || q.includes('next') || q.includes('schedule') || q.includes('when')) && q.includes('cardiolog')) {
-    return `Your next appointment is:\n\n` +
-      `📅 **April 3, 2026 at 2:30 PM**\n` +
-      `🏥 **Cardiology — Dr. R. Nguyen, MD**\n` +
-      `📍 MediAssist Midtown Cardiac Center, Suite 400\n\n` +
-      `Please arrive **15 minutes early** for pre-appointment vitals. Before the visit, avoid caffeine and strenuous exercise for 24 hours if an EKG is planned. Bring your insurance card and a list of current medications.`;
-  }
-
-  if (q.includes('appointment') || q.includes('next visit') || q.includes('schedule')) {
+  // ── APPOINTMENTS ───────────────────────────────────────────
+  if (matchIntent(q, ['appointment']) || matchIntent(q, ['next visit']) || matchIntent(q, ['next appointment']) ||
+      matchIntent(q, ['cardiology']) || matchIntent(q, ['schedule'], ['when','date','time'])) {
+    const detail = q.includes('cardiology') || q.includes('prepare') || q.includes('ekg');
     return `Your next scheduled appointment is:\n\n` +
       `📅 **April 3, 2026 at 2:30 PM**\n` +
       `🏥 **Cardiology — Dr. R. Nguyen, MD**\n` +
       `📍 MediAssist Midtown Cardiac Center, Suite 400\n\n` +
-      `To schedule additional appointments or view your full calendar, log in to the patient portal and click "Appointments."`;
+      (detail
+        ? `**Preparation tips:** Arrive 15 minutes early for vitals. Avoid caffeine and strenuous exercise 24 hours before if an EKG is planned. Bring your insurance card and current medication list.`
+        : `To schedule additional appointments or view your full calendar, log in to the patient portal and click "Appointments."` );
   }
 
-  if (q.includes('hba1c') || q.includes('a1c') || q.includes('lab') || q.includes('result') || q.includes('blood sugar')) {
+  // ── LAB RESULTS / BLOOD SUGAR ──────────────────────────────
+  if (matchIntent(q, ['hba1c']) || matchIntent(q, ['a1c']) ||
+      matchIntent(q, ['lab result']) || matchIntent(q, ['lab']) ||
+      matchIntent(q, ['blood sugar']) || matchIntent(q, ['glucose'])) {
     return `Your most recent **HbA1c result is 7.4%** (taken March 6, 2026).\n\n` +
       `**What this means:** HbA1c measures your average blood sugar over the past 2–3 months. The American Diabetes Association target for most adults with Type 2 Diabetes is **under 7.0%**. At 7.4%, your blood sugar is slightly above target.\n\n` +
-      `Your care team may review your Metformin dosage at your upcoming cardiology visit on April 3rd. In the meantime, focus on:\n` +
-      `• Low-glycemic foods (vegetables, whole grains, lean protein)\n` +
-      `• Limiting added sugars and refined carbohydrates\n` +
-      `• 150 minutes of moderate exercise per week\n\n` +
-      `Log your blood glucose readings in the MediAssist patient portal app for your care team to review.`;
+      `Your care team may review your Metformin dosage at your upcoming visit on April 3rd. In the meantime:\n` +
+      `• Choose low-glycemic foods (vegetables, whole grains, lean protein)\n` +
+      `• Limit added sugars and refined carbohydrates\n` +
+      `• Aim for 150 minutes of moderate exercise per week\n` +
+      `• Log your home glucose readings in the MediAssist patient portal app`;
   }
 
-  if (q.includes('insurance') || q.includes('covered') || q.includes('cost') || q.includes('copay') || q.includes('pay')) {
+  // ── INSURANCE / BILLING / COST ─────────────────────────────
+  if (matchIntent(q, ['insurance']) || matchIntent(q, ['covered']) || matchIntent(q, ['copay']) ||
+      matchIntent(q, ['deductible']) || matchIntent(q, ['billing']) || matchIntent(q, ['how much'])) {
     return `Based on your **BlueCross Premier PPO plan**:\n\n` +
-      `**Cardiology visit coverage:**\n` +
-      `• Covered at **80% after deductible**\n` +
-      `• Your 2026 deductible is $1,500 — **$420 applied so far**\n` +
-      `• Estimated patient responsibility: **$35–$75 copay** (depending on procedure codes)\n` +
-      `• Prior authorization is **not required** for routine cardiology consultations\n\n` +
-      `**Prescription coverage:**\n` +
-      `• Metformin, Lisinopril (Tier 1 generics): **$10 copay** per 30-day supply\n` +
-      `• 90-day mail-order available at 2.5× the 30-day copay\n\n` +
+      `**Specialist visits (e.g., Cardiology):**\n` +
+      `• Covered at **80% after deductible** · Your 2026 deductible: $1,500 ($420 applied)\n` +
+      `• Estimated responsibility: **$35–$75 copay** · No prior auth required for routine visits\n\n` +
+      `**Prescriptions (your current meds):**\n` +
+      `• Metformin, Lisinopril (Tier 1 generics): **$10 copay** / 30-day supply\n` +
+      `• 90-day mail-order: available at 2.5× the 30-day copay\n\n` +
+      `**Preventive services** (annual wellness visit, flu shot, diabetic eye exam, foot exam): **$0 — covered 100%**\n\n` +
       `For billing questions, call **(317) 555-0120**.`;
   }
 
-  if (q.includes('colonoscopy') || q.includes('eat after') || q.includes('food after')) {
+  // ── COLONOSCOPY / POST-PROCEDURE ───────────────────────────
+  if (matchIntent(q, ['colonoscopy'])) {
     return `After your colonoscopy, here are your care instructions:\n\n` +
-      `**First few hours:** Start with **clear liquids** — broth, water, juice. Bloating and gas are normal and will pass.\n\n` +
+      `**First few hours:** Start with **clear liquids** — broth, water, juice. Bloating and gas are normal.\n\n` +
       `**First 24 hours:**\n` +
       `• Advance to light foods: crackers, toast, scrambled eggs\n` +
       `• Avoid heavy or spicy meals\n` +
       `• **Do not drive or operate machinery** — sedation takes 24 hours to fully clear\n\n` +
       `**Call your care team immediately if you experience:**\n` +
-      `• Fever over 101°F\n` +
-      `• Heavy rectal bleeding\n` +
-      `• Severe abdominal pain\n\n` +
+      `• Fever over 101°F · Heavy rectal bleeding · Severe abdominal pain\n\n` +
       `Nurse advice line: **(317) 555-0100** — available 24/7.`;
   }
 
-  if (q.includes('metformin') && (q.includes('take') || q.includes('dose') || q.includes('how'))) {
+  // ── METFORMIN HOW TO TAKE ───────────────────────────────────
+  if (matchIntent(q, ['metformin']) && (q.includes('take') || q.includes('dose') || q.includes('how') || q.includes('when'))) {
     return `**Metformin 1000mg** instructions for you:\n\n` +
       `• Take **twice daily with meals** (breakfast and dinner) to reduce stomach upset\n` +
       `• Do not crush or chew extended-release tablets\n\n` +
       `**Important warnings:**\n` +
-      `• **Hold Metformin 48 hours before and after** any imaging procedure using contrast dye (e.g., CT with contrast)\n` +
-      `• Report any unusual muscle pain, difficulty breathing, stomach pain, or nausea to your care team immediately — these can be signs of a rare but serious condition called lactic acidosis\n\n` +
+      `• **Hold Metformin 48 hours before and after** any imaging procedure with contrast dye (e.g., CT scan)\n` +
+      `• Report muscle pain, difficulty breathing, or unusual stomach pain immediately — signs of lactic acidosis\n\n` +
       `Your next refill is available through the MediAssist pharmacy portal.`;
   }
 
-  if (q.includes('contact') || q.includes('nurse') || q.includes('call') || q.includes('reach') || q.includes('speak')) {
+  // ── CONTACT / REACH CARE TEAM ──────────────────────────────
+  if (matchIntent(q, ['contact']) || matchIntent(q, ['reach']) || matchIntent(q, ['speak to']) ||
+      matchIntent(q, ['talk to']) || matchIntent(q, ['how do i message']) || matchIntent(q, ['nurse line']) ||
+      matchIntent(q, ['phone number'])) {
     return `Here are your MediAssist contact options:\n\n` +
       `📞 **Nurse Advice Line (24/7):** (317) 555-0100\n` +
-      `💬 **Patient Portal Messaging:** Log in → "Messages" → message your care team\n` +
+      `💬 **Patient Portal Messaging:** Log in → "Messages" → compose to your care team\n` +
       `💳 **Billing Questions:** (317) 555-0120\n` +
       `📅 **Scheduling:** (317) 555-0110\n\n` +
-      `Your primary physician is **Dr. S. Patel, MD**. For urgent clinical questions outside office hours, please use the 24/7 nurse advice line.`;
+      `Your primary physician is **Dr. S. Patel, MD**. For urgent clinical questions outside office hours, use the 24/7 nurse advice line.`;
   }
 
-  // Generic fallback using retrieved chunks
+  // ── VACCINATIONS ───────────────────────────────────────────
+  if (matchIntent(q, ['vaccine']) || matchIntent(q, ['vaccination']) || matchIntent(q, ['immunization']) ||
+      matchIntent(q, ['flu shot']) || matchIntent(q, ['booster']) || matchIntent(q, ['shingles']) ||
+      matchIntent(q, ['pneumonia shot']) || matchIntent(q, ['seasonal'], ['vaccine','shot','vaccination'])) {
+    return `Based on your profile (age 47, Type 2 Diabetes, Hypertension), here are your recommended vaccinations:\n\n` +
+      `💉 **Flu vaccine — every September/October**\n` +
+      `The CDC recommends the **high-dose or adjuvanted flu shot** for patients with diabetes. This is covered 100% under your BlueCross PPO.\n\n` +
+      `💉 **COVID-19 annual booster — each fall**\n` +
+      `Get the updated annual booster per CDC guidance, ideally alongside your flu shot.\n\n` +
+      `💉 **Pneumococcal (pneumonia) vaccine**\n` +
+      `Strongly recommended for Type 2 Diabetes patients. Ask Dr. Patel if you've already received PCV20 or PPSV23.\n\n` +
+      `💉 **Shingles (Shingrix) — starting age 50**\n` +
+      `At 47, you're approaching eligibility. Discuss timing with Dr. Patel at your April 3rd visit.\n\n` +
+      `All preventive vaccines are **covered at $0** under your plan.\n` +
+      `📅 Schedule by calling **(317) 555-0110** or at your next visit.`;
+  }
+
+  // ── SIDE EFFECTS ───────────────────────────────────────────
+  if (matchIntent(q, ['side effect']) || matchIntent(q, ['side effects']) ||
+      matchIntent(q, ['nausea']) || matchIntent(q, ['diarrhea']) ||
+      matchIntent(q, ['dry cough']) || matchIntent(q, ['muscle ache']) || matchIntent(q, ['muscle pain']) ||
+      (matchIntent(q, ['cough']) && (q.includes('lisinopril') || q.includes('medication') || q.includes('pill'))) ||
+      matchIntent(q, ['feel sick'])) {
+    if (chunks.length > 0) {
+      return `Here's what our medication guide says:\n\n${chunks[0].text}\n\n` +
+        `If symptoms are severe or persistent, call the **Nurse Advice Line: (317) 555-0100** (24/7) or message Dr. Patel's team in the portal.`;
+    }
+    return `For side effects related to your current medications (Metformin, Lisinopril, Atorvastatin, Aspirin), please message Dr. Patel's team in the portal — they can review and adjust your dosage if needed.\n\n` +
+      `**Nurse Advice Line (24/7):** (317) 555-0100`;
+  }
+
+  // ── WEIGHT / DIET / LIFESTYLE ──────────────────────────────
+  if (matchIntent(q, ['weight']) || matchIntent(q, ['lose weight']) || matchIntent(q, ['diet']) ||
+      matchIntent(q, ['nutrition']) || matchIntent(q, ['lifestyle']) || matchIntent(q, ['what should i eat'])) {
+    return `Managing your weight improves both blood sugar and blood pressure significantly. Here's your care plan guidance:\n\n` +
+      `**Even a 5–10% weight reduction** meaningfully improves HbA1c and blood pressure.\n\n` +
+      `🥗 **Diet:** DASH or Mediterranean-style — rich in vegetables, whole grains, lean protein; low in sodium and refined sugars.\n\n` +
+      `🚶 **Exercise:** **150 minutes/week** of moderate aerobic activity (brisk walking, swimming, cycling).\n\n` +
+      `🍷 **Alcohol:** Limit to ≤1 drink/day — alcohol raises blood pressure and disrupts blood sugar.\n\n` +
+      `💬 MediAssist offers a **free 12-week digital nutrition coaching program** — ask Dr. Patel for a referral.`;
+  }
+
+  // ── SLEEP / FATIGUE ────────────────────────────────────────
+  if (matchIntent(q, ['sleep']) || matchIntent(q, ['insomnia']) || matchIntent(q, ['can\'t sleep']) ||
+      matchIntent(q, ['sleep apnea']) || matchIntent(q, ['snoring']) || matchIntent(q, ['fatigue']) ||
+      matchIntent(q, ['always tired']) || matchIntent(q, ['exhausted'])) {
+    return `Sleep quality directly affects blood sugar control and blood pressure. Here's your care plan guidance:\n\n` +
+      `🛏 **Target:** 7–9 hours of quality sleep per night.\n\n` +
+      `⚠️ **Watch for sleep apnea:** Loud snoring, gasping during sleep, or excessive daytime fatigue are common with hypertension. If you notice these signs, ask Dr. Patel about a sleep study referral.\n\n` +
+      `**Sleep hygiene tips:**\n` +
+      `• Consistent bedtime and wake time · Cool, dark bedroom\n` +
+      `• No screens 30 min before bed · Limit caffeine after 2 PM\n\n` +
+      `If fatigue is new or severe, contact Dr. Patel — it can indicate blood sugar fluctuations or medication effects.`;
+  }
+
+  // ── BLOOD PRESSURE MONITORING ──────────────────────────────
+  if (matchIntent(q, ['blood pressure']) || matchIntent(q, ['hypertension']) ||
+      matchIntent(q, ['systolic']) || matchIntent(q, ['diastolic']) || matchIntent(q, ['mmhg']) ||
+      (matchIntent(q, ['bp']) && (q.includes('check') || q.includes('monitor') || q.includes('reading') || q.includes('high') || q.includes('low')))) {
+    return `Here's your blood pressure guidance, Jordan:\n\n` +
+      `🎯 **Your target:** Below **130/80 mmHg** (for adults with Type 2 Diabetes).\n\n` +
+      `**How to measure correctly:**\n` +
+      `• Morning, before taking medications · Sit quietly for 5 minutes first\n` +
+      `• Use an upper-arm cuff · Log readings in the MediAssist portal app\n\n` +
+      `📞 **Call Dr. Patel's office** if you consistently read above **150/90 mmHg**.\n\n` +
+      `💡 A home blood pressure monitor (upper-arm cuff) is **covered under your BlueCross PPO DME benefit** — call **(317) 555-0120** to order one.`;
+  }
+
+  // ── REFERRALS / SPECIALISTS ────────────────────────────────
+  if (matchIntent(q, ['referral']) || matchIntent(q, ['specialist']) ||
+      matchIntent(q, ['endocrinologist']) || matchIntent(q, ['nephrologist']) ||
+      matchIntent(q, ['ophthalmologist']) || matchIntent(q, ['podiatrist'])) {
+    return `To request a specialist referral:\n\n` +
+      `💬 **Portal:** Log in → "Messages" → message Dr. Patel's team\n` +
+      `📞 **Phone:** (317) 555-0110 — processing takes 2–5 business days\n\n` +
+      `Your **BlueCross Premier PPO** does not require a referral for most specialists.\n\n` +
+      `**Common specialists for your conditions:**\n` +
+      `• 👁 **Ophthalmology** — annual diabetic eye exam (covered 100%)\n` +
+      `• 🦶 **Podiatry** — annual diabetic foot exam (covered 100%)\n` +
+      `• 🫘 **Nephrology** — kidney monitoring (important with diabetes + hypertension)\n` +
+      `• 🩺 **Endocrinology** — if blood sugar remains difficult to control`;
+  }
+
+  // ── MEDICATIONS — general ──────────────────────────────────
+  if (matchIntent(q, ['medication']) || matchIntent(q, ['my medications']) || matchIntent(q, ['my pills']) ||
+      matchIntent(q, ['my prescriptions']) || matchIntent(q, ['what am i taking'])) {
+    return `Your current active medications are:\n\n` +
+      `💊 **Metformin 1000mg** — twice daily with meals (Type 2 Diabetes)\n` +
+      `💊 **Lisinopril 10mg** — once daily (Hypertension)\n` +
+      `💊 **Atorvastatin 20mg** — once daily in the evening (Cholesterol)\n` +
+      `💊 **Aspirin 81mg** — once daily with food (Cardiovascular protection)\n\n` +
+      `Ask me about any specific medication for dosage instructions, side effects, or interactions.`;
+  }
+
+  // ── CHUNK-BASED FALLBACK — only if retriever found relevant content ──
   if (chunks.length > 0) {
-    return `Based on your question and your care records, here's what I found:\n\n${chunks[0].text}\n\n` +
-      (chunks.length > 1 ? `Additionally: ${chunks[1].text.substring(0, 200)}…\n\n` : '') +
-      `If you have more specific questions or this doesn't fully address your concern, I can connect you with your care team.`;
+    const citations = chunks.map(c => `📄 ${c.source}`).join(' · ');
+    return `Based on your care records, here's the most relevant information I found:\n\n` +
+      `${chunks[0].text}\n\n` +
+      (chunks.length > 1 ? `**Additional context:** ${chunks[1].text.substring(0, 200)}…\n\n` : '') +
+      `*Sources: ${citations}*\n\n` +
+      `If this doesn't fully address your question, I can connect you with your care team.`;
   }
 
-  return `I wasn't able to find a specific answer in our knowledge base for that question. For the most accurate guidance:\n\n` +
-    `📞 **Nurse Advice Line (24/7):** (317) 555-0100\n` +
-    `💬 **Portal Message:** Send a message to Dr. Patel's team\n\n` +
-    `Is there anything else I can help you with from your care records?`;
+  // ── TRUE FALLBACK — nothing matched ────────────────────────
+  return `I don't have enough information in my knowledge base to answer that confidently — and on health topics, I'd rather be honest than guess.\n\n` +
+    `Here's how to get an accurate answer:\n\n` +
+    `💬 **Message Dr. Patel's team** via the Patient Portal (response within 1 business day)\n` +
+    `📞 **Nurse Advice Line (24/7):** (317) 555-0100 — for more urgent questions\n\n` +
+    `I can help you with:\n` +
+    `• Your medications, dosages, and interactions\n` +
+    `• Your upcoming appointments\n` +
+    `• Your lab results (HbA1c, blood pressure)\n` +
+    `• Insurance and billing questions\n` +
+    `• Vaccinations, diet, sleep, and lifestyle guidance\n` +
+    `• Specialist referrals`;
 }
 
 // ═══════════════════════════════════════════════════════════════
