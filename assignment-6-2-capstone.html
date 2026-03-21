@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6.2 Capstone – ClaraMed RAG Chatbot | MediAssist AI</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:  #0d1f3c;
+      --blue:  #1a5276;
+      --teal:  #0e7b72;
+      --teal2: #1abc9c;
+      --red:   #e74c3c;
+      --gold:  #f39c12;
+      --light: #eaf4f4;
+      --white: #ffffff;
+      --text:  #1c2833;
+      --muted: #5d6d7e;
+      --border:#d5e8e4;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0a1628;
+      color: var(--text);
+    }
+
+    /* ── PROGRESS BAR ── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--teal2), var(--teal));
+      transition: width 0.4s ease;
+      z-index: 100;
+    }
+
+    /* ── SLIDE WRAPPER ── */
+    #deck {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      background: #f0f7f6;
+      transition: opacity 0.35s ease;
+    }
+    .slide.active { display: flex; }
+
+    /* Slide types */
+    .slide.cover {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 55%, var(--teal) 100%);
+      color: var(--white);
+    }
+
+    /* ── SLIDE CONTENT AREA ── */
+    .slide-body {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 16px 64px 8px;
+    }
+
+    /* COVER body */
+    .slide.cover .slide-body {
+      align-items: center;
+      text-align: center;
+      padding: 24px 64px 8px;
+    }
+
+    /* ── COVER ELEMENTS ── */
+    .cover .badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 5px 18px;
+      border-radius: 24px;
+      margin-bottom: 20px;
+    }
+    .cover .logo-icon { font-size: 3.2rem; margin-bottom: 10px; }
+    .cover h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .cover h1 span { font-weight: 400; font-size: 1.5rem; display: block; opacity: 0.82; margin-top: 4px; }
+    .cover .tagline { font-size: 1.05rem; opacity: 0.78; max-width: 560px; margin: 12px auto 28px; line-height: 1.55; }
+    .cover .meta-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      font-size: 0.83rem;
+      opacity: 0.72;
+    }
+    .cover .meta-chips span { display: flex; align-items: center; gap: 6px; }
+
+    /* ── REGULAR SLIDE HEADER ── */
+    .slide-header {
+      padding: 16px 64px 0;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+    .slide-header .icon { font-size: 1.5rem; }
+    .slide-header h2 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1.2;
+    }
+    .slide-header .slide-tag {
+      margin-left: auto;
+      font-size: 0.68rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: var(--light);
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* Accent stripe */
+    .slide-stripe {
+      height: 3px;
+      margin: 8px 64px 0;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--teal), var(--teal2));
+      flex-shrink: 0;
+    }
+
+    /* ── LAYOUT HELPERS ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      flex: 1;
+    }
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+    .col { display: flex; flex-direction: column; gap: 14px; }
+
+    .card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 14px 18px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .card h3 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .card ul { padding-left: 16px; }
+    .card li { font-size: 0.84rem; color: var(--text); margin-bottom: 4px; line-height: 1.4; }
+    .card p  { font-size: 0.84rem; color: var(--text); line-height: 1.45; }
+
+    /* highlighted card */
+    .card.highlight {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--blue) 100%);
+      color: var(--white);
+    }
+    .card.highlight h3 { color: #a8e6cf; }
+    .card.highlight p, .card.highlight li { color: var(--white); }
+
+    .card.warn { border-left: 4px solid var(--red); }
+    .card.good { border-left: 4px solid var(--teal2); }
+
+    /* stat row */
+    .stat-row {
+      display: flex;
+      gap: 10px;
+    }
+    .stat {
+      flex: 1;
+      background: var(--white);
+      border-radius: 10px;
+      padding: 10px 12px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .stat .num {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--teal);
+      line-height: 1;
+    }
+    .stat .lbl {
+      font-size: 0.67rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-top: 3px;
+    }
+
+    /* architecture flow */
+    .arch {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 12px 0;
+    }
+    .arch-node {
+      background: var(--navy);
+      color: var(--white);
+      border-radius: 8px;
+      padding: 8px 14px;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 600;
+      min-width: 90px;
+    }
+    .arch-node sub { display: block; font-size: 0.65rem; opacity: 0.75; font-weight: 400; }
+    .arch-node.teal  { background: var(--teal); }
+    .arch-node.blue  { background: var(--blue); }
+    .arch-node.gold  { background: var(--gold); color: #1a1a1a; }
+    .arch-arrow { font-size: 1rem; color: var(--muted); }
+
+    /* metric bars */
+    .metric { margin-bottom: 10px; }
+    .metric-label { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 3px; }
+    .metric-track { background: var(--border); border-radius: 99px; height: 8px; overflow: hidden; }
+    .metric-fill  { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--teal), var(--teal2)); }
+
+    /* guardrail grid */
+    .guard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    .guard-card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 12px 14px;
+      border-top: 3px solid var(--teal);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .guard-card.w { border-top-color: var(--gold); }
+    .guard-card.r { border-top-color: var(--red); }
+    .guard-card h5 { font-size: 0.78rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .guard-card p  { font-size: 0.74rem; color: var(--muted); line-height: 1.4; }
+
+    /* data table */
+    .dtable { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .dtable thead tr { background: var(--navy); color: var(--white); }
+    .dtable th, .dtable td { padding: 8px 12px; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+    .dtable tbody tr:nth-child(even) { background: #f4fbfa; }
+
+    /* pipeline steps */
+    .pipe {
+      display: flex;
+      gap: 6px;
+      align-items: stretch;
+      flex: 1;
+    }
+    .pipe-step {
+      flex: 1;
+      background: var(--white);
+      border-radius: 8px;
+      padding: 10px 12px;
+      border-top: 3px solid var(--teal);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .pipe-step h5 { font-size: 0.75rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; text-transform: uppercase; }
+    .pipe-step p  { font-size: 0.72rem; color: var(--muted); line-height: 1.35; }
+
+    /* tag chips */
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag {
+      font-size: 0.72rem; font-weight: 600;
+      padding: 3px 10px; border-radius: 20px;
+      background: var(--light); color: var(--teal); border: 1px solid var(--border);
+    }
+    .tag.b { background: #eaf0fb; color: var(--blue); border-color: #c3d0ee; }
+    .tag.g { background: #fef9e7; color: #9a7d0a; border-color: #f5dfa0; }
+    .tag.r { background: #fdf0f0; color: var(--red); border-color: #f5c6c6; }
+
+    /* section label inside body */
+    .section-lbl {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 1.8px;
+      text-transform: uppercase; color: var(--teal);
+      margin-bottom: 6px;
+    }
+
+    /* big text callout */
+    .callout {
+      background: var(--light);
+      border-left: 5px solid var(--teal);
+      border-radius: 0 8px 8px 0;
+      padding: 12px 18px;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: var(--text);
+    }
+    .callout strong { color: var(--navy); }
+
+    /* ── SPEAKER SCRIPT ── */
+    #script-bar {
+      flex-shrink: 0;
+      background: var(--navy);
+      color: rgba(255,255,255,0.85);
+      padding: 10px 64px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      min-height: 72px;
+    }
+    #script-toggle {
+      flex-shrink: 0;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.7);
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+    #script-toggle:hover { border-color: var(--teal2); color: var(--teal2); }
+    #script-text {
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.82);
+      flex: 1;
+    }
+    #script-text.hidden { display: none; }
+    .script-icon {
+      font-size: 1rem;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+
+    /* ── NAV BAR ── */
+    #nav {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 64px;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+    }
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--navy);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .nav-btn:hover { background: var(--teal); }
+    .nav-btn:disabled { background: #c8d6e5; cursor: not-allowed; }
+    .nav-btn.demo {
+      background: var(--teal);
+      text-decoration: none;
+    }
+    .nav-btn.demo:hover { background: var(--teal2); }
+
+    #counter {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .dot-row { display: flex; gap: 7px; }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--border);
+      transition: background 0.3s;
+    }
+    .dot.on { background: var(--teal); }
+
+    /* ── SLIDE-SPECIFIC OVERRIDES ── */
+    #slide5 .slide-body { padding-top: 8px; }
+    #slide7 .slide-body { overflow-y: auto; }
+    .slide.cover .slide-body { flex: 1; }
+
+    /* ── RESPONSIVE SAFETY ── */
+    @media (max-width: 900px) {
+      .slide-body { padding: 24px 28px 10px; }
+      .slide-header { padding: 18px 28px 0; }
+      .slide-stripe { margin: 8px 28px 0; }
+      #script-bar, #nav { padding-left: 28px; padding-right: 28px; }
+      .two-col { grid-template-columns: 1fr; }
+      .guard-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div id="deck">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SLIDE 1 — COVER
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="slide cover active" id="slide1" data-script="Good morning — or good afternoon — everyone. Today I'll be presenting our capstone project for AIML-501. The company we've selected is MediAssist Health Technologies, a digital health firm serving 2.4 million patients across the Midwest. We designed a Generative AI chatbot called ClaraMed — powered by Retrieval-Augmented Generation — to transform how MediAssist handles patient support. Over the next five minutes, I'll walk you through the business problem, our AI solution, the data pipeline, and how we validated accuracy and safety.">
+    <div class="slide-body">
+      <div class="badge">AIML-501 · Workshop Six · Capstone Project</div>
+      <div class="logo-icon">🏥</div>
+      <h1>
+        MediAssist AI
+        <span>ClaraMed — RAG-Powered Patient Support Chatbot</span>
+      </h1>
+      <p class="tagline">Leveraging Retrieval-Augmented Generation to deliver accurate, personalized, and HIPAA-compliant healthcare information at scale.</p>
+      <div class="meta-chips">
+        <span>📌 MediAssist Health Technologies, Inc.</span>
+        <span>📋 Assignment 6.2 · Capstone</span>
+        <span>📅 March 2026</span>
+        <span>👤 Babacar Diouf</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SLIDE 2 — COMPANY OVERVIEW
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="slide" id="slide2" data-script="MediAssist Health Technologies is a fictive mid-sized digital health company, founded in 2014 and headquartered in Indianapolis, Indiana. They currently operate a patient portal, appointment scheduling, telehealth, and insurance verification products — serving 14 regional health networks and 2.4 million patients. Despite their solid product portfolio, their support operation is under severe strain: 87,000 support tickets per month, at a cost of 8.2 million dollars per year. That operational gap is precisely what ClaraMed is designed to solve.">
+    <div class="slide-header">
+      <span class="icon">🏢</span>
+      <h2>Company Overview</h2>
+      <span class="slide-tag">Slide 02 · Background</span>
+    </div>
+    <div class="slide-stripe"></div>
+    <div class="slide-body" style="padding-top:18px;">
+      <div class="stat-row" style="margin-bottom:10px;">
+        <div class="stat"><div class="num">2.4M</div><div class="lbl">Active Patients</div></div>
+        <div class="stat"><div class="num">14</div><div class="lbl">Health Networks</div></div>
+        <div class="stat"><div class="num">1,200</div><div class="lbl">Employees</div></div>
+        <div class="stat"><div class="num">$320M</div><div class="lbl">2025 Revenue</div></div>
+        <div class="stat"><div class="num">87K</div><div class="lbl">Monthly Support Tickets</div></div>
+      </div>
+      <div class="two-col" style="flex:1;">
+        <div class="col">
+          <div class="card">
+            <h3>Company Profile</h3>
+            <ul>
+              <li><strong>Industry:</strong> Digital Health / HealthTech</li>
+              <li><strong>Founded:</strong> 2014 · HQ: Indianapolis, IN</li>
+              <li><strong>Clients:</strong> 14 regional health networks</li>
+              <li><strong>Revenue:</strong> $320M (2025)</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Current Product Suite</h3>
+            <ul>
+              <li>Patient Portal (Web + Mobile)</li>
+              <li>Appointment Scheduling Engine</li>
+              <li>Telehealth Video Integration</li>
+              <li>Insurance Eligibility Verifier</li>
+              <li>Medication Refill Tracker</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card highlight" style="flex:1;">
+            <h3>Why This Company Needs AI</h3>
+            <p>MediAssist's support center is overwhelmed — 87,000 tickets/month, 47-minute average wait times, and $8.2M in annual support costs. 64% of those tickets are routine, informational requests that <strong>don't require clinical judgment</strong> — but are still answered manually.</p>
+            <p style="margin-top:10px;">ClaraMed will automate this tier, freeing nurses for high-acuity care and reducing operational costs by an estimated $5.6M annually.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SLIDE 3 — BUSINESS PROBLEM
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="slide" id="slide3" data-script="The business problem breaks down into four root causes. First, volume: patient inquiries have grown 38% since 2022 while staff headcount grew only 9%. Second, fragmentation: care instructions, drug interaction sheets, and insurance documents live in separate silos — so agents manually search multiple systems per ticket. Third, after-hours gaps: 23% of inquiries arrive outside staffed hours. And fourth, inconsistency: without a unified knowledge base, different agents give different answers to the same question. If left unaddressed, support costs are projected to hit 13.5 million dollars by 2027.">
+    <div class="slide-header">
+      <span class="icon">⚠️</span>
+      <h2>Business Problem</h2>
+      <span class="slide-tag">Slide 03 · Pain Points</span>
+    </div>
+    <div class="slide-stripe" style="background: linear-gradient(90deg,#e74c3c,#f39c12);"></div>
+    <div class="slide-body" style="padding-top:18px;">
+      <div class="callout" style="margin-bottom:14px; border-left-color: var(--red);">
+        MediAssist's support center receives <strong>87,000 tickets/month</strong> — 64% are routine informational queries consuming significant staff time, driving average patient wait times to <strong>47 minutes</strong> and costing <strong>$8.2M/year</strong>.
+      </div>
+      <div class="stat-row" style="margin-bottom:10px;">
+        <div class="stat"><div class="num" style="color:var(--red);">64%</div><div class="lbl">Automatable Queries</div></div>
+        <div class="stat"><div class="num" style="color:var(--red);">47 min</div><div class="lbl">Avg. Wait Time</div></div>
+        <div class="stat"><div class="num" style="color:var(--red);">$8.2M</div><div class="lbl">Annual Support Cost</div></div>
+        <div class="stat"><div class="num" style="color:var(--red);">23%</div><div class="lbl">After-Hours Queries (Unserved)</div></div>
+      </div>
+      <div class="three-col" style="flex:1;">
+        <div class="card warn">
+          <h3>Volume Overload</h3>
+          <p>Inquiries up 38% since 2022; headcount grew only 9%. Staff cannot scale to meet demand.</p>
+        </div>
+        <div class="card warn">
+          <h3>Information Fragmentation</h3>
+          <p>Care guides, drug sheets, and insurance policies live in siloed systems — agents search 3+ platforms per ticket.</p>
+        </div>
+        <div class="card warn">
+          <h3>Inconsistency & Risk</h3>
+          <p>No unified knowledge base = agents give conflicting answers. 18% of calls unnecessarily escalate to licensed nurses. JCAHO audit risk.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SLIDE 4 — GENERATIVE AI USE CASE
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="slide" id="slide4" data-script="ClaraMed is embedded directly in MediAssist's patient portal and handles five categories of patient interactions: post-visit care instructions, medication inquiries, appointment management, insurance and billing FAQs, and emergency triage routing. What makes this a Generative AI use case — rather than a simple FAQ bot — is that responses are personalized to the patient's own records, dynamically composed from retrieved documents, and grounded with source citations. Pure LLM approaches risk hallucination, which is especially dangerous in healthcare. RAG solves this by anchoring every response in verified, retrieved context before generation.">
+    <div class="slide-header">
+      <span class="icon">🤖</span>
+      <h2>Generative AI Use Case</h2>
+      <span class="slide-tag">Slide 04 · Solution Overview</span>
+    </div>
+    <div class="slide-stripe"></div>
+    <div class="slide-body" style="padding-top:18px;">
+      <div class="two-col" style="flex:1;">
+        <div class="col">
+          <div class="card">
+            <h3>Use Case: ClaraMed Patient Chatbot</h3>
+            <ul>
+              <li>📋 <strong>Post-visit care instructions</strong> — "What can I eat after my colonoscopy?"</li>
+              <li>💊 <strong>Medication inquiries</strong> — "Can I take ibuprofen with metformin?"</li>
+              <li>📅 <strong>Appointment management</strong> — "When is my next cardiology visit?"</li>
+              <li>🏥 <strong>Insurance &amp; billing FAQs</strong> — "Is my procedure covered?"</li>
+              <li>📞 <strong>Emergency triage routing</strong> — escalates to live nurse on crisis keywords</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">Retrieval-Augmented Generation</span>
+            <span class="tag b">GPT-4o via Azure OpenAI</span>
+            <span class="tag g">HIPAA Compliant</span>
+            <span class="tag">24/7 Availability</span>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card highlight" style="flex:1;">
+            <h3>Why RAG — Not Just an LLM?</h3>
+            <ul>
+              <li>Patients need <strong>personalized, accurate</strong> answers drawn from their actual records — not generic text.</li>
+              <li>Pure LLMs hallucinate; in healthcare, a fabricated drug interaction answer can cause serious harm.</li>
+              <li>RAG retrieves verified clinical documents <em>first</em>, then generates a response grounded in that context.</li>
+              <li>Every response includes <strong>source citations</strong> — patients and clinicians can verify claims instantly.</li>
+              <li>Enables <strong>real-time updates</strong>: update the knowledge base without retraining the model.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SLIDE 5 — AI SOLUTION & ARCHITECTURE
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="slide" id="slide5" data-script="ClaraMed's architecture follows the standard RAG pipeline. The patient types a query — it's classified by intent, sent to our retriever which queries Azure AI Search over a vectorized knowledge base, the top three chunks are assembled into a context-enriched prompt, and GPT-4o generates the final response with source citations shown. The key technical stack is: GPT-4o via Azure OpenAI — which has a HIPAA Business Associate Agreement in place — LangChain for orchestration, OpenAI's text-embedding-3-large model for embedding, and Epic's FHIR R4 API for real-time patient record access.">
+    <div class="slide-header">
+      <span class="icon">💡</span>
+      <h2>AI Solution: ClaraMed Architecture</h2>
+      <span class="slide-tag">Slide 05 · Technical Design</span>
+    </div>
+    <div class="slide-stripe"></div>
+    <div class="slide-body" style="padding-top:16px;">
+      <div class="arch" style="margin-bottom:10px;">
+        <div class="arch-node blue">Patient Query<sub>Portal / Mobile</sub></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node teal">Intent Classifier<sub>LLM Router</sub></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node">Retriever<sub>Azure AI Search</sub></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node gold">Context Injector<sub>RAG Prompt Builder</sub></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node teal">GPT-4o<sub>Azure OpenAI</sub></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node blue">Response + Citations<sub>Patient Portal</sub></div>
+      </div>
+      <div class="two-col" style="flex:1;">
+        <div class="card">
+          <h3>Core Technical Stack</h3>
+          <ul>
+            <li><strong>LLM:</strong> GPT-4o · Azure OpenAI (HIPAA BAA)</li>
+            <li><strong>Embedding:</strong> text-embedding-3-large (3,072-dim)</li>
+            <li><strong>Vector Store:</strong> Azure AI Search (hybrid: vector + BM25)</li>
+            <li><strong>Orchestration:</strong> LangChain + Azure Functions</li>
+            <li><strong>EHR Integration:</strong> Epic FHIR R4 API</li>
+            <li><strong>Drug DB:</strong> DrugBank API (real-time)</li>
+            <li><strong>Auth:</strong> OAuth 2.0 + MFA</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>What ClaraMed Can Do</h3>
+          <ul>
+            <li>Answer care-plan specific questions from live EHR records</li>
+            <li>Check real-time drug–drug interactions via DrugBank</li>
+            <li>Explain lab results in plain language with source</li>
+            <li>Retrieve and summarize insurance benefits</li>
+            <li>Provide post-procedure instructions with citations</li>
+            <li>Escalate to live nurse on emergency keywords</li>
+            <li>Log all interactions to HIPAA-compliant audit trail</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SLIDE 6 — PRODUCT INTEGRATION & VALUE-ADD
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="slide" id="slide6" data-script="ClaraMed integrates with six existing MediAssist systems. The most critical is Epic EHR via FHIR R4, providing read-only, patient-consented access to diagnoses, medications, and lab results. DrugBank gives us real-time drug interaction data. Our internal insurance eligibility engine answers coverage questions via a gRPC microservice. All of these are orchestrated through Azure AI Search and LangChain, with an escalation webhook to our nurse queue via Twilio. The projected value-add is 68% ticket deflection, $5.6 million in annual savings, and sub-3-second response times — 24 hours a day, 7 days a week.">
+    <div class="slide-header">
+      <span class="icon">🔗</span>
+      <h2>Product Integration &amp; Value-Add</h2>
+      <span class="slide-tag">Slide 06 · Integrations</span>
+    </div>
+    <div class="slide-stripe"></div>
+    <div class="slide-body" style="padding-top:16px;">
+      <div class="stat-row" style="margin-bottom:10px;">
+        <div class="stat"><div class="num">68%</div><div class="lbl">Ticket Deflection</div></div>
+        <div class="stat"><div class="num">$5.6M</div><div class="lbl">Annual Savings</div></div>
+        <div class="stat"><div class="num">&lt;3s</div><div class="lbl">Response Time</div></div>
+        <div class="stat"><div class="num">24/7</div><div class="lbl">Availability</div></div>
+        <div class="stat"><div class="num">93%</div><div class="lbl">Target Patient Satisfaction</div></div>
+      </div>
+      <table class="dtable" style="flex:1;">
+        <thead>
+          <tr><th>System</th><th>Method</th><th>Data</th><th>Direction</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Epic EHR</strong></td><td>FHIR R4 REST API</td><td>Demographics, diagnoses, medications, labs</td><td>Read-only (patient-consented)</td></tr>
+          <tr><td><strong>Patient Portal</strong></td><td>Embedded React widget</td><td>Auth session, conversation history</td><td>Bidirectional</td></tr>
+          <tr><td><strong>DrugBank API</strong></td><td>REST API (real-time)</td><td>Drug interactions, dosing guidelines</td><td>Read-only</td></tr>
+          <tr><td><strong>Insurance Engine</strong></td><td>Internal gRPC microservice</td><td>Coverage, prior auth status, benefits</td><td>Read-only</td></tr>
+          <tr><td><strong>Azure AI Search</strong></td><td>LangChain SDK</td><td>Clinical docs, care guides, policy docs</td><td>Read (query) / Write (indexing)</td></tr>
+          <tr><td><strong>Nurse Escalation Queue</strong></td><td>Webhook + Twilio</td><td>Escalation trigger, transcript</td><td>Write (trigger only)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SLIDE 7 — DATA SOURCES & PIPELINE
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="slide" id="slide7" data-script="Our knowledge base draws from three source types: uploaded files, databases, and web APIs. Uploaded files include 4,200 clinical care guides and 870 insurance policy documents — all CMO-approved before indexing. Database sources include our PostgreSQL scheduling system and Epic's FHIR records. Web APIs include DrugBank and NIH MedlinePlus for evidence-based clinical content. The preprocessing pipeline runs in six steps: ingestion via OCR and API normalization, cleaning, semantic chunking at 512 tokens with 64-token overlap, metadata enrichment with trust scores and PII flags, embedding, and finally hybrid indexing in Azure AI Search. All storage is in Azure Government Cloud — AES-256 at rest, TLS 1.3 in transit.">
+    <div class="slide-header">
+      <span class="icon">🗄️</span>
+      <h2>Data Sources &amp; Pipeline</h2>
+      <span class="slide-tag">Slide 07 · Data Design</span>
+    </div>
+    <div class="slide-stripe"></div>
+    <div class="slide-body" style="padding-top:16px; gap:12px;">
+      <div class="two-col" style="flex: 0 0 auto;">
+        <div class="card">
+          <h3>Data Sources (by type)</h3>
+          <ul>
+            <li><strong>Uploaded Files:</strong> 4,200 clinical care guides (PDF/DOCX) + 870 insurance policy documents — CMO-reviewed</li>
+            <li><strong>Web APIs:</strong> Epic FHIR R4 (real-time EHR) · DrugBank API · NIH MedlinePlus (weekly sync)</li>
+            <li><strong>Databases:</strong> PostgreSQL scheduling DB (~12M records) · Azure Cosmos DB (conversation logs)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Data Quality Controls</h3>
+          <ul>
+            <li>All clinical docs require CMO approval before indexing</li>
+            <li>Stale doc detector flags content older than 18 months</li>
+            <li>FHIR resources validated against HL7 schema on ingestion</li>
+            <li>Duplicate detection: cosine similarity ≥ 0.97 → deduplicate</li>
+            <li>Quarterly top-50 chunk audit by clinical QA team</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section-lbl">Preprocessing Pipeline</div>
+      <div class="pipe">
+        <div class="pipe-step"><h5>1. Ingest</h5><p>PDF → Textract OCR. APIs → normalized JSON. DB → REST microservice.</p></div>
+        <div class="pipe-step"><h5>2. Clean</h5><p>Strip headers/footers, normalize whitespace, fix encoding.</p></div>
+        <div class="pipe-step"><h5>3. Chunk</h5><p>512-token semantic windows, 64-token overlap, section-aware splits.</p></div>
+        <div class="pipe-step"><h5>4. Enrich</h5><p>Attach metadata: source, date, specialty, trust score, PII flag.</p></div>
+        <div class="pipe-step"><h5>5. Embed</h5><p>text-embedding-3-large → 3,072-dim vectors per chunk.</p></div>
+        <div class="pipe-step"><h5>6. Index</h5><p>Hybrid index: vector similarity + BM25 keyword in Azure AI Search.</p></div>
+      </div>
+      <p style="font-size:0.75rem;color:var(--muted);margin-top:4px;">All storage on <strong>Azure Government Cloud (US)</strong> · AES-256 at rest · TLS 1.3 in transit · 90-day conversation retention · HIPAA + HITECH compliant</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SLIDE 8 — VALIDATION & ACCURACY
+  ══════════════════════════════════════════════════════════════ -->
+  <section class="slide" id="slide8" data-script="Validation operates in three layers. First, six runtime guardrails: a prompt injection shield via Azure AI Content Safety, a clinical boundary enforcer that blocks any response resembling a diagnosis or prescription, an emergency keyword detector that immediately escalates to 911 guidance, a PII redaction layer using Microsoft Presidio, a response length limiter to prevent overwhelming patients, and a source citation enforcer so every claim is grounded. Second, our RAGAS-based automated metrics: faithfulness at 94%, answer relevance at 91%, and context recall at 88% — all above threshold. Third, a 200-question golden dataset curated by our CMO scored 96.5% accuracy. ClaraMed passed our clinical governance board review in February 2026 and is approved for phased rollout beginning April 2026. Thank you.">
+    <div class="slide-header">
+      <span class="icon">✅</span>
+      <h2>Validation &amp; Accuracy Demonstration</h2>
+      <span class="slide-tag">Slide 08 · Quality Assurance</span>
+    </div>
+    <div class="slide-stripe"></div>
+    <div class="slide-body" style="padding-top:16px; gap:14px;">
+      <div class="guard-grid">
+        <div class="guard-card"><h5>🚫 Prompt Injection Shield</h5><p>Azure AI Content Safety pre-screens all inputs. Adversarial patterns blocked before the LLM.</p></div>
+        <div class="guard-card"><h5>🩺 Clinical Boundary Enforcer</h5><p>System prompt forbids diagnosis, prescriptions, or treatment decisions. Flagged responses redirect to provider.</p></div>
+        <div class="guard-card w"><h5>⚠️ Emergency Keyword Detector</h5><p>"Chest pain", "can't breathe", "suicidal" → immediate 911 guidance + nurse queue escalation.</p></div>
+        <div class="guard-card r"><h5>🔒 PII Redaction (Presidio)</h5><p>SSNs, DOBs, MRNs masked in every response before delivery to patient.</p></div>
+        <div class="guard-card"><h5>📌 Source Citation Enforcer</h5><p>Ungrounded claims trigger fallback: "I don't have enough info — contact your care team."</p></div>
+        <div class="guard-card w"><h5>📏 Response Length Limiter</h5><p>Max 400 tokens per turn. Long answers chunked with "Continue?" for patient readability.</p></div>
+      </div>
+      <div class="section-lbl" style="margin-top:4px;">Pre-Launch RAGAS Benchmark Results</div>
+      <div class="metric">
+        <div class="metric-label"><span>RAG Faithfulness Score</span><span style="font-weight:700;color:var(--teal);">0.94 / target ≥ 0.92 ✓</span></div>
+        <div class="metric-track"><div class="metric-fill" style="width:94%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label"><span>Answer Relevance Score</span><span style="font-weight:700;color:var(--teal);">0.91 / target ≥ 0.88 ✓</span></div>
+        <div class="metric-track"><div class="metric-fill" style="width:91%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label"><span>Golden Dataset Accuracy (200 questions, CMO-curated)</span><span style="font-weight:700;color:var(--teal);">96.5% / target ≥ 95% ✓</span></div>
+        <div class="metric-track"><div class="metric-fill" style="width:96.5%"></div></div>
+      </div>
+      <div class="metric">
+        <div class="metric-label"><span>Emergency Escalation Recall</span><span style="font-weight:700;color:var(--teal);">99.1% ✓</span></div>
+        <div class="metric-track"><div class="metric-fill" style="width:99.1%"></div></div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- #deck -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     SPEAKER SCRIPT BAR
+══════════════════════════════════════════════════════════════ -->
+<div id="script-bar">
+  <span class="script-icon">🎤</span>
+  <div id="script-text"></div>
+  <button id="script-toggle">Hide Script</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAV BAR
+══════════════════════════════════════════════════════════════ -->
+<div id="nav">
+  <button class="nav-btn" id="btn-prev" disabled>← Previous Slide</button>
+  <div id="counter">
+    <div class="dot-row" id="dots"></div>
+    <span id="counter-text">1 / 8</span>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <a class="nav-btn demo" href="claramed-demo.html" target="_blank" id="demo-link" style="display:none;">🤖 Live Demo</a>
+    <button class="nav-btn" id="btn-next">Next Slide →</button>
+  </div>
+</div>
+
+<script>
+  const slides    = Array.from(document.querySelectorAll('.slide'));
+  const total     = slides.length;
+  let   current   = 0;
+  let   scriptOn  = true;
+
+  const progressBar  = document.getElementById('progress-bar');
+  const counterText  = document.getElementById('counter-text');
+  const dotsEl       = document.getElementById('dots');
+  const scriptText   = document.getElementById('script-text');
+  const scriptToggle = document.getElementById('script-toggle');
+  const btnPrev      = document.getElementById('btn-prev');
+  const btnNext      = document.getElementById('btn-next');
+  const demoLink     = document.getElementById('demo-link');
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    current = Math.max(0, Math.min(n, total - 1));
+    slides[current].classList.add('active');
+    update();
+  }
+
+  function update() {
+    // progress bar
+    progressBar.style.width = ((current + 1) / total * 100) + '%';
+    // counter
+    counterText.textContent = (current + 1) + ' / ' + total;
+    // dots
+    Array.from(dotsEl.children).forEach((d, i) => {
+      d.className = 'dot' + (i === current ? ' on' : '');
+    });
+    // buttons
+    btnPrev.disabled = current === 0;
+    btnNext.disabled = current === total - 1;
+    btnNext.textContent = current === total - 1 ? '✓ End' : 'Next Slide →';
+    // script
+    scriptText.textContent = slides[current].dataset.script || '';
+    // demo link only on last slide
+    demoLink.style.display = current === total - 1 ? 'flex' : 'none';
+  }
+
+  btnPrev.addEventListener('click', () => goTo(current - 1));
+  btnNext.addEventListener('click', () => { if (current < total - 1) goTo(current + 1); });
+
+  scriptToggle.addEventListener('click', () => {
+    scriptOn = !scriptOn;
+    scriptText.className = scriptOn ? '' : 'hidden';
+    scriptToggle.textContent = scriptOn ? 'Hide Script' : 'Show Script';
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      if (current < total - 1) goTo(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (current > 0) goTo(current - 1);
+    }
+  });
+
+  update();
+</script>
+</body>
+</html>

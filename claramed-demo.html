@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClaraMed – AI Patient Support | MediAssist</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:  #0d1f3c;
+      --blue:  #1a5276;
+      --teal:  #0e7b72;
+      --teal2: #1abc9c;
+      --red:   #e74c3c;
+      --gold:  #f39c12;
+      --light: #eaf4f4;
+      --white: #ffffff;
+      --text:  #1c2833;
+      --muted: #5d6d7e;
+      --border:#d5e8e4;
+      --bg:    #f0f7f6;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TOP BAR ── */
+    header {
+      background: var(--navy);
+      color: var(--white);
+      padding: 0 28px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+    .logo { font-size: 1.5rem; }
+    .brand { display: flex; flex-direction: column; line-height: 1.2; }
+    .brand strong { font-size: 1rem; font-weight: 800; }
+    .brand small { font-size: 0.7rem; opacity: 0.65; letter-spacing: 0.5px; }
+    .header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .rag-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: rgba(26,188,156,0.2);
+      border: 1px solid var(--teal2);
+      color: var(--teal2);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .back-link {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--teal2); }
+    .status-dot {
+      width: 8px; height: 8px;
+      background: var(--teal2);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--teal2);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ── LAYOUT ── */
+    .app {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 300px 1fr 280px;
+      overflow: hidden;
+    }
+
+    /* ── LEFT SIDEBAR – patient context ── */
+    .sidebar {
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 20px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .sidebar-section h4 {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .patient-card {
+      background: var(--light);
+      border-radius: 10px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .patient-avatar {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--teal), var(--blue));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .patient-info { line-height: 1.3; }
+    .patient-info strong { font-size: 0.9rem; color: var(--navy); }
+    .patient-info small { font-size: 0.72rem; color: var(--muted); display: block; }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8rem;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-row .lbl { color: var(--muted); }
+    .info-row .val { color: var(--navy); font-weight: 600; text-align: right; max-width: 130px; }
+
+    .med-chip {
+      display: inline-block;
+      font-size: 0.72rem;
+      background: #e8f8f5;
+      border: 1px solid var(--border);
+      color: var(--teal);
+      border-radius: 20px;
+      padding: 3px 9px;
+      margin: 2px;
+      font-weight: 600;
+    }
+
+    .rag-panel {
+      background: var(--light);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .rag-panel p { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
+    .rag-panel strong { color: var(--navy); }
+
+    /* ── CHAT AREA ── */
+    .chat-area {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      scroll-behavior: smooth;
+    }
+
+    /* Suggested chips */
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 28px 16px;
+      flex-shrink: 0;
+    }
+    .suggestions span {
+      font-size: 0.75rem;
+      cursor: pointer;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      color: var(--teal);
+      font-weight: 600;
+      transition: all 0.18s;
+    }
+    .suggestions span:hover { background: var(--teal); color: var(--white); border-color: var(--teal); }
+
+    /* Input bar */
+    .input-bar {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 14px 28px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+    .input-bar textarea {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      resize: none;
+      outline: none;
+      height: 44px;
+      max-height: 120px;
+      line-height: 1.5;
+      color: var(--text);
+      transition: border-color 0.2s;
+      overflow-y: hidden;
+    }
+    .input-bar textarea:focus { border-color: var(--teal); }
+    .send-btn {
+      background: var(--teal);
+      color: var(--white);
+      border: none;
+      border-radius: 10px;
+      width: 44px; height: 44px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .send-btn:hover { background: var(--teal2); }
+    .send-btn:disabled { background: #c8d6e5; cursor: not-allowed; }
+
+    /* ── MESSAGES ── */
+    .msg { display: flex; gap: 10px; align-items: flex-start; }
+    .msg.user { flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      background: var(--light);
+    }
+    .msg.user .msg-avatar { background: var(--navy); }
+
+    .msg-body { max-width: 75%; }
+    .msg.user .msg-body { display: flex; flex-direction: column; align-items: flex-end; }
+
+    .bubble {
+      background: var(--white);
+      border-radius: 16px 16px 16px 4px;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--text);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .msg.user .bubble {
+      background: var(--navy);
+      color: var(--white);
+      border-radius: 16px 16px 4px 16px;
+    }
+
+    .citations {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 7px;
+    }
+    .cite-chip {
+      font-size: 0.68rem;
+      background: #eaf4f4;
+      border: 1px solid var(--border);
+      color: var(--teal);
+      border-radius: 20px;
+      padding: 2px 9px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    /* Emergency alert */
+    .emergency-alert {
+      background: #fdf0f0;
+      border: 2px solid var(--red);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      color: #7b241c;
+      line-height: 1.5;
+      max-width: 75%;
+    }
+    .emergency-alert strong { color: var(--red); font-size: 0.95rem; }
+
+    /* Typing indicator */
+    .typing { display: flex; align-items: center; gap: 5px; padding: 10px 16px; }
+    .typing span {
+      width: 7px; height: 7px;
+      background: var(--muted);
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+    .typing span:nth-child(2) { animation-delay: 0.2s; }
+    .typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+    }
+
+    /* ── RIGHT SIDEBAR – RAG retrieval log ── */
+    .rag-log {
+      background: var(--navy);
+      color: rgba(255,255,255,0.85);
+      overflow-y: auto;
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .rag-log h4 {
+      font-size: 0.68rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--teal2);
+      margin-bottom: 4px;
+    }
+    .rag-empty {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      margin-top: 30px;
+      line-height: 1.6;
+    }
+    .rag-entry {
+      background: rgba(255,255,255,0.06);
+      border-radius: 8px;
+      padding: 10px 12px;
+      border-left: 3px solid var(--teal2);
+    }
+    .rag-entry .rag-query {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 6px;
+    }
+    .rag-chunk {
+      background: rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      font-size: 0.72rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.82);
+    }
+    .rag-chunk:last-child { margin-bottom: 0; }
+    .rag-chunk .chunk-source {
+      font-size: 0.65rem;
+      color: var(--teal2);
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .rag-chunk .chunk-score {
+      float: right;
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ── SYSTEM MESSAGE ── */
+    .sys-msg {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      padding: 6px 0;
+    }
+
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar, .rag-log { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="logo">🏥</div>
+  <div class="brand">
+    <strong>MediAssist Patient Portal</strong>
+    <small>Powered by ClaraMed AI</small>
+  </div>
+  <div class="header-right">
+    <div class="status-dot"></div>
+    <span style="font-size:0.75rem;opacity:0.65;">ClaraMed Online</span>
+    <span class="rag-badge">RAG · GPT-4o</span>
+    <a class="back-link" href="assignment-6-2-capstone.html">← Back to Slides</a>
+  </div>
+</header>
+
+<!-- ── APP LAYOUT ── -->
+<div class="app">
+
+  <!-- LEFT SIDEBAR — Patient Context -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <h4>Current Patient</h4>
+      <div class="patient-card">
+        <div class="patient-avatar">👤</div>
+        <div class="patient-info">
+          <strong>Jordan M. Ellis</strong>
+          <small>DOB: Aug 14, 1978 · Male</small>
+          <small>MRN: ••••••4821</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <h4>EHR Summary (via FHIR)</h4>
+      <div class="info-row"><span class="lbl">Primary Physician</span><span class="val">Dr. S. Patel, MD</span></div>
+      <div class="info-row"><span class="lbl">Last Visit</span><span class="val">Mar 6, 2026</span></div>
+      <div class="info-row"><span class="lbl">Next Appointment</span><span class="val">Apr 3, 2026 · Cardiology</span></div>
+      <div class="info-row"><span class="lbl">Active Diagnoses</span><span class="val">Type 2 Diabetes, Hypertension</span></div>
+      <div class="info-row"><span class="lbl">Last Lab (HbA1c)</span><span class="val">7.4% · Mar 6, 2026</span></div>
+      <div class="info-row"><span class="lbl">Insurance</span><span class="val">BlueCross Premier PPO</span></div>
+    </div>
+
+    <div class="sidebar-section">
+      <h4>Current Medications</h4>
+      <span class="med-chip">Metformin 1000mg</span>
+      <span class="med-chip">Lisinopril 10mg</span>
+      <span class="med-chip">Atorvastatin 20mg</span>
+      <span class="med-chip">Aspirin 81mg</span>
+    </div>
+
+    <div class="sidebar-section">
+      <h4>About ClaraMed RAG</h4>
+      <div class="rag-panel">
+        <p><strong>How it works:</strong> Your question is converted to a vector embedding, matched against MediAssist's verified clinical knowledge base, and the top relevant chunks are retrieved. GPT-4o then generates a response grounded in those documents — never from memory alone.</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CHAT AREA -->
+  <main class="chat-area">
+    <div class="messages" id="messages">
+      <div class="sys-msg">— Secure, HIPAA-compliant session started —</div>
+
+      <!-- Welcome message -->
+      <div class="msg bot">
+        <div class="msg-avatar">🤖</div>
+        <div class="msg-body">
+          <div class="bubble">
+            Hi Jordan! I'm <strong>ClaraMed</strong>, MediAssist's AI health assistant. I have access to your care records and can help with:<br><br>
+            • Post-visit care instructions<br>
+            • Medication questions<br>
+            • Appointment details<br>
+            • Insurance &amp; billing FAQs<br><br>
+            I always cite my sources and will connect you to a nurse if I detect anything urgent. How can I help you today?
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suggested questions -->
+    <div class="suggestions" id="suggestions">
+      <span onclick="sendSuggestion(this)">💊 Can I take ibuprofen with my metformin?</span>
+      <span onclick="sendSuggestion(this)">📅 When is my next appointment?</span>
+      <span onclick="sendSuggestion(this)">🧪 What does my HbA1c result mean?</span>
+      <span onclick="sendSuggestion(this)">🏥 Is my cardiology visit covered by insurance?</span>
+      <span onclick="sendSuggestion(this)">⚠️ I have chest pain right now</span>
+    </div>
+
+    <div class="input-bar">
+      <textarea id="user-input" placeholder="Ask me anything about your care…" rows="1"></textarea>
+      <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Send">➤</button>
+    </div>
+  </main>
+
+  <!-- RIGHT SIDEBAR — RAG Retrieval Log -->
+  <aside class="rag-log" id="rag-log">
+    <h4>RAG Retrieval Log</h4>
+    <div class="rag-empty" id="rag-empty">
+      Ask a question to see which knowledge chunks ClaraMed retrieves before generating a response.
+    </div>
+  </aside>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// KNOWLEDGE BASE — mock clinical chunks (simulating vector store)
+// Each entry: { id, source, text, keywords[] }
+// ═══════════════════════════════════════════════════════════════
+const KB = [
+  // MEDICATIONS
+  {
+    id: 'med-01',
+    source: 'MediAssist Drug Safety Guide 2025',
+    text: 'Ibuprofen (NSAIDs) should be used with caution in patients taking Metformin. NSAIDs can cause acute kidney injury which impairs Metformin excretion, increasing the risk of lactic acidosis. Patients with diabetes and hypertension should prefer acetaminophen (Tylenol) for mild pain relief.',
+    keywords: ['ibuprofen','metformin','nsaid','pain','medication','drug','interaction','advil','motrin']
+  },
+  {
+    id: 'med-02',
+    source: 'MediAssist Drug Safety Guide 2025',
+    text: 'Lisinopril (ACE inhibitor) combined with NSAIDs like ibuprofen can reduce antihypertensive effectiveness and increase risk of kidney damage. Patients taking Lisinopril for hypertension should avoid regular NSAID use.',
+    keywords: ['lisinopril','ibuprofen','nsaid','blood pressure','hypertension','kidney']
+  },
+  {
+    id: 'med-03',
+    source: 'MediAssist Medication Guide 2025',
+    text: 'Metformin 1000mg is taken twice daily with meals to reduce stomach upset. It is the first-line medication for Type 2 Diabetes. Do not take Metformin if you are having imaging with contrast dye — hold for 48 hours before and after. Report any unusual muscle pain, difficulty breathing, or stomach pain to your care team immediately.',
+    keywords: ['metformin','diabetes','dosage','take','meal','dose','type 2','contrast','imaging']
+  },
+  {
+    id: 'med-04',
+    source: 'MediAssist Medication Guide 2025',
+    text: 'Atorvastatin 20mg is a statin medication taken once daily in the evening to lower cholesterol. Avoid grapefruit juice as it increases statin levels in the blood. Report any unexplained muscle pain or weakness (myopathy), which is a rare but serious side effect.',
+    keywords: ['atorvastatin','statin','cholesterol','grapefruit','muscle','evening','dose']
+  },
+  {
+    id: 'med-05',
+    source: 'MediAssist Medication Guide 2025',
+    text: 'Aspirin 81mg (low-dose) is taken once daily as an antiplatelet agent to reduce risk of heart attack and stroke in patients with cardiovascular risk factors. Take with food to reduce stomach irritation. Do not stop taking aspirin without consulting your physician.',
+    keywords: ['aspirin','antiplatelet','heart','stroke','81mg','low dose','cardiovascular']
+  },
+
+  // APPOINTMENTS
+  {
+    id: 'appt-01',
+    source: 'MediAssist Patient Portal – Scheduling Data',
+    text: 'Patient Jordan Ellis (MRN: ••••••4821) has an upcoming appointment with Cardiology on April 3, 2026 at 2:30 PM with Dr. R. Nguyen, MD at the MediAssist Midtown Cardiac Center, Suite 400. Please arrive 15 minutes early for pre-appointment vitals.',
+    keywords: ['appointment','schedule','next','when','cardiology','visit','date','upcoming','april']
+  },
+  {
+    id: 'appt-02',
+    source: 'MediAssist Appointment Preparation Guide',
+    text: 'Before your cardiology appointment, please avoid caffeine and strenuous exercise for 24 hours if an EKG is planned. Bring a list of all current medications and your insurance card. Fasting may be required if bloodwork is ordered — your care team will notify you in advance.',
+    keywords: ['cardiology','appointment','prepare','preparation','ekg','ecg','before','bring','fasting']
+  },
+
+  // LAB RESULTS
+  {
+    id: 'lab-01',
+    source: 'MediAssist Lab Results Interpretation Guide 2025',
+    text: 'HbA1c (Glycated Hemoglobin) measures average blood sugar over the past 2–3 months. A result of 7.4% indicates your blood sugar is slightly above the American Diabetes Association target of less than 7.0% for most adults with Type 2 Diabetes. Your care team may review your Metformin dosage at your next appointment.',
+    keywords: ['hba1c','a1c','hemoglobin','blood sugar','result','lab','glucose','diabetes','what does','mean']
+  },
+  {
+    id: 'lab-02',
+    source: 'MediAssist Lab Results Interpretation Guide 2025',
+    text: 'Blood pressure goal for patients with Type 2 Diabetes and hypertension is generally less than 130/80 mmHg. Regular monitoring at home is recommended. A home blood pressure monitor is available through MediAssist\'s durable medical equipment benefit.',
+    keywords: ['blood pressure','hypertension','goal','monitor','mmhg','diastolic','systolic']
+  },
+
+  // INSURANCE & BILLING
+  {
+    id: 'ins-01',
+    source: 'BlueCross Premier PPO Benefit Summary 2026',
+    text: 'Specialist visits (including Cardiology) are covered at 80% after your deductible is met under the BlueCross Premier PPO plan. Your 2026 deductible is $1,500, of which $420 has been applied. Estimated patient responsibility for cardiology visit: $35–$75 copay depending on procedure codes. Prior authorization is not required for routine cardiology consultations.',
+    keywords: ['insurance','covered','cardiology','cost','deductible','copay','pay','coverage','bluecross','prior auth']
+  },
+  {
+    id: 'ins-02',
+    source: 'BlueCross Premier PPO Benefit Summary 2026',
+    text: 'Prescription drug coverage under BlueCross Premier PPO: Tier 1 generic drugs (like Metformin, Lisinopril) have a $10 copay per 30-day supply. Tier 2 preferred brands have a $35 copay. Mail-order 90-day supply is available at 2.5x the 30-day copay for maintenance medications.',
+    keywords: ['prescription','drug coverage','copay','pharmacy','generic','metformin cost','lisinopril cost','mail order']
+  },
+
+  // POST-PROCEDURE / CARE INSTRUCTIONS
+  {
+    id: 'care-01',
+    source: 'MediAssist Colonoscopy Post-Procedure Care Guide',
+    text: 'After your colonoscopy: You may feel bloated for several hours — this is normal. Start with clear liquids (broth, water, juice) and advance to light foods like crackers and toast. Avoid heavy meals for 24 hours. Do not drive or operate machinery for 24 hours due to sedation. Call your care team if you experience fever over 101°F, heavy rectal bleeding, or severe abdominal pain.',
+    keywords: ['colonoscopy','eat','food','after','recovery','post','procedure','clear liquid','diet']
+  },
+  {
+    id: 'care-02',
+    source: 'MediAssist Diabetes Self-Management Guide 2025',
+    text: 'For Type 2 Diabetes management, focus on: low-glycemic foods (vegetables, whole grains, lean protein), limiting added sugars and refined carbohydrates, regular moderate exercise (150 min/week), and monitoring blood glucose as directed by your care plan. Log your readings in the MediAssist patient portal app.',
+    keywords: ['diabetes','diet','food','exercise','blood sugar','manage','glycemic','carbs','weight']
+  },
+
+  // EMERGENCY
+  {
+    id: 'emergency-01',
+    source: 'MediAssist Emergency Triage Protocol',
+    text: 'EMERGENCY: Chest pain, shortness of breath, left arm pain, jaw pain, or sudden dizziness may indicate a cardiac emergency. CALL 911 IMMEDIATELY. Do not drive yourself to the hospital. Chew an aspirin (if not allergic and you have one available) while waiting for emergency services.',
+    keywords: ['chest pain','chest','heart attack','emergency','shortness of breath','left arm','jaw','911','dizzy','cardiac']
+  },
+  {
+    id: 'emergency-02',
+    source: 'MediAssist Mental Health Crisis Protocol',
+    text: 'If you are experiencing thoughts of self-harm or suicide, please call or text 988 (Suicide & Crisis Lifeline) immediately. You can also go to your nearest emergency room or call 911. MediAssist\'s social work team is also available at (317) 555-0190 Monday–Friday 8 AM–6 PM.',
+    keywords: ['suicidal','suicide','self harm','self-harm','crisis','mental health','988','hurt myself']
+  },
+
+  // GENERAL
+  {
+    id: 'gen-01',
+    source: 'MediAssist Patient Portal Help Guide',
+    text: 'To contact your care team directly: log into the patient portal, click "Messages" in the top menu, and compose a message to your care team. Urgent clinical questions should be directed to the nurse advice line at (317) 555-0100, available 24/7. For billing questions, call (317) 555-0120.',
+    keywords: ['contact','message','nurse','phone','call','billing','reach','team','talk','speak']
+  },
+  {
+    id: 'gen-02',
+    source: 'MediAssist Preventive Care Guidelines 2026',
+    text: 'Annual preventive screenings covered at 100% (no cost) under most plans for eligible patients: Annual wellness visit, flu vaccine, colorectal cancer screening (colonoscopy every 10 years age 45+), diabetic eye exam (annual), diabetic foot exam (annual). Schedule these through the patient portal or by calling (317) 555-0110.',
+    keywords: ['preventive','screening','wellness','annual','vaccine','flu','colonoscopy','covered','free','exam']
+  }
+];
+
+// ═══════════════════════════════════════════════════════════════
+// EMERGENCY KEYWORDS
+// ═══════════════════════════════════════════════════════════════
+const EMERGENCY_KEYWORDS = [
+  'chest pain','chest','heart attack','shortness of breath','can\'t breathe',
+  'cannot breathe','suicidal','suicide','self harm','self-harm','hurt myself',
+  'left arm pain','jaw pain','dizzy','collapse','unconscious','emergency','911',
+  '988','overdose','bleeding heavily','stroke','numbness in face'
+];
+
+// ═══════════════════════════════════════════════════════════════
+// RAG RETRIEVER — keyword-based similarity (simulates vector search)
+// ═══════════════════════════════════════════════════════════════
+function retrieve(query, topK = 3) {
+  const q = query.toLowerCase();
+  const words = q.replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter(w => w.length > 2);
+
+  const scored = KB.map(chunk => {
+    let score = 0;
+    chunk.keywords.forEach(kw => {
+      if (q.includes(kw)) score += 3;
+      else if (words.some(w => kw.includes(w) || w.includes(kw))) score += 1;
+    });
+    return { ...chunk, score };
+  });
+
+  return scored
+    .filter(c => c.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, topK);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RESPONSE GENERATOR — rule-based LLM simulation
+// ═══════════════════════════════════════════════════════════════
+function generateResponse(query, chunks) {
+  const q = query.toLowerCase();
+
+  // Build context from chunks
+  const context = chunks.map(c => c.text).join('\n\n');
+
+  // Detect topic for tailored response framing
+  if (q.includes('ibuprofen') || (q.includes('advil') || q.includes('motrin'))) {
+    return `Based on your current medications — **Metformin 1000mg** and **Lisinopril 10mg** — I need to flag an important interaction:\n\n` +
+      `**⚠️ Ibuprofen (NSAIDs) is not recommended for you.** NSAIDs can impair kidney function, which reduces Metformin clearance and raises the risk of lactic acidosis. Combined with Lisinopril, NSAIDs can also reduce blood pressure control and cause further kidney strain.\n\n` +
+      `**Safer alternative:** Acetaminophen (Tylenol) is generally preferred for mild pain in patients with diabetes and hypertension — but please confirm the dose with your care team before taking any new medication.\n\n` +
+      `If your pain is severe or persistent, please contact Dr. Patel's office directly.`;
+  }
+
+  if ((q.includes('appointment') || q.includes('next') || q.includes('schedule') || q.includes('when')) && q.includes('cardiolog')) {
+    return `Your next appointment is:\n\n` +
+      `📅 **April 3, 2026 at 2:30 PM**\n` +
+      `🏥 **Cardiology — Dr. R. Nguyen, MD**\n` +
+      `📍 MediAssist Midtown Cardiac Center, Suite 400\n\n` +
+      `Please arrive **15 minutes early** for pre-appointment vitals. Before the visit, avoid caffeine and strenuous exercise for 24 hours if an EKG is planned. Bring your insurance card and a list of current medications.`;
+  }
+
+  if (q.includes('appointment') || q.includes('next visit') || q.includes('schedule')) {
+    return `Your next scheduled appointment is:\n\n` +
+      `📅 **April 3, 2026 at 2:30 PM**\n` +
+      `🏥 **Cardiology — Dr. R. Nguyen, MD**\n` +
+      `📍 MediAssist Midtown Cardiac Center, Suite 400\n\n` +
+      `To schedule additional appointments or view your full calendar, log in to the patient portal and click "Appointments."`;
+  }
+
+  if (q.includes('hba1c') || q.includes('a1c') || q.includes('lab') || q.includes('result') || q.includes('blood sugar')) {
+    return `Your most recent **HbA1c result is 7.4%** (taken March 6, 2026).\n\n` +
+      `**What this means:** HbA1c measures your average blood sugar over the past 2–3 months. The American Diabetes Association target for most adults with Type 2 Diabetes is **under 7.0%**. At 7.4%, your blood sugar is slightly above target.\n\n` +
+      `Your care team may review your Metformin dosage at your upcoming cardiology visit on April 3rd. In the meantime, focus on:\n` +
+      `• Low-glycemic foods (vegetables, whole grains, lean protein)\n` +
+      `• Limiting added sugars and refined carbohydrates\n` +
+      `• 150 minutes of moderate exercise per week\n\n` +
+      `Log your blood glucose readings in the MediAssist patient portal app for your care team to review.`;
+  }
+
+  if (q.includes('insurance') || q.includes('covered') || q.includes('cost') || q.includes('copay') || q.includes('pay')) {
+    return `Based on your **BlueCross Premier PPO plan**:\n\n` +
+      `**Cardiology visit coverage:**\n` +
+      `• Covered at **80% after deductible**\n` +
+      `• Your 2026 deductible is $1,500 — **$420 applied so far**\n` +
+      `• Estimated patient responsibility: **$35–$75 copay** (depending on procedure codes)\n` +
+      `• Prior authorization is **not required** for routine cardiology consultations\n\n` +
+      `**Prescription coverage:**\n` +
+      `• Metformin, Lisinopril (Tier 1 generics): **$10 copay** per 30-day supply\n` +
+      `• 90-day mail-order available at 2.5× the 30-day copay\n\n` +
+      `For billing questions, call **(317) 555-0120**.`;
+  }
+
+  if (q.includes('colonoscopy') || q.includes('eat after') || q.includes('food after')) {
+    return `After your colonoscopy, here are your care instructions:\n\n` +
+      `**First few hours:** Start with **clear liquids** — broth, water, juice. Bloating and gas are normal and will pass.\n\n` +
+      `**First 24 hours:**\n` +
+      `• Advance to light foods: crackers, toast, scrambled eggs\n` +
+      `• Avoid heavy or spicy meals\n` +
+      `• **Do not drive or operate machinery** — sedation takes 24 hours to fully clear\n\n` +
+      `**Call your care team immediately if you experience:**\n` +
+      `• Fever over 101°F\n` +
+      `• Heavy rectal bleeding\n` +
+      `• Severe abdominal pain\n\n` +
+      `Nurse advice line: **(317) 555-0100** — available 24/7.`;
+  }
+
+  if (q.includes('metformin') && (q.includes('take') || q.includes('dose') || q.includes('how'))) {
+    return `**Metformin 1000mg** instructions for you:\n\n` +
+      `• Take **twice daily with meals** (breakfast and dinner) to reduce stomach upset\n` +
+      `• Do not crush or chew extended-release tablets\n\n` +
+      `**Important warnings:**\n` +
+      `• **Hold Metformin 48 hours before and after** any imaging procedure using contrast dye (e.g., CT with contrast)\n` +
+      `• Report any unusual muscle pain, difficulty breathing, stomach pain, or nausea to your care team immediately — these can be signs of a rare but serious condition called lactic acidosis\n\n` +
+      `Your next refill is available through the MediAssist pharmacy portal.`;
+  }
+
+  if (q.includes('contact') || q.includes('nurse') || q.includes('call') || q.includes('reach') || q.includes('speak')) {
+    return `Here are your MediAssist contact options:\n\n` +
+      `📞 **Nurse Advice Line (24/7):** (317) 555-0100\n` +
+      `💬 **Patient Portal Messaging:** Log in → "Messages" → message your care team\n` +
+      `💳 **Billing Questions:** (317) 555-0120\n` +
+      `📅 **Scheduling:** (317) 555-0110\n\n` +
+      `Your primary physician is **Dr. S. Patel, MD**. For urgent clinical questions outside office hours, please use the 24/7 nurse advice line.`;
+  }
+
+  // Generic fallback using retrieved chunks
+  if (chunks.length > 0) {
+    return `Based on your question and your care records, here's what I found:\n\n${chunks[0].text}\n\n` +
+      (chunks.length > 1 ? `Additionally: ${chunks[1].text.substring(0, 200)}…\n\n` : '') +
+      `If you have more specific questions or this doesn't fully address your concern, I can connect you with your care team.`;
+  }
+
+  return `I wasn't able to find a specific answer in our knowledge base for that question. For the most accurate guidance:\n\n` +
+    `📞 **Nurse Advice Line (24/7):** (317) 555-0100\n` +
+    `💬 **Portal Message:** Send a message to Dr. Patel's team\n\n` +
+    `Is there anything else I can help you with from your care records?`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// EMERGENCY DETECTION
+// ═══════════════════════════════════════════════════════════════
+function isEmergency(query) {
+  const q = query.toLowerCase();
+  return EMERGENCY_KEYWORDS.some(kw => q.includes(kw));
+}
+
+// ═══════════════════════════════════════════════════════════════
+// UI HELPERS
+// ═══════════════════════════════════════════════════════════════
+const messagesEl = document.getElementById('messages');
+const ragLogEl   = document.getElementById('rag-log');
+const ragEmpty   = document.getElementById('rag-empty');
+const inputEl    = document.getElementById('user-input');
+const sendBtn    = document.getElementById('send-btn');
+
+function scrollToBottom() {
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function appendUserMsg(text) {
+  const div = document.createElement('div');
+  div.className = 'msg user';
+  div.innerHTML = `
+    <div class="msg-avatar" style="background:var(--navy);color:#fff;">👤</div>
+    <div class="msg-body">
+      <div class="bubble">${escapeHtml(text)}</div>
+    </div>`;
+  messagesEl.appendChild(div);
+  scrollToBottom();
+}
+
+function appendBotMsg(html, citations = []) {
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  const citeHtml = citations.length
+    ? `<div class="citations">${citations.map(c =>
+        `<span class="cite-chip">📄 ${escapeHtml(c)}</span>`).join('')}</div>`
+    : '';
+  div.innerHTML = `
+    <div class="msg-avatar">🤖</div>
+    <div class="msg-body">
+      <div class="bubble">${formatMd(html)}</div>
+      ${citeHtml}
+    </div>`;
+  messagesEl.appendChild(div);
+  scrollToBottom();
+}
+
+function appendEmergencyMsg() {
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.innerHTML = `
+    <div class="msg-avatar">🚨</div>
+    <div class="msg-body">
+      <div class="emergency-alert">
+        <strong>🚨 Emergency Detected — Connecting You Now</strong><br><br>
+        If this is a medical emergency, <strong>call 911 immediately</strong>. Do not drive yourself.<br><br>
+        • <strong>Emergency: 911</strong><br>
+        • <strong>MediAssist 24/7 Nurse Line: (317) 555-0100</strong><br>
+        • <strong>Crisis / Mental Health: Call or text 988</strong><br><br>
+        I'm notifying the MediAssist on-call nurse team now. A nurse will contact you within 2 minutes.
+        <div style="margin-top:10px;padding:8px 12px;background:rgba(231,76,60,0.12);border-radius:6px;font-size:0.78rem;">
+          ⏱ Escalation sent to nurse queue at ${new Date().toLocaleTimeString()} · Transcript attached
+        </div>
+      </div>
+    </div>`;
+  messagesEl.appendChild(div);
+  scrollToBottom();
+}
+
+function appendTyping() {
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.id = 'typing-indicator';
+  div.innerHTML = `
+    <div class="msg-avatar">🤖</div>
+    <div class="msg-body">
+      <div class="bubble" style="padding:10px 16px;">
+        <div class="typing"><span></span><span></span><span></span></div>
+      </div>
+    </div>`;
+  messagesEl.appendChild(div);
+  scrollToBottom();
+  return div;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing-indicator');
+  if (el) el.remove();
+}
+
+function updateRagLog(query, chunks) {
+  ragEmpty.style.display = 'none';
+  const entry = document.createElement('div');
+  entry.className = 'rag-entry';
+  const chunkHtml = chunks.map((c, i) =>
+    `<div class="rag-chunk">
+      <div class="chunk-source">${escapeHtml(c.source)} <span class="chunk-score">score: ${c.score}</span></div>
+      ${escapeHtml(c.text.substring(0, 130))}…
+    </div>`
+  ).join('');
+  entry.innerHTML = `
+    <div class="rag-query">Query: "${escapeHtml(query.substring(0, 60))}"</div>
+    ${chunkHtml.length ? chunkHtml : '<div class="rag-chunk" style="color:rgba(255,255,255,0.4);">No relevant chunks retrieved.</div>'}`;
+  ragLogEl.appendChild(entry);
+  ragLogEl.scrollTop = ragLogEl.scrollHeight;
+}
+
+// Simple markdown formatter (bold, bullet)
+function formatMd(text) {
+  return escapeHtml(text)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n• /g, '<br>• ')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MAIN SEND FUNCTION
+// ═══════════════════════════════════════════════════════════════
+async function sendMessage() {
+  const raw = inputEl.value.trim();
+  if (!raw) return;
+
+  inputEl.value = '';
+  inputEl.style.height = '44px';
+  sendBtn.disabled = true;
+
+  // Hide suggestions after first use
+  document.getElementById('suggestions').style.display = 'none';
+
+  appendUserMsg(raw);
+
+  // Check emergency first
+  if (isEmergency(raw)) {
+    const typing = appendTyping();
+    await delay(900);
+    removeTyping();
+    appendEmergencyMsg();
+    updateRagLog(raw, [{ source: 'MediAssist Emergency Triage Protocol', text: 'Emergency keyword detected — triage protocol activated.', score: '∞' }]);
+    sendBtn.disabled = false;
+    return;
+  }
+
+  // Retrieve relevant chunks
+  const chunks = retrieve(raw, 3);
+
+  // Show typing indicator
+  const typing = appendTyping();
+
+  // Simulate processing delay (RAG + generation)
+  await delay(1200 + Math.random() * 600);
+  removeTyping();
+
+  // Generate response
+  const response = generateResponse(raw, chunks);
+  const citations = chunks.map(c => c.source).filter((v, i, a) => a.indexOf(v) === i); // unique
+
+  appendBotMsg(response, citations);
+  updateRagLog(raw, chunks);
+
+  sendBtn.disabled = false;
+  inputEl.focus();
+}
+
+function sendSuggestion(el) {
+  inputEl.value = el.textContent.trim().replace(/^[^\s]+ /, ''); // strip emoji prefix
+  sendMessage();
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ── INPUT EVENTS ──
+inputEl.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+inputEl.addEventListener('input', () => {
+  inputEl.style.height = '44px';
+  inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + 'px';
+});
+</script>
+</body>
+</html>
