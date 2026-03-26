@@ -3,380 +3,592 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Case Study: RAG System for the Food & Beverage Industry</title>
+    <title>Babacar Diouf · AIML-501 Professional Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@400;700&display=swap');
-        
-        body {
-            font-family: 'Lato', sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@300;400;700&family=Fira+Code:wght@400;500&display=swap');
+
+        body { font-family: 'Lato', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Merriweather', serif; }
+        code { font-family: 'Fira Code', monospace; }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+
+        /* ── Nav ── */
+        .portfolio-nav {
+            background: #0f172a;
+            border-bottom: 1px solid rgba(59,130,246,0.2);
         }
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Merriweather', serif;
+
+        /* ── Hero ── */
+        .hero-gradient {
+            background-color: #0f172a;
+            background-image:
+                linear-gradient(rgba(59,130,246,0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59,130,246,0.07) 1px, transparent 1px),
+                linear-gradient(135deg, #0f172a 0%, #1e1b4b 35%, #0f3460 70%, #064e3b 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
         }
-        .page-break {
-            page-break-before: always;
+
+        /* ── Section divider ── */
+        .section-divider {
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #10b981);
+            border-radius: 9999px;
         }
-        .diagram-component {
-            transition: all 0.3s ease-in-out;
+
+        /* ── Project card ── */
+        .project-card {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
-        .diagram-component:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.10);
+        .project-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.14);
         }
-        .tooltip {
-            visibility: hidden;
+
+        /* ── Skill bar ── */
+        .skill-bar-fill {
+            transition: width 1.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* ── Fade-in ── */
+        .fade-in {
             opacity: 0;
-            transition: opacity 0.3s;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
-        .has-tooltip:hover .tooltip {
-            visibility: visible;
+        .fade-in.visible {
             opacity: 1;
+            transform: translateY(0);
         }
-        .connector-arrow {
-            position: relative;
-            z-index: 1;
+
+        /* ── Avatar ring ── */
+        .avatar-ring {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #10b981);
+            padding: 3px;
+            border-radius: 9999px;
         }
+
+        /* ── Artifact badge colors ── */
+        .badge-blue   { background:#dbeafe; color:#1e40af; }
+        .badge-purple { background:#ede9fe; color:#5b21b6; }
+        .badge-emerald{ background:#d1fae5; color:#065f46; }
+        .badge-pink   { background:#fce7f3; color:#9d174d; }
+        .badge-amber  { background:#fef3c7; color:#92400e; }
+
+        /* ── Timeline dot ── */
+        .tl-dot {
+            background: #3b82f6;
+            border: 3px solid #1e3a5f;
+        }
+
+        /* ── Typewriter cursor ── */
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+        .cursor { animation: blink 1s infinite; }
     </style>
 </head>
-<body class="bg-gray-200">
+<body class="bg-slate-50">
 
-    <main class="container mx-auto p-4 sm:p-8">
-        <!-- New Artifact Overview Section -->
-        <div class="bg-white p-8 md:p-12 shadow-2xl mb-8">
-            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-600 pb-4 mb-8">Artifact Overview</h2>
-            <div class="space-y-6 text-gray-700">
-                <div>
-                    <h3 class="font-bold text-lg text-gray-900">Title:</h3>
-                    <p>Generative AI Strategic Initiative: A Case Study for a RAG System</p>
+<!-- ══════════════════════════════════════════
+     STICKY NAV
+═══════════════════════════════════════════ -->
+<nav class="portfolio-nav text-white px-6 py-3 sticky top-0 z-50">
+    <div class="container mx-auto max-w-6xl flex items-center justify-between flex-wrap gap-3">
+        <a href="index.html" class="text-blue-300 text-xs font-semibold tracking-widest uppercase hover:text-blue-200 transition">AIML-501 Portfolio · Babacar Diouf</a>
+        <div class="flex gap-2 flex-wrap items-center">
+            <a href="#about" class="text-slate-300 hover:text-white text-xs font-medium px-3 py-1.5 rounded-full hover:bg-white/10 transition">About</a>
+            <a href="#skills" class="text-slate-300 hover:text-white text-xs font-medium px-3 py-1.5 rounded-full hover:bg-white/10 transition">Skills</a>
+            <a href="#projects" class="text-slate-300 hover:text-white text-xs font-medium px-3 py-1.5 rounded-full hover:bg-white/10 transition">Work Samples</a>
+            <div class="w-px h-4 bg-slate-600 mx-1"></div>
+            <a href="artifact-algorithm-types.html"
+               class="bg-blue-600/30 border border-blue-500/40 text-blue-200 hover:bg-blue-600/50 px-3 py-1.5 rounded-full text-xs font-medium transition">Artifact 1</a>
+            <a href="artifact-neural-network.html"
+               class="bg-purple-600/30 border border-purple-500/40 text-purple-200 hover:bg-purple-600/50 px-3 py-1.5 rounded-full text-xs font-medium transition">Artifact 2</a>
+            <a href="artifact-llm-infrastructure.html"
+               class="bg-emerald-600/30 border border-emerald-500/40 text-emerald-200 hover:bg-emerald-600/50 px-3 py-1.5 rounded-full text-xs font-medium transition">Artifact 3</a>
+        </div>
+    </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<header class="hero-gradient text-white py-24 px-6 relative overflow-hidden">
+    <div class="absolute top-8 right-12 w-72 h-72 rounded-full opacity-10"
+         style="background: radial-gradient(circle, #6366f1, transparent 70%);"></div>
+    <div class="absolute bottom-0 left-8 w-56 h-56 rounded-full opacity-10"
+         style="background: radial-gradient(circle, #10b981, transparent 70%);"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full opacity-5"
+         style="background: radial-gradient(circle, #ec4899, transparent 60%);"></div>
+
+    <div class="container mx-auto max-w-5xl relative z-10">
+        <div class="flex flex-col md:flex-row items-center md:items-start gap-10">
+
+            <!-- Avatar placeholder -->
+            <div class="avatar-ring shrink-0">
+                <div class="w-28 h-28 rounded-full bg-slate-800 flex items-center justify-center text-5xl font-bold text-blue-300 border-4 border-slate-800">
+                    BD
                 </div>
-                <div>
-                    <h3 class="font-bold text-lg text-gray-900">Objective:</h3>
-                    <p>To demonstrate the process of translating a complex business need into a viable, strategic Generative AI solution, from initial concept to a full implementation and governance plan.</p>
-                </div>
-                <div>
-                    <h3 class="font-bold text-lg text-gray-900">Process:</h3>
-                    <p>The case study was developed by first identifying high-impact business problems within the Food & Beverage industry. I then designed a modular system architecture for a Retrieval-Augmented Generation (RAG) solution, mapped out the data workflow, and anticipated key challenges related to data governance, user adoption, and security. The final step was to synthesize these elements into a comprehensive strategic document.</p>
-                </div>
-                <div>
-                    <h3 class="font-bold text-lg text-gray-900">Tools:</h3>
-                    <p>The document was structured and styled for clear, professional presentation using HTML and Tailwind CSS. The core concepts and content were developed using standard word processing and diagramming software.</p>
-                </div>
-                <div>
-                    <h3 class="font-bold text-lg text-gray-900">Value Proposition:</h3>
-                    <p>This artifact showcases the ability to act as a bridge between technical AI capabilities and strategic business objectives. It proves I can perform technical discovery, design a scalable AI solution, manage stakeholder expectations, and articulate the ROI of a complex technology initiative to both technical and executive audiences.</p>
+            </div>
+
+            <div>
+                <p class="text-blue-400 font-semibold tracking-widest uppercase text-sm mb-2">AIML-501 · Professional Portfolio · Indiana Wesleyan University</p>
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-3">
+                    Babacar Diouf
+                </h1>
+                <p class="text-xl text-transparent bg-clip-text font-semibold mb-4"
+                   style="background-image: linear-gradient(90deg, #60a5fa, #a78bfa, #34d399);">
+                    .NET Full Stack Developer → AI/ML Practitioner
+                </p>
+                <p class="text-slate-300 text-lg max-w-3xl leading-relaxed mb-6">
+                    Computer Engineering graduate with full-stack development experience, now building expertise in machine learning, generative AI, and LLM infrastructure. This portfolio documents that transition through research artifacts, interactive visualizations, and a deployed AI product.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <a href="#projects"
+                       class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-full text-sm font-semibold transition shadow-lg shadow-blue-900/40">
+                        View Work Samples ↓
+                    </a>
+                    <a href="#about"
+                       class="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-6 py-2.5 rounded-full text-sm font-medium transition">
+                        About Me
+                    </a>
+                    <a href="https://github.com/babacar1033" target="_blank"
+                       class="bg-white/10 hover:bg-white/20 border border-white/20 text-white px-6 py-2.5 rounded-full text-sm font-medium transition">
+                        GitHub ↗
+                    </a>
                 </div>
             </div>
         </div>
 
-        <!-- Cover Page -->
-        <div class="page-break bg-white p-12 shadow-2xl min-h-screen flex flex-col justify-center">
-            <div class="text-center">
-                <h1 class="text-5xl md:text-6xl font-bold text-gray-800">Generative AI Strategic Initiative</h1>
-                <p class="text-2xl text-gray-600 mt-4">A Case Study for Implementing a Retrieval-Augmented Generation (RAG) System in the Food & Beverage Industry</p>
-                <div class="mt-12 border-t pt-4">
-                    <p class="text-lg text-gray-700"><strong>Project Proposal</strong></p>
-                    <p class="text-md text-gray-500">Date: September 12, 2025</p>
+        <!-- Quick stats -->
+        <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
+                <div class="text-3xl font-bold text-blue-300">3</div>
+                <div class="text-slate-400 text-xs mt-1">Portfolio Artifacts</div>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
+                <div class="text-3xl font-bold text-purple-300">1</div>
+                <div class="text-slate-400 text-xs mt-1">Deployed AI Product</div>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
+                <div class="text-3xl font-bold text-emerald-300">5+</div>
+                <div class="text-slate-400 text-xs mt-1">Years Dev Experience</div>
+            </div>
+            <div class="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
+                <div class="text-3xl font-bold text-pink-300">∞</div>
+                <div class="text-slate-400 text-xs mt-1">Curiosity</div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<main class="container mx-auto max-w-6xl px-4 py-12 space-y-20">
+
+    <!-- ══════════════════════════════════════════
+         ABOUT ME
+    ═══════════════════════════════════════════ -->
+    <section id="about" class="fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">About Me</h2>
+        <div class="section-divider mb-8"></div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+
+            <!-- Main bio -->
+            <div class="md:col-span-2 space-y-6">
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-blue-600 mb-3">Career Goal</h3>
+                    <p class="text-gray-700 leading-relaxed text-lg">
+                        My goal is to bridge the gap between robust software engineering and applied artificial intelligence — transitioning from building reliable production systems to designing intelligent ones. Specifically, I am working toward roles in <strong>AI/ML engineering, MLOps, and AI product development</strong>, where deep technical fluency meets strategic business impact.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed mt-4">
+                        Having spent years as a .NET Full Stack Developer with a Computer Engineering foundation, I bring a rare combination of system-design discipline, production-grade coding habits, and a genuine drive to understand how modern AI systems are built, trained, and deployed at scale. This portfolio — developed through AIML-501 at Indiana Wesleyan University — represents my commitment to that transition.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-purple-600 mb-3">Unique Strengths</h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-4">
+                            <div class="text-xl mb-2">🏗️</div>
+                            <div class="font-bold text-blue-800 text-sm mb-1">Engineering Foundation</div>
+                            <p class="text-gray-600 text-sm">Years of .NET full-stack development mean I understand production constraints, system architecture, and data flow at a level most ML practitioners lack — enabling me to design AI systems that are actually deployable.</p>
+                        </div>
+                        <div class="bg-purple-50 border border-purple-100 rounded-xl p-4">
+                            <div class="text-xl mb-2">🗣️</div>
+                            <div class="font-bold text-purple-800 text-sm mb-1">Communication Clarity</div>
+                            <p class="text-gray-600 text-sm">Strong ability to translate complex technical concepts — from neural network architecture to LLM cost structures — into clear, visually compelling content for technical and executive audiences alike.</p>
+                        </div>
+                        <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4">
+                            <div class="text-xl mb-2">🔄</div>
+                            <div class="font-bold text-emerald-800 text-sm mb-1">Adaptability</div>
+                            <p class="text-gray-600 text-sm">Demonstrated capacity to pivot quickly into new domains — learning ML theory, RAG architectures, and LLM infrastructure concurrently while continuing to build production-quality software.</p>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-100 rounded-xl p-4">
+                            <div class="text-xl mb-2">⚖️</div>
+                            <div class="font-bold text-amber-800 text-sm mb-1">Ethical Awareness</div>
+                            <p class="text-gray-600 text-sm">Strong grounding in responsible AI principles — bias, fairness, data governance, and the societal implications of automated decision systems — applied throughout all portfolio work.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education & background sidebar -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-blue-600 mb-4">Education</h3>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <div class="font-bold text-gray-800 text-sm">M.S. — AI/ML (in progress)</div>
+                            <div class="text-gray-500 text-xs">Indiana Wesleyan University · 2025–2026</div>
+                            <div class="text-gray-600 text-xs mt-1">AIML-501: Model Development</div>
+                        </div>
+                        <div class="border-l-4 border-purple-400 pl-4">
+                            <div class="font-bold text-gray-800 text-sm">B.S. — Computer Engineering</div>
+                            <div class="text-gray-500 text-xs">Undergraduate · Completed</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-emerald-600 mb-4">Background</h3>
+                    <div class="space-y-3 text-sm text-gray-700">
+                        <div class="flex items-start gap-2">
+                            <span class="text-blue-500 mt-0.5 shrink-0">▸</span>
+                            <span>.NET Full Stack Developer (C#, ASP.NET, SQL Server)</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="text-purple-500 mt-0.5 shrink-0">▸</span>
+                            <span>Frontend: HTML5, CSS3, JavaScript, Tailwind</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="text-emerald-500 mt-0.5 shrink-0">▸</span>
+                            <span>Deployed projects via GitHub Pages</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="text-pink-500 mt-0.5 shrink-0">▸</span>
+                            <span>Generative AI: RAG systems, LLM APIs</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="text-amber-500 mt-0.5 shrink-0">▸</span>
+                            <span>Currently: ML theory, neural networks, LLM infrastructure</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 text-white">
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-blue-300 mb-3">Live Portfolio</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed mb-3">All artifacts deployed on GitHub Pages — no backend, zero hosting cost, full interactivity.</p>
+                    <a href="https://babacar1033.github.io" target="_blank"
+                       class="text-blue-300 hover:text-blue-200 text-xs underline transition">babacar1033.github.io ↗</a>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Milestone 1 -->
-        <div class="page-break bg-white p-8 md:p-12 shadow-2xl min-h-screen">
-            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-600 pb-4 mb-8">Milestone 1: Use Case Definition</h2>
-            
-            <div class="space-y-6 text-gray-700 text-base leading-relaxed">
-                <p><strong>Introduction:</strong> To maintain a competitive advantage in the dynamic food and beverage sector, our organization must harness its most valuable asset: information. A Retrieval-Augmented Generation (RAG) system represents a strategic leap forward, transforming our disparate data sources into a cohesive intelligence engine. This system will empower our teams by providing instant, accurate, and contextually-aware answers to complex business queries, directly addressing key operational bottlenecks and unlocking new avenues for growth.</p>
 
-                <h3 class="text-2xl font-bold text-gray-800 pt-6">Primary Business Use Cases</h3>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-blue-500">
-                        <h4 class="font-bold text-lg text-gray-900">1. Supply Chain Resilience & Optimization</h4>
-                        <p class="mt-2">Enable proactive responses to supply chain disruptions. Logistics and procurement managers can ask complex, multi-faceted questions like, <em>"Given the current drought in Spain, what are our top three alternative olive oil suppliers in Italy and Greece? Compare their current spot prices, lead times, and quality certifications from our internal supplier database."</em> This transforms a multi-day research task into an instant, data-backed decision.</p>
+    <!-- ══════════════════════════════════════════
+         SKILLS
+    ═══════════════════════════════════════════ -->
+    <section id="skills" class="fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Skills</h2>
+        <div class="section-divider mb-8"></div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+
+            <!-- AI/ML Skills -->
+            <div class="bg-white rounded-2xl shadow-lg p-7">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-xl">🤖</div>
+                    <h3 class="font-bold text-gray-800">AI / Machine Learning</h3>
+                </div>
+                <div class="space-y-4" id="ai-skills">
+                    <div data-pct="80">
+                        <div class="flex justify-between text-sm mb-1"><span class="text-gray-700">ML Algorithm Theory</span><span class="text-blue-600 font-semibold">80%</span></div>
+                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-blue-500 h-2 rounded-full skill-bar-fill" style="width:0"></div></div>
                     </div>
-                    <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-blue-500">
-                        <h4 class="font-bold text-lg text-gray-900">2. Accelerated Product Innovation</h4>
-                        <p class="mt-2">Drastically reduce R&D cycles. A food scientist can query, <em>"Summarize recent patents and scientific literature on plant-based emulsifiers suitable for a clean-label, high-protein beverage. Cross-reference with our internal experimental data to identify any potential formulation conflicts."</em> The system synthesizes vast amounts of unstructured text from patents, journals, and internal reports, highlighting opportunities and risks.</p>
+                    <div data-pct="75">
+                        <div class="flex justify-between text-sm mb-1"><span class="text-gray-700">Neural Networks & Deep Learning</span><span class="text-blue-600 font-semibold">75%</span></div>
+                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-blue-400 h-2 rounded-full skill-bar-fill" style="width:0"></div></div>
                     </div>
-                    <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-blue-500">
-                        <h4 class="font-bold text-lg text-gray-900">3. Proactive Regulatory & Compliance Management</h4>
-                        <p class="mt-2">Navigate the complex web of global food safety and labeling laws. A compliance officer can ask, <em>"What are the specific changes in the European Union's regulations regarding allergen labeling for tree nuts that come into effect in the next six months, and which of our current product lines sold in Germany are impacted?"</em> This allows for proactive adjustments, mitigating the risk of costly recalls or fines.</p>
+                    <div data-pct="78">
+                        <div class="flex justify-between text-sm mb-1"><span class="text-gray-700">Generative AI / LLMs</span><span class="text-blue-600 font-semibold">78%</span></div>
+                        <div class="w-full bg-blue-100 rounded-full h-2"><div class="bg-blue-600 h-2 rounded-full skill-bar-fill" style="width:0"></div></div>
                     </div>
-                    <div class="bg-gray-50 p-6 rounded-lg border-l-4 border-blue-500">
-                        <h4 class="font-bold text-lg text-gray-900">4. Enhanced Customer & Market Intelligence</h4>
-                        <p class="mt-2">Equip marketing and sales teams with deep, actionable insights. A brand manager could query, <em>"Analyze customer feedback from the last quarter and summarize the most common complaints and praises for our new organic snack line. How does this sentiment compare to social media trends for our top two competitors?"</em> This provides a unified view of the market landscape, guiding strategic marketing decisions.</p>
+                    <div data-pct="82">
+                        <div class="flex justify-between text-sm mb-1"><span class="text-gray-700">RAG System Design</span><span class="text-blue-600 font-semibold">82%</span></div>
+                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-indigo-500 h-2 rounded-full skill-bar-fill" style="width:0"></div></div>
+                    </div>
+                    <div data-pct="70">
+                        <div class="flex justify-between text-sm mb-1"><span class="text-gray-700">LLM Training & Infrastructure</span><span class="text-blue-600 font-semibold">70%</span></div>
+                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-violet-500 h-2 rounded-full skill-bar-fill" style="width:0"></div></div>
+                    </div>
+                    <div data-pct="72">
+                        <div class="flex justify-between text-sm mb-1"><span class="text-gray-700">AI Ethics & Governance</span><span class="text-blue-600 font-semibold">72%</span></div>
+                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-purple-400 h-2 rounded-full skill-bar-fill" style="width:0"></div></div>
                     </div>
                 </div>
+            </div>
 
-                <h3 class="text-2xl font-bold text-gray-800 pt-6">Key Stakeholders & Business Objectives</h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white border">
-                        <thead class="bg-gray-800 text-white">
-                            <tr>
-                                <th class="py-3 px-4 text-left">Stakeholder Group</th>
-                                <th class="py-3 px-4 text-left">Specific Business Objectives</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            <tr>
-                                <td class="py-4 px-4 font-semibold">Executive Leadership</td>
-                                <td class="py-4 px-4">Improve strategic decision-making speed; Increase overall operational agility; Foster a data-first culture.</td>
-                            </tr>
-                            <tr>
-                                <td class="py-4 px-4 font-semibold">Supply Chain & Procurement</td>
-                                <td class="py-4 px-4">Reduce issue resolution time by 50%; Mitigate risks from single-supplier dependency; Decrease costs through better sourcing options.</td>
-                            </tr>
-                             <tr>
-                                <td class="py-4 px-4 font-semibold">Research & Development</td>
-                                <td class="py-4 px-4">Reduce new product research phase by 30%; Increase discovery of novel ingredients; Ensure 100% compliance of formulations.</td>
-                            </tr>
-                             <tr>
-                                <td class="py-4 px-4 font-semibold">Compliance & Quality Assurance</td>
-                                <td class="py-4 px-4">Eliminate non-compliance risks; Automate regulatory change monitoring; Improve speed and accuracy of quality audits.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- Software Engineering Skills -->
+            <div class="bg-white rounded-2xl shadow-lg p-7">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-xl">⚙️</div>
+                    <h3 class="font-bold text-gray-800">Software Engineering</h3>
+                </div>
+                <div class="space-y-4" id="eng-skills">
+                    <div data-pct="90">
+                        <div class="flex justify-between text-sm mb-1"><span class="text-gray-700">.NET / C# / ASP.NET</span><span class="text-emerald-600 font-semibold">90%</span></div>
+                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-emerald-600 h-2 rounded-full skill-bar-fill" style="width:0"></div></div>
+                    </div>
+                    <div data-pct="88">
+                        <div class="flex justify-between text-sm mb-1"><span class="text-gray-700">HTML5 / CSS3 / JavaScript</span><span class="text-emerald-600 font-semibold">88%</span></div>
+                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-emerald-500 h-2 rounded-full skill-bar-fill" style="width:0"></div></div>
+                    </div>
+                    <div data-pct="85">
+                        <div class="flex justify-between text-sm mb-1"><span class="text-gray-700">SQL / Database Design</span><span class="text-emerald-600 font-semibold">85%</span></div>
+                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-teal-500 h-2 rounded-full skill-bar-fill" style="width:0"></div></div>
+                    </div>
+                    <div data-pct="82">
+                        <div class="flex justify-between text-sm mb-1"><span class="text-gray-700">RESTful API Design</span><span class="text-emerald-600 font-semibold">82%</span></div>
+                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-cyan-500 h-2 rounded-full skill-bar-fill" style="width:0"></div></div>
+                    </div>
+                    <div data-pct="78">
+                        <div class="flex justify-between text-sm mb-1"><span class="text-gray-700">Git / GitHub / CI/CD</span><span class="text-emerald-600 font-semibold">78%</span></div>
+                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-emerald-400 h-2 rounded-full skill-bar-fill" style="width:0"></div></div>
+                    </div>
+                    <div data-pct="65">
+                        <div class="flex justify-between text-sm mb-1"><span class="text-gray-700">Python (in progress)</span><span class="text-emerald-600 font-semibold">65%</span></div>
+                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-yellow-400 h-2 rounded-full skill-bar-fill" style="width:0"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technologies & Tools -->
+            <div class="bg-white rounded-2xl shadow-lg p-7">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-xl bg-pink-100 flex items-center justify-center text-xl">🛠️</div>
+                    <h3 class="font-bold text-gray-800">Technologies & Tools</h3>
+                </div>
+                <div class="space-y-3">
+                    <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Languages</p>
+                    <div class="flex flex-wrap gap-2">
+                        <code class="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-xs border border-blue-100">C# / .NET</code>
+                        <code class="bg-yellow-50 text-yellow-700 px-3 py-1 rounded-lg text-xs border border-yellow-100">JavaScript</code>
+                        <code class="bg-green-50 text-green-700 px-3 py-1 rounded-lg text-xs border border-green-100">Python</code>
+                        <code class="bg-orange-50 text-orange-700 px-3 py-1 rounded-lg text-xs border border-orange-100">SQL</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-xs">HTML5 / CSS3</code>
+                    </div>
+
+                    <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2 pt-2">Frameworks & Libraries</p>
+                    <div class="flex flex-wrap gap-2">
+                        <code class="bg-purple-50 text-purple-700 px-3 py-1 rounded-lg text-xs border border-purple-100">ASP.NET MVC</code>
+                        <code class="bg-cyan-50 text-cyan-700 px-3 py-1 rounded-lg text-xs border border-cyan-100">Tailwind CSS</code>
+                        <code class="bg-pink-50 text-pink-700 px-3 py-1 rounded-lg text-xs border border-pink-100">Entity Framework</code>
+                        <code class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-lg text-xs border border-emerald-100">vLLM / LangChain</code>
+                    </div>
+
+                    <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2 pt-2">AI / Cloud</p>
+                    <div class="flex flex-wrap gap-2">
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-xs">OpenAI API</code>
+                        <code class="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-xs border border-blue-100">Azure (basic)</code>
+                        <code class="bg-amber-50 text-amber-700 px-3 py-1 rounded-lg text-xs border border-amber-100">GitHub Pages</code>
+                        <code class="bg-violet-50 text-violet-700 px-3 py-1 rounded-lg text-xs border border-violet-100">RAG Architecture</code>
+                        <code class="bg-rose-50 text-rose-700 px-3 py-1 rounded-lg text-xs border border-rose-100">Prompt Engineering</code>
+                    </div>
+
+                    <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2 pt-2">Professional</p>
+                    <div class="flex flex-wrap gap-2">
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-xs">Technical Writing</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-xs">AI Stakeholder Comm.</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-xs">Change Management</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-xs">Data Visualization</code>
+                    </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Milestone 2 -->
-        <div class="page-break bg-white p-8 md:p-12 shadow-2xl min-h-screen">
-            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-600 pb-4 mb-8">Milestone 2: System Architecture Design</h2>
-            <p class="mb-10 text-gray-700">The proposed system is built on a secure, modular, and scalable architecture designed to integrate seamlessly with our existing data infrastructure. Each component is clearly defined to ensure a robust and efficient flow of information from query to answer. (Hover over components for details).</p>
-            
-            <div class="bg-slate-100 p-8 rounded-xl border border-slate-200">
-                <div class="flex flex-col items-center justify-center space-y-6">
 
-                    <!-- User Interface -->
-                    <div class="has-tooltip relative diagram-component w-3/4 max-w-lg bg-white p-4 rounded-lg shadow-lg border-2 border-blue-500">
-                         <div class="flex items-center space-x-4">
-                            <svg class="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+    <!-- ══════════════════════════════════════════
+         WORK SAMPLES
+    ═══════════════════════════════════════════ -->
+    <section id="projects" class="fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Work Samples &amp; Project Descriptions</h2>
+        <div class="section-divider mb-4"></div>
+        <p class="text-gray-500 mb-8">Three artifacts from the AIML-501 portfolio — each grounded in real course requirements, with context, the challenge solved, and the chosen solution.</p>
+
+        <div class="space-y-8">
+
+            <!-- Project 1 -->
+            <div class="project-card bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-2 shrink-0 bg-gradient-to-b from-blue-500 to-indigo-600"></div>
+                    <div class="p-8 flex-1">
+                        <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
                             <div>
-                                <h4 class="font-bold text-lg text-gray-800">User Interface Layer</h4>
-                                <p class="text-sm text-gray-600">Secure portal for query input.</p>
+                                <span class="badge-blue text-xs font-bold px-2.5 py-1 rounded-full">Artifact 1</span>
+                                <h3 class="text-xl font-bold text-gray-900 mt-2">ML Algorithm Types: Visual Framework</h3>
                             </div>
+                            <a href="artifact-algorithm-types.html"
+                               class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-full text-xs font-semibold transition shrink-0">
+                                View Artifact →
+                            </a>
                         </div>
-                        <div class="tooltip absolute bottom-full mb-2 w-full left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 text-center z-10">Secure, role-based web portal where users ask questions in natural language.</div>
-                    </div>
-                    
-                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
 
-                    <!-- Core RAG Engine -->
-                    <div class="w-full p-6 bg-slate-200 rounded-xl border border-slate-300">
-                        <h4 class="text-center font-bold text-lg text-gray-800 mb-4">Core RAG Engine</h4>
-                        <div class="flex flex-col md:flex-row justify-around items-center space-y-4 md:space-y-0 md:space-x-4">
-
-                            <!-- Retriever -->
-                            <div class="has-tooltip relative diagram-component w-full md:w-1/2 bg-white p-4 rounded-lg shadow-md border-2 border-green-500">
-                                <div class="flex items-center space-x-3">
-                                    <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                    <div>
-                                        <h5 class="font-bold">Retriever</h5>
-                                        <p class="text-sm text-gray-600">Finds relevant documents.</p>
-                                    </div>
-                                </div>
-                                <div class="tooltip absolute bottom-full mb-2 w-full left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 text-center z-10">Uses semantic search to scan the Knowledge Base and fetch the most relevant data snippets.</div>
-                            </div>
-                            
-                            <div class="text-2xl font-bold text-gray-500 transform md:rotate-0 rotate-90">&harr;</div>
-
-                            <!-- Generative Model -->
-                             <div class="has-tooltip relative diagram-component w-full md:w-1/2 bg-white p-4 rounded-lg shadow-md border-2 border-purple-500">
-                                <div class="flex items-center space-x-3">
-                                    <svg class="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                    <div>
-                                        <h5 class="font-bold">Generative Model</h5>
-                                        <p class="text-sm text-gray-600">Synthesizes the answer.</p>
-                                    </div>
-                                </div>
-                                <div class="tooltip absolute bottom-full mb-2 w-full left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 text-center z-10">A large language model that composes a human-readable answer based ONLY on the context provided by the Retriever.</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-
-                    <!-- Knowledge Base -->
-                    <div class="has-tooltip relative diagram-component w-3/4 max-w-lg bg-white p-4 rounded-lg shadow-lg border-2 border-red-500">
-                         <div class="flex items-center space-x-4">
-                            <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7l8-4 8 4m-8 4v10"></path></svg>
+                        <div class="grid md:grid-cols-3 gap-6 text-sm">
                             <div>
-                                <h4 class="font-bold text-lg text-gray-800">Unified Knowledge Base</h4>
-                                <p class="text-sm text-gray-600">Internal & External Data Sources.</p>
+                                <p class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-2">Context</p>
+                                <p class="text-gray-600 leading-relaxed">The first portfolio artifact required a structured, visually compelling reference for ML algorithm types — covering learning paradigms and application domains in a way accessible to both technical and non-technical audiences.</p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2">Challenge</p>
+                                <p class="text-gray-600 leading-relaxed">13 algorithms across 2 learning paradigms and 4 application domains (tabular, vision, NLP, generative AI) needed to be organized, explained, and made interactive — without becoming an overwhelming wall of text or a static PDF.</p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2">Solution</p>
+                                <p class="text-gray-600 leading-relaxed">Built an interactive HTML page with live filter buttons (by paradigm and domain), hover-effect algorithm cards, a taxonomy tree, a domain-by-domain breakdown, and a comparison table. Deployed to GitHub Pages.</p>
                             </div>
                         </div>
-                        <div class="tooltip absolute top-full mt-2 w-full left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 text-center z-10">The indexed repository of all trusted data: ERP systems, R&D docs, patents, regulatory updates, market reports, etc.</div>
+
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <code class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">HTML5</code>
+                            <code class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">Tailwind CSS</code>
+                            <code class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">Vanilla JS</code>
+                            <code class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">GitHub Pages</code>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Milestone 3 -->
-        <div class="page-break bg-white p-8 md:p-12 shadow-2xl min-h-screen">
-            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-600 pb-4 mb-8">Milestone 3: Simulated Workflow</h2>
-            <p class="mb-10 text-gray-700">The following diagram illustrates the step-by-step process of how the RAG system handles a sample query from an R&D team member, ensuring a response that is both accurate and grounded in verified data.</p>
-            
-            <div class="space-y-4">
-                <div class="text-center p-4 bg-gray-100 rounded-lg">
-                    <p class="font-semibold text-gray-800">Sample Query:</p>
-                    <p class="text-lg italic text-blue-800">"Summarize the latest findings on using high-pressure processing (HPP) to extend the shelf life of cold-pressed juices, and list any associated impacts on nutritional content."</p>
-                </div>
-                
-                <div class="flex flex-col items-center">
-                    <!-- Step 1 -->
-                    <div class="w-full max-w-2xl bg-white p-4 border-l-4 border-cyan-500 rounded-lg shadow-md my-2 diagram-component">
-                        <h4 class="font-bold text-cyan-700">Step 1: Query Input & Semantic Analysis</h4>
-                        <p class="text-sm text-gray-600">The user enters the query. The system breaks it down into core concepts: 'HPP', 'shelf life', 'cold-pressed juice', and 'nutritional impact'.</p>
-                    </div>
-                    <div class="text-2xl text-gray-400">&darr;</div>
-                    <!-- Step 2 -->
-                    <div class="w-full max-w-2xl bg-white p-4 border-l-4 border-green-500 rounded-lg shadow-md my-2 diagram-component">
-                        <h4 class="font-bold text-green-700">Step 2: Document Retrieval</h4>
-                        <p class="text-sm text-gray-600">The Retriever scans the Knowledge Base. It identifies and fetches:
-                        <ul class="list-disc pl-6 text-sm text-gray-600 mt-1">
-                            <li>3 internal R&D reports on past HPP trials.</li>
-                            <li>5 peer-reviewed scientific articles on HPP and vitamin degradation.</li>
-                            <li>2 competitor patent filings mentioning HPP for beverages.</li>
-                        </ul>
-                        </p>
-                    </div>
-                    <div class="text-2xl text-gray-400">&darr;</div>
-                    <!-- Step 3 -->
-                    <div class="w-full max-w-2xl bg-white p-4 border-l-4 border-purple-500 rounded-lg shadow-md my-2 diagram-component">
-                        <h4 class="font-bold text-purple-700">Step 3: Contextual Augmentation</h4>
-                        <p class="text-sm text-gray-600">The most relevant passages from the retrieved documents are compiled into a single, condensed "context package" and passed to the Generative Model along with the original query.</p>
-                    </div>
-                    <div class="text-2xl text-gray-400">&darr;</div>
-                    <!-- Step 4 -->
-                    <div class="w-full max-w-2xl bg-white p-4 border-l-4 border-yellow-500 rounded-lg shadow-md my-2 diagram-component">
-                        <h4 class="font-bold text-yellow-700">Step 4: Generative Response Generation</h4>
-                        <p class="text-sm text-gray-600">The Generative Model reads the context and synthesizes a coherent answer, strictly adhering to the provided facts. It does not access outside information or "hallucinate."</p>
-                    </div>
-                     <div class="text-2xl text-gray-400">&darr;</div>
-                    <!-- Step 5 -->
-                     <div class="w-full max-w-2xl bg-blue-100 p-4 border-t-4 border-blue-600 rounded-lg shadow-lg my-2">
-                        <h4 class="font-bold text-blue-900">Step 5: Generated Response & Sourcing</h4>
-                        <p class="text-gray-800 text-base leading-relaxed"><em>"High-Pressure Processing (HPP) can extend the shelf life of cold-pressed juices by up to 30-45 days by inactivating spoilage microbes [Source: Internal Report R&D-2024-03]. However, studies show a potential 10-15% degradation of Vitamin C, though levels of other nutrients like Vitamin A remain stable [Source: Journal of Food Science, Vol. 88]. Competitor patents suggest a two-stage pressure application may mitigate some nutritional loss [Source: Patent US-112345]."</em></p>
+
+            <!-- Project 2 -->
+            <div class="project-card bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-2 shrink-0 bg-gradient-to-b from-purple-500 to-pink-600"></div>
+                    <div class="p-8 flex-1">
+                        <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
+                            <div>
+                                <span class="badge-purple text-xs font-bold px-2.5 py-1 rounded-full">Artifact 2</span>
+                                <h3 class="text-xl font-bold text-gray-900 mt-2">Neural Network Components: Visual Presentation</h3>
+                            </div>
+                            <a href="artifact-neural-network.html"
+                               class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-full text-xs font-semibold transition shrink-0">
+                                View Artifact →
+                            </a>
+                        </div>
+
+                        <div class="grid md:grid-cols-3 gap-6 text-sm">
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-widest text-purple-600 mb-2">Context</p>
+                                <p class="text-gray-600 leading-relaxed">This artifact required defining the six core neural network components — layers, neurons, weights, activation functions, loss functions, and optimization algorithms — grounded in hands-on exploration with TensorFlow's Neural Network Playground.</p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2">Challenge</p>
+                                <p class="text-gray-600 leading-relaxed">Neural network concepts are notoriously abstract. The challenge was to make each component definition concrete, visual, and connected to observable Playground behavior — not just a glossary of terms.</p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2">Solution</p>
+                                <p class="text-gray-600 leading-relaxed">Designed an interactive SVG architecture diagram with hover tooltips per neuron, six detailed component cards each featuring a "Playground Insight" box, a three-step training cycle visualization, and a key insights summary tied directly to observed behavior.</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <code class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">HTML5 / SVG</code>
+                            <code class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">TensorFlow Playground</code>
+                            <code class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">Tailwind CSS</code>
+                            <code class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">Vanilla JS</code>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Milestone 4 -->
-        <div class="page-break bg-white p-8 md:p-12 shadow-2xl min-h-screen">
-             <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-600 pb-4 mb-8">Milestone 4: Evaluation and Improvement</h2>
-            <p class="mb-8 text-gray-700">The long-term success of the RAG system hinges on a robust framework for continuous evaluation and iterative improvement. This will be driven by direct stakeholder feedback and a proactive focus on core system pillars.</p>
+            <!-- Project 3 -->
+            <div class="project-card bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-2 shrink-0 bg-gradient-to-b from-emerald-500 to-cyan-600"></div>
+                    <div class="p-8 flex-1">
+                        <div class="flex flex-wrap items-start justify-between gap-3 mb-4">
+                            <div>
+                                <span class="badge-emerald text-xs font-bold px-2.5 py-1 rounded-full">Artifact 3</span>
+                                <h3 class="text-xl font-bold text-gray-900 mt-2">LLM Infrastructure: Training Process &amp; Costs</h3>
+                            </div>
+                            <a href="artifact-llm-infrastructure.html"
+                               class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-full text-xs font-semibold transition shrink-0">
+                                View Artifact →
+                            </a>
+                        </div>
 
-            <h3 class="text-2xl font-bold text-gray-800 mb-4">Analysis of Potential Stakeholder Feedback</h3>
-            <p class="mb-6">Post-launch, we anticipate feedback from key user groups that will be critical for refinement:</p>
-            <ul class="space-y-4">
-                <li class="flex items-start">
-                    <span class="text-red-500 font-bold mr-3">&rarr;</span>
-                    <div>
-                        <strong class="text-gray-900">From Supply Chain Managers:</strong> "The supplier data is a week old; I need real-time shipping updates. The system couldn't find information on a brand new sustainable packaging material I heard about yesterday."
-                        <br><em class="text-gray-600">Implication: Need for higher data freshness and integration with real-time external news feeds.</em>
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <span class="text-red-500 font-bold mr-3">&rarr;</span>
-                    <div>
-                        <strong class="text-gray-900">From R&D Scientists:</strong> "The answer was too simplistic. I need the system to understand complex chemical compound names and prioritize peer-reviewed journals over internal memos when I ask scientific questions."
-                        <br><em class="text-gray-600">Implication: The Retriever needs to be fine-tuned to understand domain-specific terminology and weigh sources based on query context.</em>
-                    </div>
-                </li>
-                 <li class="flex items-start">
-                    <span class="text-red-500 font-bold mr-3">&rarr;</span>
-                    <div>
-                        <strong class="text-gray-900">From the IT & Security Team:</strong> "When a user asks about sales margins, how do we guarantee the response is only generated from data that their specific role is authorized to see? We need a clear audit trail of what data was used for each answer."
-                        <br><em class="text-gray-600">Implication: Data security and access control are paramount and must be built into the core of the retrieval process.</em>
-                    </div>
-                </li>
-            </ul>
+                        <div class="grid md:grid-cols-3 gap-6 text-sm">
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2">Context</p>
+                                <p class="text-gray-600 leading-relaxed">The assignment required a comprehensive breakdown of how large language models are trained — from data acquisition through RLHF and deployment — and how costs (data, compute, energy, time) break down for real models like GPT-4, LLaMA-3, Gemini, and Claude.</p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-widest text-red-500 mb-2">Challenge</p>
+                                <p class="text-gray-600 leading-relaxed">LLM training details are partially proprietary, spread across dozens of papers and industry reports (Epoch AI, SemiAnalysis, DeepMind), and inherently complex. The challenge was synthesizing this into a clear, credible, visually rich framework — not a wall of caveats.</p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-widest text-emerald-600 mb-2">Solution</p>
+                                <p class="text-gray-600 leading-relaxed">Built a 7-stage clickable accordion pipeline, four cost-pillar cards with animated bar charts, a full model comparison table across 4 models, and a Chinchilla scaling laws section — all backed by 9 academic and industry references.</p>
+                            </div>
+                        </div>
 
-            <h3 class="text-2xl font-bold text-gray-800 mt-10 mb-4">Strategic Areas for System Improvement</h3>
-             <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-gray-50 p-6 rounded-lg border">
-                    <h4 class="font-bold text-xl text-gray-900">1. Data Quality & Governance</h4>
-                    <p class="mt-2 text-gray-700"><strong>Challenge:</strong> The system's output is only as reliable as its input. Stale, inaccurate, or incomplete data in the Knowledge Base will erode user trust and deliver poor results.</p>
-                    <p class="mt-4 font-semibold text-gray-800">Proposed Solutions:</p>
-                    <ul class="list-disc pl-5 mt-2 space-y-1 text-gray-700">
-                        <li><strong>Establish a Data Governance Council:</strong> A cross-functional team to define standards for data ingestion, validation, and archival.</li>
-                        <li><strong>Automate Data Pipelines:</strong> Implement automated connectors to key internal systems (ERP, PLM) and external data providers to ensure freshness.</li>
-                        <li><strong>Implement a "Source Rating" System:</strong> Allow users and administrators to rate the reliability of data sources, which the Retriever can use as a signal for ranking results.</li>
-                    </ul>
-                </div>
-                <div class="bg-gray-50 p-6 rounded-lg border">
-                    <h4 class="font-bold text-xl text-gray-900">2. Data Security & Access Control</h4>
-                    <p class="mt-2 text-gray-700"><strong>Challenge:</strong> The centralized Knowledge Base contains sensitive intellectual property and confidential business data. Preventing unauthorized access is non-negotiable.</p>
-                    <p class="mt-4 font-semibold text-gray-800">Proposed Solutions:</p>
-                    <ul class="list-disc pl-5 mt-2 space-y-1 text-gray-700">
-                        <li><strong>Retrieval-Level Access Control:</strong> Design the Retriever to first check user credentials against an access control list *before* searching a data source. If a user is not authorized, that source is excluded from the search entirely.</li>
-                        <li><strong>Data Anonymization:</strong> For trend analysis, use anonymized datasets to protect personally identifiable information (PII) from both customers and employees.</li>
-                        <li><strong>Comprehensive Audit Trails:</strong> Log every query, the data sources used to generate the answer, and the final response. This ensures full traceability for security and compliance reviews.</li>
-                    </ul>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <code class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">HTML5</code>
+                            <code class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">Tailwind CSS</code>
+                            <code class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">Epoch AI / SemiAnalysis data</code>
+                            <code class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-xs">GitHub Pages</code>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
+    </section>
 
-        <!-- Milestone 5 -->
-        <div class="page-break bg-white p-8 md:p-12 shadow-2xl min-h-screen">
-            <h2 class="text-3xl font-bold text-gray-800 border-b-2 border-blue-600 pb-4 mb-8">Milestone 5: Comprehensive Case Study</h2>
-            
-            <div class="prose max-w-none text-gray-800 leading-relaxed">
-                <h3 class="text-2xl font-bold">1. Executive Summary: Transforming Data into a Strategic Asset</h3>
-                <p>The modern food and beverage landscape is characterized by unprecedented volatility and complexity. To navigate this environment successfully, our organization requires a fundamental shift from reactive data analysis to proactive, on-demand intelligence. This case study details the strategic imperative and implementation framework for a Retrieval-Augmented Generation (RAG) system—a transformative technology that bridges the gap between our vast data repositories and the decision-makers who need critical insights. By grounding a powerful generative AI in a curated knowledge base of our own trusted information, we can unlock unparalleled efficiency, accelerate innovation, and build a more resilient, intelligent enterprise. This initiative is not merely a technology upgrade; it is a foundational investment in our long-term competitive advantage.</p>
+</main>
 
-                <h3 class="text-2xl font-bold mt-8">2. Strategic Application and Architectural Vision</h3>
-                <p>The system's value is realized through its direct application to high-impact business challenges. As outlined in Milestone 1, the use cases range from de-risking our global supply chain by identifying alternative suppliers in real-time to cutting R&D cycles by synthesizing complex scientific data instantly. The common thread is the conversion of time-consuming research tasks into immediate, data-driven answers.</p>
-                <p>Our architectural vision, detailed in Milestone 2, supports this mission with a focus on security, scalability, and integration. The system is composed of four primary layers: a secure **User Interface** for query input; a core **RAG Engine** where the Retriever and Generative Model work in tandem; and a comprehensive **Unified Knowledge Base**. This modular design ensures that each component can be independently upgraded. Crucially, the architecture is designed so that the Generative Model is an "inference engine," not a knowledge source. It can only synthesize answers from the factual, verified context provided by the Retriever, which operates securely within our data ecosystem. This prevents data leakage and the "hallucinations" common in consumer-grade AI tools, ensuring that every answer is trustworthy and auditable.</p>
-                
-                <h3 class="text-2xl font-bold mt-8">3. Annotated Diagrams: Visualizing the Flow of Intelligence</h3>
-                <p>The diagrams from Milestones 2 and 3 provide a clear visual narrative of the system's operation. The architecture diagram illustrates the robust separation of concerns, with the RAG Engine acting as a secure intermediary between the user and the foundational data. The workflow diagram demonstrates the "grounding" process in action: a user's query is not sent directly to a black-box AI but is first enriched with hard data. This process is the key to the system's reliability. Each step, from semantic analysis to retrieval and final synthesis, is designed to narrow the scope and increase the factual accuracy of the output, culminating in a response that is not just a probable answer, but a verifiable summary of trusted information, complete with citations.</p>
 
-                <h3 class="text-2xl font-bold mt-8">4. Reflection on Critical Challenges & Strategic Solutions</h3>
-                <p>The implementation of a system this transformative presents significant challenges beyond the technical. Successfully navigating these requires a holistic strategy focused on people, processes, and data governance.</p>
-                
-                <h4 class="text-xl font-bold mt-4">Challenge 1: Data Governance and Integrity</h4>
-                <p>The axiom "garbage in, garbage out" has never been more relevant. The system's utility is wholly dependent on the quality, freshness, and comprehensiveness of the Unified Knowledge Base. A poorly maintained knowledge base will quickly erode user trust and render the system useless.</p>
-                <p><strong>Solution:</strong> We will establish a formal Data Governance Council, a cross-functional body with executive sponsorship. This council's mandate will be to:
-                    <ul class="list-disc pl-6 mt-2">
-                        <li>Define and enforce a data quality framework for all information entering the Knowledge Base.</li>
-                        <li>Prioritize the integration of new data sources based on strategic business needs.</li>
-                        <li>Oversee a "data stewardship" program, assigning ownership of key data domains (e.g., supplier data, R&D data) to specific teams responsible for their accuracy.</li>
-                    </ul>
-                </p>
+<!-- ══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer class="hero-gradient text-slate-400 py-10 px-6 text-center mt-16">
+    <p class="text-sm">Babacar Diouf · AIML-501 Professional Portfolio · Indiana Wesleyan University · 2026</p>
+    <p class="text-xs mt-1 text-slate-500">Deployed on GitHub Pages · babacar1033.github.io</p>
+    <div class="mt-5 flex justify-center flex-wrap gap-4">
+        <a href="artifact-algorithm-types.html" class="text-blue-400 hover:text-blue-300 text-xs transition">Artifact 1: ML Algorithm Types</a>
+        <span class="text-slate-600">|</span>
+        <a href="artifact-neural-network.html" class="text-purple-400 hover:text-purple-300 text-xs transition">Artifact 2: Neural Networks</a>
+        <span class="text-slate-600">|</span>
+        <a href="artifact-llm-infrastructure.html" class="text-emerald-400 hover:text-emerald-300 text-xs transition">Artifact 3: LLM Infrastructure</a>
+    </div>
+</footer>
 
-                <h4 class="text-xl font-bold mt-4">Challenge 2: User Adoption and Change Management</h4>
-                <p>A new technology is only effective if it is embraced by its intended users. Employees accustomed to traditional methods of information retrieval (e.g., searching shared drives, emailing colleagues) may be hesitant to adopt a new system. A lack of adoption is the single greatest risk to realizing the project's ROI.</p>
-                <p><strong>Solution:</strong> A proactive change management plan will be executed, focusing on:
-                    <ul class="list-disc pl-6 mt-2">
-                        <li><strong>Identifying Departmental Champions:</strong> We will recruit influential individuals from each key stakeholder group (Supply Chain, R&D, etc.) to act as early adopters and internal advocates.</li>
-                        <li><strong>Developing Role-Specific Training:</strong> Instead of generic training, we will create targeted workshops that demonstrate how the system solves specific, real-world problems for each team.</li>
-                        <li><strong>Implementing a Feedback Loop:</strong> The user interface will feature an intuitive "Rate this Answer" function, and regular user forums will be held to ensure the system's evolution is guided by user needs.</li>
-                    </ul>
-                </p>
-                
-                 <h4 class="text-xl font-bold mt-4">Challenge 3: Measuring Success and Demonstrating ROI</h4>
-                <p>The investment in this system must be justified by clear, measurable business outcomes. Without a framework for measuring success, the project risks being perceived as a cost center rather than a value driver.</p>
-                <p><strong>Solution:</strong> We will define and track a set of Key Performance Indicators (KPIs) tied directly to the use cases:
-                    <ul class="list-disc pl-6 mt-2">
-                        <li><strong>Efficiency Gains:</strong> Track the average time saved on information retrieval tasks, aiming for a 40% reduction in targeted workflows within the first year.</li>
-                        <li><strong>Innovation Velocity:</strong> Measure the length of the initial research phase for new product development, targeting a 25% decrease.</li>
-                        <li><strong>Risk Mitigation:</strong> Log the number of proactive compliance and supply chain queries, correlating system usage with a reduction in related incidents.</li>
-                    </ul>
-                </p>
 
-                <h3 class="text-2xl font-bold mt-8">5. Future Roadmap and Strategic Outlook</h3>
-                <p>The initial implementation is the foundation. The true long-term value of the RAG system lies in its potential for future expansion. The roadmap includes:
-                    <ul class="list-disc pl-6 mt-2">
-                        <li><strong>Proactive Alerting:</strong> Evolving the system from a reactive Q&A tool to a proactive intelligence agent that can monitor real-time data streams and alert managers to potential supply chain disruptions or emerging market trends before they become critical.</li>
-                        <li><strong>Multi-Modal Capabilities:</strong> Expanding the Knowledge Base to include unstructured data like images of packaging designs or videos from production lines, allowing users to ask questions about visual information.</li>
-                        <li><strong>Workflow Automation:</strong> Integrating the system with other enterprise software to not only answer questions but also initiate workflows, such as automatically generating a draft procurement order for a newly identified alternative supplier.</li>
-                    </ul>
-                <p class="mt-4">In conclusion, the RAG system is more than an advanced search engine; it is a strategic platform for institutionalizing knowledge, democratizing access to insights, and building a more agile, data-driven organization prepared for the challenges and opportunities of the future.</p>
-            </div>
-        </div>
-    </main>
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+    // ── Scroll fade-in ──────────────────────
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ── Skill bar animation ──────────────────
+    const barObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.querySelectorAll('[data-pct]').forEach(row => {
+                const pct = row.dataset.pct;
+                const bar = row.querySelector('.skill-bar-fill');
+                if (bar) { bar.style.width = '0'; setTimeout(() => { bar.style.width = pct + '%'; }, 100); }
+            });
+        });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('#ai-skills, #eng-skills').forEach(el => barObserver.observe(el.parentElement));
+</script>
+
 </body>
 </html>

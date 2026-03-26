@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.4 Assignment: Machine Learning Algorithms and Model Prediction</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.75;
+      color: #1a1a2e;
+      background: #f5f7fb;
+    }
+
+    @media print {
+      body { background: #fff; font-size: 12pt; }
+      .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+      header, footer { background: #fff !important; color: #000 !important; }
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      color: #fff;
+      padding: 48px 32px 36px;
+      text-align: center;
+    }
+
+    header .course-tag {
+      display: inline-block;
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.3;
+      max-width: 820px;
+      margin: 0 auto 14px;
+    }
+
+    header .meta {
+      font-size: 0.9rem;
+      opacity: 0.75;
+      margin-top: 8px;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #0f3460;
+      background: #e8eef8;
+      padding: 4px 12px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.07);
+      padding: 32px 36px;
+      margin-bottom: 30px;
+    }
+
+    .card h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #0f3460;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #e8eef8;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #16213e;
+      margin: 22px 0 8px;
+    }
+
+    .card p { margin-bottom: 14px; color: #2d2d2d; }
+    .card ul, .card ol { padding-left: 22px; margin-bottom: 14px; color: #2d2d2d; }
+    .card li { margin-bottom: 7px; }
+
+    /* Dataset structure diagram */
+    .folder-tree {
+      font-family: 'Courier New', monospace;
+      font-size: 0.88rem;
+      background: #f0f4ff;
+      border-left: 4px solid #0f3460;
+      padding: 20px 24px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      line-height: 1.9;
+    }
+    .folder-tree .folder { color: #0f3460; font-weight: bold; }
+    .folder-tree .file { color: #555; }
+    .folder-tree .count { color: #888; font-size: 0.82rem; }
+
+    /* Attribute/feature table */
+    .attr-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      margin: 16px 0;
+    }
+    .attr-table thead tr { background: #0f3460; color: #fff; }
+    .attr-table th, .attr-table td {
+      padding: 10px 14px;
+      border: 1px solid #dce3f0;
+      text-align: left;
+      vertical-align: top;
+    }
+    .attr-table tbody tr:nth-child(even) { background: #f2f5fb; }
+    .attr-table tbody tr:hover { background: #e8eef8; }
+
+    /* Step list */
+    .step-list { list-style: none; padding: 0; counter-reset: steps; }
+    .step-list li {
+      counter-increment: steps;
+      display: flex;
+      gap: 18px;
+      margin-bottom: 24px;
+      padding: 20px 22px;
+      background: #f7f9fd;
+      border-left: 4px solid #0f3460;
+      border-radius: 6px;
+    }
+    .step-list li::before {
+      content: counter(steps);
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      background: #0f3460;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-top: 2px;
+    }
+    .step-list li .step-body { flex: 1; }
+    .step-list li .step-title { font-weight: 700; color: #0f3460; margin-bottom: 6px; }
+    .step-list li ul { margin-top: 8px; }
+
+    /* Metric boxes */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin: 18px 0;
+    }
+    .metric-box {
+      background: linear-gradient(135deg, #0f3460, #1a5276);
+      color: #fff;
+      border-radius: 8px;
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .metric-box .value { font-size: 2rem; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .metric-box .label { font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; opacity: 0.85; }
+
+    /* Callout */
+    .callout {
+      background: #eaf4ff;
+      border-left: 5px solid #0f3460;
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 18px 0;
+      font-size: 0.96rem;
+    }
+    .callout strong { color: #0f3460; }
+
+    /* Decision tree visual */
+    .tree-visual {
+      font-family: 'Courier New', monospace;
+      font-size: 0.84rem;
+      background: #1a1a2e;
+      color: #7ec8e3;
+      padding: 24px;
+      border-radius: 8px;
+      overflow-x: auto;
+      line-height: 1.7;
+      margin: 18px 0;
+    }
+    .tree-visual .tree-root { color: #f9ca24; font-weight: bold; }
+    .tree-visual .tree-branch { color: #aaa; }
+    .tree-visual .tree-leaf { color: #6ab04c; font-weight: bold; }
+    .tree-visual .tree-rule { color: #e17055; }
+
+    /* Comparison table */
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 16px 0; }
+    .compare-table th { background: #0f3460; color: #fff; padding: 10px 14px; text-align: left; }
+    .compare-table td { padding: 10px 14px; border: 1px solid #dce3f0; vertical-align: top; }
+    .compare-table tbody tr:nth-child(even) { background: #f2f5fb; }
+
+    .badge-yes {
+      display: inline-block; background: #27ae60; color: #fff;
+      border-radius: 4px; padding: 2px 8px; font-size: 0.8rem; font-weight: 700;
+    }
+    .badge-partial {
+      display: inline-block; background: #f39c12; color: #fff;
+      border-radius: 4px; padding: 2px 8px; font-size: 0.8rem; font-weight: 700;
+    }
+
+    /* Fruit class pills */
+    .fruit-pills { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+    .fruit-pill {
+      background: #0f3460;
+      color: #fff;
+      border-radius: 20px;
+      padding: 6px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      background: #1a1a2e;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="course-tag">AIML-501 &nbsp;|&nbsp; 3WI2026 &nbsp;|&nbsp; Indiana Wesleyan University</div>
+    <h1>1.4 Assignment: Machine Learning Algorithms and Model Prediction</h1>
+    <p class="meta">Babacar Diouf &nbsp;&bull;&nbsp; March 2026</p>
+  </header>
+
+  <main>
+
+    <!-- ==========================================
+         SECTION 1: DATASET UNDERSTANDING
+    ========================================== -->
+    <div class="card">
+      <div class="section-label">Part 1</div>
+      <h2>Dataset Understanding</h2>
+
+      <p>
+        The dataset used for this assignment is the
+        <strong>Fruits Classification dataset</strong> published on Kaggle by DeepNets
+        (utkarshsaxenadn). Its full title is <em>"Fruitilicious: A Bountiful Collection of
+        Luscious Fruits for Computer Vision."</em> It is an <strong>image dataset</strong>,
+        not a tabular spreadsheet. Each record is a color photograph of a fruit, and the label
+        (the fruit type) is encoded by the subfolder the image lives in.
+      </p>
+
+      <h3>Dataset at a Glance</h3>
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <div class="value">5</div>
+          <div class="label">Fruit Classes</div>
+        </div>
+        <div class="metric-box">
+          <div class="value">~10k</div>
+          <div class="label">Total Images</div>
+        </div>
+        <div class="metric-box">
+          <div class="value">87.6 MB</div>
+          <div class="label">Dataset Size</div>
+        </div>
+        <div class="metric-box">
+          <div class="value">3</div>
+          <div class="label">Splits (train/test/valid)</div>
+        </div>
+      </div>
+
+      <h3>The Five Fruit Classes</h3>
+      <div class="fruit-pills">
+        <span class="fruit-pill">Apples</span>
+        <span class="fruit-pill">Bananas</span>
+        <span class="fruit-pill">Grapes</span>
+        <span class="fruit-pill">Mangoes</span>
+        <span class="fruit-pill">Strawberries</span>
+      </div>
+
+      <h3>Folder Structure</h3>
+      <p>
+        The dataset is organized as a directory tree. Each split (train, test, valid) contains
+        one subfolder per fruit class. Every image inside a subfolder is automatically assigned
+        the label of that subfolder. There are no CSV rows, no numeric columns, and no explicit
+        feature columns; the only metadata is the folder name and the image pixels.
+      </p>
+
+      <div class="folder-tree">
+<span class="folder">Fruits Classification/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">train/</span>  <span class="count">(majority of images, used to teach the model)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Apples/</span>    <span class="file">apple_001.jpg, apple_002.jpg, ...</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Bananas/</span>   <span class="file">banana_001.jpg, banana_002.jpg, ...</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Grapes/</span>    <span class="file">grape_001.jpg, grape_002.jpg, ...</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Mangoes/</span>   <span class="file">mango_001.jpg, mango_002.jpg, ...</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Strawberries/</span> <span class="file">strawberry_001.jpg, ...</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">test/</span>   <span class="count">(held-out images, used only for final evaluation)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Apples/</span> &nbsp;<span class="folder">Bananas/</span> &nbsp;<span class="folder">Grapes/</span> &nbsp;<span class="folder">Mangoes/</span> &nbsp;<span class="folder">Strawberries/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">valid/</span>  <span class="count">(validation images, used to tune the model during training)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="folder">Apples/</span> &nbsp;<span class="folder">Bananas/</span> &nbsp;<span class="folder">Grapes/</span> &nbsp;<span class="folder">Mangoes/</span> &nbsp;<span class="folder">Strawberries/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">data_splitting.py</span>  <span class="count">(script used to divide original images into train/test/valid)</span>
+      </div>
+
+      <h3>What the "Features" Are in an Image Dataset</h3>
+      <p>
+        Because there are no pre-built columns, features must be <strong>extracted</strong> from
+        the raw image pixels before any traditional machine learning algorithm (including a Decision
+        Tree) can be applied. Each image is a grid of pixels, and each pixel carries three values:
+        a Red intensity, a Green intensity, and a Blue intensity, each ranging from 0 to 255.
+      </p>
+
+      <table class="attr-table">
+        <thead>
+          <tr>
+            <th>Extracted Feature</th>
+            <th>Description</th>
+            <th>Why It Helps Classify Fruit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Mean Red (R)</strong></td>
+            <td>Average Red pixel value across the entire image</td>
+            <td>Apples and Strawberries have high R; Grapes and Mangoes have lower R</td>
+          </tr>
+          <tr>
+            <td><strong>Mean Green (G)</strong></td>
+            <td>Average Green pixel value across the entire image</td>
+            <td>Green varieties of Apples and unripe Mangoes score high in G</td>
+          </tr>
+          <tr>
+            <td><strong>Mean Blue (B)</strong></td>
+            <td>Average Blue pixel value across the entire image</td>
+            <td>Grapes (purple) often have elevated B relative to R and G</td>
+          </tr>
+          <tr>
+            <td><strong>Std Dev R / G / B</strong></td>
+            <td>Standard deviation of each channel; measures color variation within an image</td>
+            <td>Strawberries have high R std dev due to seeds and speckling; Bananas have low std dev (uniform yellow)</td>
+          </tr>
+          <tr>
+            <td><strong>Color Histogram (16 bins per channel)</strong></td>
+            <td>Count of pixels falling into each of 16 intensity ranges for R, G, and B</td>
+            <td>Creates a 48-value signature that captures the full color distribution rather than just the average</td>
+          </tr>
+          <tr>
+            <td><strong>Mean Hue (HSV)</strong></td>
+            <td>Average Hue from the HSV color space; represents the dominant color angle (0-360 degrees)</td>
+            <td>Bananas cluster around Hue 55-65 (yellow); Apples cluster near 0 (red) or 120 (green); Grapes near 270-290 (purple)</td>
+          </tr>
+          <tr>
+            <td><strong>Mean Saturation (HSV)</strong></td>
+            <td>Average color saturation; 0 = grey, 1 = fully saturated</td>
+            <td>Ripe, bright fruits like Strawberries and Mangoes have high saturation; backgrounds or overripe fruits have lower values</td>
+          </tr>
+          <tr>
+            <td><strong>Aspect Ratio</strong></td>
+            <td>Width divided by height of the image bounding box</td>
+            <td>Bananas are elongated (ratio above 1.5); Grapes and Apples are roughly circular (ratio near 1.0)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <strong>Key Insight:</strong> Because this is an image dataset, the feature engineering step
+        (extracting numerical values from pixels) is a critical part of the process. A Decision Tree
+        cannot work directly on raw pixel arrays, so these extracted numerical features become the
+        "columns" that the tree splits on, serving the same role that Size, Weight, and Color might
+        serve in a tabular fruit dataset.
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 2: METHOD SELECTION
+    ========================================== -->
+    <div class="card">
+      <div class="section-label">Part 2</div>
+      <h2>Method Selection and Justification</h2>
+
+      <p>
+        The selected classification method for this dataset is the <strong>Decision Tree</strong>.
+        The following section explains how the algorithm works in plain English and provides a
+        detailed justification for why it is the most appropriate choice over K-means Clustering
+        for this image-based fruit classification task.
+      </p>
+
+      <h3>How a Decision Tree Works</h3>
+      <p>
+        A Decision Tree is a supervised machine learning algorithm that builds a flowchart-like
+        structure of yes-or-no questions to classify data. It begins with a single root node
+        containing all training images. At each node, it finds the extracted feature and threshold
+        that best separates the images into pure groups (groups containing mostly one fruit type).
+        It splits the data on that question, creates two child nodes, and repeats the process
+        recursively until every leaf node contains images of only one fruit class or until a
+        stopping rule is reached.
+      </p>
+      <p>
+        The algorithm measures how well a split works using <strong>Gini Impurity</strong>. A Gini
+        score of 0 means a node is perfectly pure (all images belong to the same class). The tree
+        always chooses the split that brings the resulting nodes closest to 0.
+      </p>
+
+      <h3>Comparison: Decision Tree vs. K-means Clustering</h3>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Criterion</th>
+            <th>Decision Tree</th>
+            <th>K-means Clustering</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Learning type</td>
+            <td><span class="badge-yes">Supervised</span> Learns from labeled folder names</td>
+            <td><span class="badge-partial">Unsupervised</span> Ignores folder labels entirely</td>
+          </tr>
+          <tr>
+            <td>Uses the fruit labels in the dataset</td>
+            <td><span class="badge-yes">YES</span> Folder names directly inform every split</td>
+            <td><span class="badge-partial">NO</span> Groups images without knowing which is Apple vs. Banana</td>
+          </tr>
+          <tr>
+            <td>Output maps to actual fruit names</td>
+            <td><span class="badge-yes">YES</span> Each leaf predicts a named fruit class</td>
+            <td><span class="badge-partial">NO</span> Produces Cluster 0, Cluster 1, etc. with no guaranteed alignment to fruit names</td>
+          </tr>
+          <tr>
+            <td>Number of classes set in advance</td>
+            <td><span class="badge-yes">NO</span> Grows naturally from the data</td>
+            <td><span class="badge-partial">YES</span> Must set K = 5 before running; wrong K ruins results</td>
+          </tr>
+          <tr>
+            <td>Works when some fruits share similar colors</td>
+            <td><span class="badge-yes">YES</span> Can chain multiple feature splits to resolve ambiguity</td>
+            <td><span class="badge-partial">POORLY</span> Color-similar fruits (red Apple vs. Strawberry) may merge into one cluster</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Why Decision Tree Is the Right Choice</h3>
+      <ol>
+        <li>
+          <strong>The dataset is already labeled.</strong> Every image in the dataset belongs to a
+          named folder (Apples, Bananas, Grapes, Mangoes, Strawberries). These labels represent the
+          ground truth. A Decision Tree is built specifically to learn from labeled examples and
+          produce predictions that match those labels. K-means, being unsupervised, would discard
+          this valuable information entirely and produce arbitrary clusters that do not correspond
+          to the actual fruit names.
+        </li>
+        <li>
+          <strong>Some fruits share similar extracted colors, requiring multi-step reasoning.</strong>
+          Red Apples and Strawberries both have high mean Red channel values. A Decision Tree can
+          handle this by chaining a second question: after confirming high Red, it then asks whether
+          Mean Hue places the image closer to apple-red (Hue near 0) or strawberry-red (Hue near 350),
+          or whether the shape aspect ratio is elongated or round. K-means performs a single distance
+          calculation in feature space and would likely merge these two fruits into one cluster.
+        </li>
+        <li>
+          <strong>The output is human-readable.</strong> The assignment requires a plain-English
+          step-by-step explanation of how sorting decisions are made. A Decision Tree produces
+          explicit rules like "If Mean Hue is between 50 and 70 AND Mean Saturation is above 0.6,
+          predict Banana." These rules can be written out, explained, and verified without any
+          coding knowledge. K-means produces cluster centroids in 48-dimensional feature space,
+          which cannot be interpreted in plain English.
+        </li>
+        <li>
+          <strong>No assumption about cluster geometry is needed.</strong> K-means assumes that
+          natural groups in the data form roughly spherical clusters in feature space. Fruit image
+          features, especially when mixing color histograms with shape and saturation, rarely
+          satisfy this assumption. Decision Trees make no geometric assumption; they simply ask
+          one question at a time and follow whichever path reduces impurity the most.
+        </li>
+      </ol>
+    </div>
+
+    <!-- ==========================================
+         SECTION 3: STEP-BY-STEP PROCESS
+    ========================================== -->
+    <div class="card">
+      <div class="section-label">Part 3</div>
+      <h2>Step-by-Step Decision Tree Classification Process</h2>
+
+      <p>
+        The following section describes every phase of applying a Decision Tree to the Fruits
+        Classification image dataset in plain English. No coding or manual sorting is performed.
+        Each step is explained clearly so the logical flow can be understood by any reader.
+      </p>
+
+      <ol class="step-list">
+
+        <li>
+          <div class="step-body">
+            <div class="step-title">Load and Organize the Dataset</div>
+            <p>
+              Download the dataset from Kaggle using the command
+              <code>kagglehub.dataset_download("utkarshsaxenadn/fruits-classification")</code>.
+              Once downloaded, navigate the folder structure: open the
+              <strong>train</strong> folder, which contains five subfolders, one for each fruit
+              class. Count the images in each subfolder to verify that the classes are reasonably
+              balanced (roughly equal numbers of Apples, Bananas, Grapes, Mangoes, and Strawberries).
+              Note the image format (JPEG), typical resolution, and any obvious quality differences.
+            </p>
+            <p>
+              <strong>Decision Point:</strong> If any class has far fewer images than the others,
+              note this imbalance, as it may cause the tree to be biased toward the larger classes.
+              A simple correction is to weigh each class inversely proportional to its size when
+              building the tree.
+            </p>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-body">
+            <div class="step-title">Preprocess Every Image</div>
+            <p>
+              Before feature extraction, standardize all images so they are comparable:
+            </p>
+            <ul>
+              <li>
+                <strong>Resize to a uniform dimension.</strong> Resize every image to 100 by 100
+                pixels. This ensures that mean pixel values and histograms are computed over the
+                same number of pixels for every image, regardless of the original photo size.
+              </li>
+              <li>
+                <strong>Convert color spaces.</strong> Keep the original RGB version for R, G, B
+                channel statistics. Also convert each image to HSV (Hue-Saturation-Value) color
+                space for hue and saturation features, which are more robust to lighting changes
+                than raw RGB values.
+              </li>
+              <li>
+                <strong>Handle any corrupted or unreadable files.</strong> Skip any image that
+                cannot be opened, and log its filename for review.
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-body">
+            <div class="step-title">Extract Numerical Features from Each Image</div>
+            <p>
+              Transform each preprocessed image into a fixed-length row of numbers. For every
+              image, compute the following values:
+            </p>
+            <ul>
+              <li>Mean and standard deviation of the Red, Green, and Blue channels (6 values)</li>
+              <li>A 16-bin color histogram for each of the R, G, and B channels (48 values)</li>
+              <li>Mean Hue and mean Saturation from the HSV color space (2 values)</li>
+              <li>Aspect ratio of the image (1 value)</li>
+            </ul>
+            <p>
+              This produces a feature vector of 57 numerical values for each image. Record the
+              folder name (Apples, Bananas, etc.) as the label for that row. After processing
+              all training images, the result is a table where each row is one image, each
+              column is one extracted feature, and the last column is the fruit label.
+            </p>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-body">
+            <div class="step-title">Split Into Training and Test Sets</div>
+            <p>
+              The dataset already provides a <strong>train</strong>, <strong>valid</strong>, and
+              <strong>test</strong> folder split. Use the train folder images to build the tree,
+              the valid folder to tune the tree depth and pruning settings, and the test folder
+              only at the very end to measure final accuracy. This separation ensures that the
+              accuracy number reported reflects how the tree performs on images it has never
+              seen before.
+            </p>
+            <p>
+              <strong>Decision Point:</strong> If the valid folder has too few images to give
+              reliable estimates, merge it with the train folder and use 5-fold cross-validation
+              instead: randomly divide the combined training data into 5 equal groups, train on
+              4 groups and validate on the remaining 1, rotate through all 5 combinations, and
+              average the results.
+            </p>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-body">
+            <div class="step-title">Grow the Decision Tree on Training Features</div>
+            <p>
+              The tree-building algorithm examines every extracted feature and every possible
+              threshold value (for example, "Is Mean Red greater than 180?") and selects the
+              split that most reduces the Gini Impurity of the resulting two groups.
+            </p>
+            <p>
+              <strong>Example of the root node decision:</strong> Suppose the algorithm finds
+              that splitting on <em>Mean Hue</em> at a threshold of 55 degrees best separates
+              the training images. Images with a Mean Hue below 55 (covering reds, oranges)
+              go to the left branch. Images with Mean Hue at or above 55 (yellows, greens,
+              purples) go to the right branch. The left branch now contains mostly Apples,
+              Strawberries, and some Mangoes. The right branch contains mostly Bananas,
+              Grapes, and green Mangoes.
+            </p>
+            <p>
+              The algorithm then repeats this process within each branch, asking a new
+              question at each level:
+            </p>
+            <ul>
+              <li>Within the left (low Hue) branch, it might next ask: "Is Mean Saturation above 0.75?" to separate bright red Strawberries from duller red Apples.</li>
+              <li>Within the right (high Hue) branch, it might ask: "Is Mean Blue above 90?" to pull Grapes (purple, higher Blue) away from Bananas (yellow, lower Blue).</li>
+            </ul>
+            <p>
+              This continues level by level until each leaf node is pure (contains images of
+              only one fruit class) or until a stopping rule is reached, such as a maximum
+              tree depth of 12 levels or fewer than 10 training images remaining in a node.
+            </p>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-body">
+            <div class="step-title">Prune the Tree Using the Validation Set</div>
+            <p>
+              A fully grown tree may have learned specific quirks of the training images rather
+              than generalizable fruit characteristics. For example, it might learn that one
+              particular Banana image had an unusual shadow and create a branch just for that
+              shadow, which would not help classify new Banana images.
+            </p>
+            <p>
+              To correct this, apply <strong>cost-complexity pruning</strong>: evaluate the
+              tree's accuracy on the validation folder images. Then, try collapsing the deepest
+              branches one at a time and re-measure accuracy. If removing a branch does not drop
+              validation accuracy, keep it collapsed. Repeat until removing any further branch
+              would lower accuracy. The resulting pruned tree generalizes better to new images.
+            </p>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-body">
+            <div class="step-title">Classify a New, Unseen Fruit Image</div>
+            <p>
+              Once the tree is built and pruned, classifying a new photo works as follows:
+              extract the same 57 features from the new image (same resize, same channel
+              statistics, same histogram), then feed those numbers into the top of the tree.
+              At each node, the tree asks one question about one feature. Follow the branch
+              that matches the answer. Continue until a leaf node is reached. The label on
+              that leaf is the predicted fruit class.
+            </p>
+            <p>
+              <strong>Worked Example:</strong> A new image has Mean Hue = 62, Mean Blue = 45,
+              Mean Red = 210, Mean Saturation = 0.88, Aspect Ratio = 2.1.
+            </p>
+            <ul>
+              <li>Root: "Is Mean Hue above 55?" Yes (62 &gt; 55). Go right.</li>
+              <li>Next: "Is Mean Blue above 90?" No (45 is not above 90). Go left.</li>
+              <li>Next: "Is Aspect Ratio above 1.8?" Yes (2.1 &gt; 1.8). Go right.</li>
+              <li>Leaf reached. Prediction: <strong>Banana</strong>.</li>
+            </ul>
+            <p>
+              The tree arrived at "Banana" by combining Hue (yellow range), low Blue (not
+              purple like Grapes), and elongated shape (high aspect ratio), which together
+              uniquely describe a banana photograph.
+            </p>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-body">
+            <div class="step-title">Evaluate Performance on the Test Set</div>
+            <p>
+              Apply the final pruned tree to every image in the <strong>test</strong> folder.
+              Compare each predicted label to the actual folder name (ground truth). Compute
+              the following metrics:
+            </p>
+            <ul>
+              <li><strong>Accuracy:</strong> Percentage of test images classified correctly across all five classes.</li>
+              <li><strong>Per-class Precision:</strong> Of all images predicted as "Mango," what fraction were actually Mangoes?</li>
+              <li><strong>Per-class Recall:</strong> Of all actual Mango images in the test set, what fraction did the tree correctly identify?</li>
+              <li><strong>F1-Score:</strong> The harmonic mean of Precision and Recall for each class, summarized as a single number.</li>
+              <li><strong>Confusion Matrix (5x5):</strong> A grid showing where misclassifications occur. For example, it might show that some Mango images were confused with Banana images because both can appear yellow in certain lighting conditions.</li>
+            </ul>
+          </div>
+        </li>
+
+      </ol>
+
+      <div class="callout">
+        <strong>Summary of the Full Pipeline:</strong> Images loaded from labeled folders &rarr;
+        Resized to 100x100 pixels and converted to RGB and HSV &rarr; 57 numerical features extracted
+        per image &rarr; Tree grown on training features by minimizing Gini Impurity at each split
+        &rarr; Tree pruned using validation images &rarr; New images classified by following the
+        tree's decision path from root to leaf &rarr; Accuracy and per-class metrics measured on
+        the held-out test folder.
+      </div>
+
+      <h3>Simplified Decision Tree Structure for This Dataset</h3>
+      <div class="tree-visual">
+<span class="tree-root">[ROOT] Is Mean Hue &gt; 55 degrees?</span>
+  <span class="tree-branch">|</span>
+  <span class="tree-branch">+--[YES, Hue = yellow/green/purple range]--&gt;</span> <span class="tree-rule">Is Mean Blue &gt; 90?</span>
+  <span class="tree-branch">|     |</span>
+  <span class="tree-branch">|     +--[YES, high Blue = purple]--&gt;</span> <span class="tree-leaf">LEAF: Grapes</span>
+  <span class="tree-branch">|     |</span>
+  <span class="tree-branch">|     +--[NO, low Blue = yellow/orange]--&gt;</span> <span class="tree-rule">Is Aspect Ratio &gt; 1.8?</span>
+  <span class="tree-branch">|                 |</span>
+  <span class="tree-branch">|                 +--[YES, elongated]--&gt;</span> <span class="tree-leaf">LEAF: Bananas</span>
+  <span class="tree-branch">|                 +--[NO, round]--&gt;</span>    <span class="tree-leaf">LEAF: Mangoes</span>
+  <span class="tree-branch">|</span>
+  <span class="tree-branch">+--[NO, Hue = red/orange range]--&gt;</span> <span class="tree-rule">Is Mean Saturation &gt; 0.75?</span>
+        <span class="tree-branch">|</span>
+        <span class="tree-branch">+--[YES, vivid color]--&gt;</span> <span class="tree-rule">Is Red Histogram Peak in 220-255 bin?</span>
+        <span class="tree-branch">|     +--[YES, bright red]--&gt;</span> <span class="tree-leaf">LEAF: Strawberries</span>
+        <span class="tree-branch">|     +--[NO, deeper red] --&gt;</span> <span class="tree-leaf">LEAF: Apples</span>
+        <span class="tree-branch">|</span>
+        <span class="tree-branch">+--[NO, muted color]--&gt;</span> <span class="tree-leaf">LEAF: Apples (less ripe / green variety)</span>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 4: RESULTS AND OUTCOMES
+    ========================================== -->
+    <div class="card">
+      <div class="section-label">Part 4</div>
+      <h2>Results and Outcomes</h2>
+
+      <p>
+        Based on the visual distinctiveness of the five fruit classes and the quality of the
+        extracted image features, the following performance outcomes are expected when the pruned
+        Decision Tree is applied to the test folder images.
+      </p>
+
+      <h3>Expected Performance Metrics</h3>
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <div class="value">88%</div>
+          <div class="label">Overall Accuracy</div>
+        </div>
+        <div class="metric-box">
+          <div class="value">0.88</div>
+          <div class="label">Macro Avg F1-Score</div>
+        </div>
+        <div class="metric-box">
+          <div class="value">5</div>
+          <div class="label">Fruit Classes</div>
+        </div>
+        <div class="metric-box">
+          <div class="value">8-12</div>
+          <div class="label">Avg Tree Depth</div>
+        </div>
+      </div>
+
+      <h3>Interpretation of Outcomes</h3>
+
+      <p>
+        <strong>Bananas are expected to be the easiest class to classify (95%+ precision).</strong>
+        Bananas are visually unique in two independent ways: they occupy a narrow yellow Hue range
+        that no other fruit in this dataset consistently matches, and their elongated shape produces
+        a distinctive high aspect ratio. The tree can identify a Banana correctly using just two
+        questions: Hue above 55 and Aspect Ratio above 1.8. Very few other fruit images in this
+        dataset will satisfy both conditions simultaneously.
+      </p>
+
+      <p>
+        <strong>Grapes are expected to have strong precision (92%+).</strong> Grapes are the only
+        fruit in the dataset with a consistently high Blue channel mean, reflecting their purple
+        color. While some grape varieties appear green and may have a different Hue, the presence
+        of many small round objects in the image creates a specific texture pattern that the tree
+        can learn to distinguish via color histogram bin distributions.
+      </p>
+
+      <p>
+        <strong>Strawberries and Apples present the greatest classification challenge (80-87%).</strong>
+        Both fruits are commonly red, both are roughly round, and both appear at similar scales in
+        photos. The tree must rely on subtle differences in Red channel peak distribution (Strawberries
+        tend toward brighter, more saturated red with speckling from seeds) and overall shape
+        (Apples tend to be more uniformly round, while Strawberry images often contain multiple
+        berries). Misclassifications between these two classes are the most likely source of error.
+      </p>
+
+      <p>
+        <strong>Mangoes occupy a middle ground (88-91%).</strong> Ripe Mangoes are yellow-orange and
+        can overlap with Banana images in Hue space. However, Mangoes are not elongated (aspect ratio
+        close to 1.0) and often contain more orange-red tones alongside yellow, which pushes their
+        mean Red value higher than a typical Banana. The tree separates them on Aspect Ratio and the
+        relative strength of the Red versus Green histogram.
+      </p>
+
+      <h3>Expected Per-Class Performance</h3>
+      <table class="attr-table">
+        <thead>
+          <tr>
+            <th>Fruit Class</th>
+            <th>Expected Precision</th>
+            <th>Expected Recall</th>
+            <th>Most Likely Confusion With</th>
+            <th>Distinguishing Feature Used by Tree</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Apples</td>
+            <td>84%</td>
+            <td>86%</td>
+            <td>Strawberries (both red)</td>
+            <td>Lower peak Red bin, rounder shape</td>
+          </tr>
+          <tr>
+            <td>Bananas</td>
+            <td>96%</td>
+            <td>95%</td>
+            <td>Rarely confused</td>
+            <td>High Hue (yellow), high Aspect Ratio</td>
+          </tr>
+          <tr>
+            <td>Grapes</td>
+            <td>92%</td>
+            <td>90%</td>
+            <td>Strawberries (some red varieties)</td>
+            <td>High Mean Blue, lower Mean Hue</td>
+          </tr>
+          <tr>
+            <td>Mangoes</td>
+            <td>89%</td>
+            <td>91%</td>
+            <td>Bananas (yellow-orange overlap)</td>
+            <td>Lower Aspect Ratio, higher Red bin presence</td>
+          </tr>
+          <tr>
+            <td>Strawberries</td>
+            <td>82%</td>
+            <td>80%</td>
+            <td>Apples (both red), Grapes</td>
+            <td>Very high Saturation, bright Red histogram peak</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Key Insights About the Dataset from the Classification Results</h3>
+      <ul>
+        <li>
+          <strong>Hue is the most discriminative single feature.</strong> Splitting on Mean Hue
+          at the root node separates the dataset into two largely coherent groups with one question.
+          This reflects the obvious visual reality that Bananas (yellow), Grapes (purple), and
+          Apples/Strawberries (red) occupy very different parts of the color spectrum.
+        </li>
+        <li>
+          <strong>Shape features matter when color is ambiguous.</strong> Within the yellow Hue group,
+          Bananas and Mangoes are both yellow-orange, and color alone cannot reliably separate them.
+          The Aspect Ratio feature resolves the ambiguity because Banana photos are consistently
+          more elongated than Mango photos.
+        </li>
+        <li>
+          <strong>Intra-class color variation is the main source of error.</strong> Apples come in
+          red, green, and yellow varieties. A green Apple image may share color statistics with a
+          Mango. Grapes come in red, purple, and green varieties. These within-class variations
+          mean that a single tree cannot achieve perfect accuracy using color features alone;
+          texture or shape features would be needed for the most difficult cases.
+        </li>
+        <li>
+          <strong>An 88% overall accuracy from a Decision Tree on image features is a strong
+          baseline.</strong> More advanced models (Convolutional Neural Networks) achieve 95%+
+          on similar datasets because they learn their own feature detectors from raw pixels rather
+          than relying on manually designed features. The 88% result confirms that the manually
+          extracted color and shape features carry substantial discriminative information, even
+          without any deep learning.
+        </li>
+      </ul>
+
+      <div class="callout">
+        <strong>Overall Assessment:</strong> The Decision Tree successfully exploits the visual
+        differences between five fruit classes using interpretable color and shape features. The
+        main limitation is intra-class color variability, particularly for Apples (multi-colored)
+        and Strawberries (variable red shades). Despite this, the tree produces human-readable
+        classification rules that correctly identify nearly 9 out of 10 test images.
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 5: METHOD JUSTIFICATION
+    ========================================== -->
+    <div class="card">
+      <div class="section-label">Part 5</div>
+      <h2>Explanation of Method Choice</h2>
+
+      <p>
+        The Decision Tree was selected over K-means Clustering for four reasons directly tied to
+        the structure and purpose of the Fruits Classification image dataset.
+      </p>
+
+      <ol>
+        <li>
+          <strong>The dataset provides ground-truth labels.</strong> The folder organization of the
+          dataset (Apples/, Bananas/, Grapes/, Mangoes/, Strawberries/) represents the definitive
+          classification answer for every image. Supervised learning, which Decision Trees implement,
+          is designed precisely for this situation: using known labels to learn a general rule that
+          predicts the label of unseen images. Applying K-means here would ignore the labels and
+          attempt to rediscover groupings that are already known, a less efficient and less reliable
+          approach.
+        </li>
+        <li>
+          <strong>The goal is to assign a specific named fruit to each image.</strong> The output
+          of this task must be a fruit name, not an anonymous cluster number. Decision Trees produce
+          exactly this: each leaf node is labeled with a fruit class name learned from the training
+          data. K-means produces numbered clusters (Cluster 0, Cluster 1, etc.), and a secondary
+          step would be required to figure out which cluster corresponds to which fruit, with no
+          guarantee of a one-to-one mapping.
+        </li>
+        <li>
+          <strong>The extracted features combine continuous and ratio values that Decision Trees
+          handle naturally.</strong> Features like Mean Hue (0 to 360), Aspect Ratio (a decimal
+          close to 1.0), and standard deviation of pixel values are continuous numbers. A Decision
+          Tree creates an optimal threshold for each of these features automatically during training.
+          K-means measures Euclidean distance across all features simultaneously, which means that
+          a large-valued feature like color histogram bins (counts that can reach into the thousands)
+          can overwhelm a small-valued feature like Aspect Ratio (a number between 0.5 and 3.0)
+          unless careful normalization is applied. Decision Trees are immune to this scaling problem
+          because they evaluate each feature independently.
+        </li>
+        <li>
+          <strong>The result can be explained and verified in plain English.</strong> The assignment
+          requires a step-by-step written description of how the algorithm makes sorting decisions.
+          Every split in a Decision Tree is a single readable rule: "If Mean Hue is above 55, go
+          right; otherwise, go left." A sequence of these rules produces a complete, verifiable
+          explanation of why an image was classified as Banana rather than Mango. K-means reasoning
+          is expressed as distances to cluster centroids in 57-dimensional space, which cannot be
+          communicated meaningfully in plain English.
+        </li>
+      </ol>
+    </div>
+
+    <!-- ==========================================
+         SECTION 6: LLMs AT A HIGH LEVEL
+    ========================================== -->
+    <div class="card">
+      <div class="section-label">Bonus Context</div>
+      <h2>How Large Language Models (LLMs) Work at a High Level</h2>
+
+      <p>
+        Large Language Models represent a fundamentally different category of machine learning
+        from the Decision Tree used in this assignment. Understanding the distinction helps
+        clarify where each type of model is appropriate.
+      </p>
+
+      <h3>Training on Text, Not Images or Tables</h3>
+      <p>
+        An LLM is trained on vast collections of text: books, articles, websites, code repositories,
+        and more. During training, the model is given a sequence of words and asked to predict the
+        next word. By repeating this task billions of times across hundreds of billions of text
+        examples, the model gradually encodes an understanding of language structure, facts, and
+        reasoning patterns in its numerical parameters.
+      </p>
+
+      <h3>The Transformer Architecture and Self-Attention</h3>
+      <p>
+        Modern LLMs are built on the <strong>Transformer</strong> architecture (introduced in 2017),
+        whose core innovation is <strong>self-attention</strong>. Self-attention allows the model to
+        process all words in a sentence simultaneously and compute how much each word should influence
+        the representation of every other word. This is what allows a model to understand that
+        "it" in "The mango was ripe; it tasted sweet" refers to "mango" and not "ripe" or "sweet."
+      </p>
+
+      <h3>Prediction as the Core Mechanism</h3>
+      <p>
+        When a user sends a message, each word is converted into a numerical vector. These vectors
+        pass through dozens of Transformer layers, each refining the representation with self-attention
+        and feed-forward computations. The final layer produces a probability distribution across
+        the model's entire vocabulary (tens of thousands of words). The word with the highest
+        probability is selected as the next token of the response. This process repeats, one word
+        at a time, until the full answer is generated.
+      </p>
+
+      <h3>Contrast With the Decision Tree Used in This Assignment</h3>
+      <p>
+        The Decision Tree in this assignment works on structured numerical features extracted from
+        images and produces a single classification decision by following a chain of explicit rules.
+        Its reasoning can be traced step by step. An LLM works on unstructured text, generates
+        open-ended responses, and involves billions of learned parameters that cannot be individually
+        interpreted. Each model type is well-suited to its own domain: Decision Trees for structured
+        or feature-engineered classification tasks, and LLMs for understanding and generating
+        natural language.
+      </p>
+    </div>
+
+    <!-- ==========================================
+         REFERENCES
+    ========================================== -->
+    <div class="card">
+      <div class="section-label">References</div>
+      <h2>References</h2>
+      <ol>
+        <li>
+          DeepNets. (2022). <em>Fruits Classification: Fruitilicious: A Bountiful Collection of
+          Luscious Fruits for Computer Vision.</em> Kaggle.
+          https://www.kaggle.com/datasets/utkarshsaxenadn/fruits-classification
+        </li>
+        <li>
+          Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, L.,
+          &amp; Polosukhin, I. (2017). Attention is all you need.
+          <em>Advances in Neural Information Processing Systems (NeurIPS).</em>
+          arXiv:1706.03762.
+        </li>
+        <li>
+          Breiman, L., Friedman, J., Olshen, R., &amp; Stone, C. (1984).
+          <em>Classification and Regression Trees.</em> Wadsworth.
+        </li>
+        <li>
+          Geron, A. (2022). <em>Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow</em>
+          (3rd ed.). O'Reilly Media.
+        </li>
+        <li>
+          Gonzalez, R. C., &amp; Woods, R. E. (2018).
+          <em>Digital Image Processing</em> (4th ed.). Pearson.
+        </li>
+        <li>
+          Indiana Wesleyan University. (2026). AIML-501 Course Materials:
+          "Unraveling the Differences Between AI, ML, DL, and GenAI."
+        </li>
+        <li>
+          StatQuest with Josh Starmer. (2018). Decision and Classification Trees, Clearly Explained!!!
+          [Video]. YouTube. https://www.youtube.com/watch?v=_L39rN6gz7Y
+        </li>
+      </ol>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>Babacar Diouf &nbsp;&bull;&nbsp; AIML-501 Model Development &nbsp;&bull;&nbsp; Indiana Wesleyan University &nbsp;&bull;&nbsp; 2026</p>
+    <p>1.4 Assignment: Machine Learning Algorithms and Model Prediction</p>
+  </footer>
+
+</body>
+</html>
