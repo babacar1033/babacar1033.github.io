@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artifact 3: LLM Infrastructure – Training Process & Costs | Babacar Diouf</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@300;400;700&family=Fira+Code:wght@400;500&display=swap');
+
+        body { font-family: 'Lato', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Merriweather', serif; }
+        code { font-family: 'Fira Code', monospace; }
+
+        /* ── Portfolio Nav ── */
+        .portfolio-nav {
+            background: #0f172a;
+            border-bottom: 1px solid rgba(16,185,129,0.25);
+        }
+
+        /* ── Dark hero ── */
+        .hero-gradient {
+            background-color: #0f172a;
+            background-image:
+                linear-gradient(rgba(16,185,129,0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16,185,129,0.07) 1px, transparent 1px),
+                linear-gradient(135deg, #0f172a 0%, #064e3b 40%, #0f3460 100%);
+            background-size: 40px 40px, 40px 40px, 100% 100%;
+        }
+
+        /* ── Section divider ── */
+        .section-divider {
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #06b6d4, #3b82f6);
+            border-radius: 9999px;
+        }
+
+        /* ── Stat box ── */
+        .stat-box {
+            background: linear-gradient(135deg, #064e3b, #0f3460);
+        }
+
+        /* ── Pipeline stage card ── */
+        .pipeline-stage {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .pipeline-stage:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.14);
+        }
+
+        /* ── Cost pillar card ── */
+        .pillar-card {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .pillar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        /* ── Scroll fade-in ── */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Cost bar chart ── */
+        .cost-bar {
+            transition: width 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* ── Pipeline connector ── */
+        .pipeline-arrow {
+            color: #10b981;
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        /* ── Badge ── */
+        .model-badge-openai  { background:#dbeafe; color:#1e40af; }
+        .model-badge-meta    { background:#fce7f3; color:#9d174d; }
+        .model-badge-google  { background:#fef3c7; color:#92400e; }
+        .model-badge-anthropic { background:#d1fae5; color:#065f46; }
+
+        /* ── Animated pulse for pipeline ── */
+        @keyframes slide-right {
+            0%   { transform: translateX(-100%); opacity: 0; }
+            50%  { opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+        .data-flow {
+            overflow: hidden;
+            position: relative;
+        }
+        .data-flow::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(16,185,129,0.4), transparent);
+            animation: slide-right 2.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+<!-- ══════════════════════════════════════════
+     PORTFOLIO NAV
+═══════════════════════════════════════════ -->
+<nav class="portfolio-nav text-white px-6 py-3 sticky top-0 z-50">
+    <div class="container mx-auto max-w-6xl flex items-center justify-between flex-wrap gap-3">
+        <span class="text-emerald-300 text-xs font-semibold tracking-widest uppercase">AIML-501 Portfolio · Babacar Diouf</span>
+        <div class="flex gap-2 flex-wrap">
+            <a href="artifact-algorithm-types.html"
+               class="bg-blue-600/30 border border-blue-500/40 text-blue-200 hover:bg-blue-600/50 px-4 py-1.5 rounded-full text-xs font-medium transition">
+                Artifact 1: ML Algorithm Types
+            </a>
+            <a href="artifact-neural-network.html"
+               class="bg-purple-600/30 border border-purple-500/40 text-purple-200 hover:bg-purple-600/50 px-4 py-1.5 rounded-full text-xs font-medium transition">
+                Artifact 2: Neural Networks
+            </a>
+            <a href="artifact-llm-infrastructure.html"
+               class="bg-emerald-600/60 border border-emerald-400/60 text-emerald-100 px-4 py-1.5 rounded-full text-xs font-medium">
+                Artifact 3: LLM Infrastructure &#10003;
+            </a>
+        </div>
+    </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<header class="hero-gradient text-white py-20 px-6 relative overflow-hidden">
+    <div class="absolute top-10 right-16 w-64 h-64 rounded-full opacity-10"
+         style="background: radial-gradient(circle, #10b981, transparent 70%);"></div>
+    <div class="absolute bottom-0 left-8 w-48 h-48 rounded-full opacity-10"
+         style="background: radial-gradient(circle, #06b6d4, transparent 70%);"></div>
+
+    <div class="container mx-auto max-w-5xl relative z-10">
+        <p class="text-emerald-400 font-semibold tracking-widest uppercase text-sm mb-3">AIML-501 · Portfolio Artifact 3</p>
+        <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">
+            LLM Infrastructure:<br>
+            <span class="text-transparent bg-clip-text"
+                  style="background-image: linear-gradient(90deg, #34d399, #22d3ee, #60a5fa);">Training Process &amp; Costs</span>
+        </h1>
+        <p class="text-slate-300 text-lg md:text-xl max-w-3xl leading-relaxed">
+            A visual framework breaking down the end-to-end training pipeline for large language models — from raw data acquisition through RLHF and deployment — with real-world cost analysis for GPT-4, LLaMA-3, Gemini Ultra, and Claude 3 Opus.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+            <span class="bg-emerald-600/30 border border-emerald-500/40 text-emerald-200 px-4 py-1.5 rounded-full text-sm font-medium">7-Stage Training Pipeline</span>
+            <span class="bg-cyan-600/30 border border-cyan-500/40 text-cyan-200 px-4 py-1.5 rounded-full text-sm font-medium">4 Major Models Compared</span>
+            <span class="bg-blue-600/30 border border-blue-500/40 text-blue-200 px-4 py-1.5 rounded-full text-sm font-medium">4 Cost Pillars Analyzed</span>
+        </div>
+    </div>
+</header>
+
+
+<main class="container mx-auto max-w-6xl px-4 py-12 space-y-16">
+
+    <!-- ══════════════════════════════════════════
+         ARTIFACT OVERVIEW
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Artifact Overview</h2>
+        <div class="section-divider mb-8"></div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-emerald-600 mb-1">Title</h3>
+                    <p class="text-gray-800 font-semibold text-lg">Generative AI LLM Infrastructure: Training Process and Costs — A Visual Framework</p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-emerald-600 mb-1">Introduction</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Training advanced generative AI large language models — such as GPT-4, LLaMA-3, Gemini Ultra, and Claude 3 Opus — requires massive infrastructure investments spanning data acquisition, GPU/TPU compute clusters, energy consumption, and months of continuous operation. For AI practitioners, product managers, and investment decision-makers, understanding where these costs originate and how they scale is no longer optional. This artifact demystifies the LLM training lifecycle through visual analysis and real-world cost data.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-emerald-600 mb-1">Description</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        This framework walks through the seven-stage LLM training pipeline (data collection → preprocessing → tokenization → pre-training → fine-tuning → RLHF → deployment), maps four cost pillars (Data, Compute, Energy, Time), and provides a side-by-side comparison of infrastructure choices and estimated training costs across four leading foundation models.
+                    </p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-emerald-600 mb-1">Objective</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        To clearly communicate the end-to-end LLM training process; identify and quantify the four primary cost categories (data, compute, energy, time); compare infrastructure choices across leading foundation models; and present findings in a visually compelling, portfolio-quality format accessible to both technical and non-technical audiences.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-emerald-600 mb-1">Process</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        I reviewed published research papers, technical reports, and cost analyses from OpenAI, Meta, Google DeepMind, and Anthropic, supplemented by public compute cost estimates from SemiAnalysis and Epoch AI. I mapped the training pipeline stages, categorized cost drivers, and synthesized infrastructure comparisons into an interactive visual framework built with HTML, CSS (Tailwind), and JavaScript.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-widest text-emerald-600 mb-1">Tools &amp; Technologies Used</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">HTML5 / SVG</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">CSS3 / Tailwind</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">JavaScript (Vanilla)</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">GitHub Pages</code>
+                        <code class="bg-slate-100 text-slate-700 px-3 py-1 rounded-lg text-sm">Epoch AI / SemiAnalysis</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 bg-gradient-to-r from-emerald-50 to-cyan-50 border border-emerald-100 rounded-xl p-6">
+            <h3 class="text-sm font-bold uppercase tracking-widest text-emerald-600 mb-2">Value Proposition</h3>
+            <p class="text-gray-800 leading-relaxed">
+                <strong>Unique Value:</strong> Most discussions of LLM training costs focus on a single dimension — usually compute. This artifact uniquely integrates all four cost pillars (data, compute, energy, time) into a unified visual framework, enabling stakeholders to understand the full cost structure before committing to infrastructure decisions. The side-by-side model comparison also highlights how architectural choices (parameter count, context window, training tokens) translate directly into dollar costs.
+            </p>
+            <p class="text-gray-800 leading-relaxed mt-3">
+                <strong>Relevance to Audience:</strong> For hiring managers in AI/ML, this artifact demonstrates cost literacy — a critical competency for roles in AI infrastructure, MLOps, and strategic AI leadership. For academic evaluators, it directly addresses AIML-501 learning outcomes: communicating training processes, analyzing infrastructure requirements, and quantifying resource utilization.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         STATS BAR
+    ═══════════════════════════════════════════ -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-in">
+        <div class="stat-box text-white rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-emerald-300">$100M+</div>
+            <div class="text-slate-300 text-sm mt-1">Est. GPT-4 Training Cost</div>
+        </div>
+        <div class="stat-box text-white rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-cyan-300">13T+</div>
+            <div class="text-slate-300 text-sm mt-1">Tokens in LLaMA-3 Training</div>
+        </div>
+        <div class="stat-box text-white rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-blue-300">25K+</div>
+            <div class="text-slate-300 text-sm mt-1">A100 GPUs for Frontier Models</div>
+        </div>
+        <div class="stat-box text-white rounded-xl p-6 text-center">
+            <div class="text-4xl font-bold text-teal-300">500 MWh</div>
+            <div class="text-slate-300 text-sm mt-1">Est. Energy per Large Run</div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         7-STAGE TRAINING PIPELINE
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">The LLM Training Pipeline</h2>
+        <div class="section-divider mb-6"></div>
+        <p class="text-gray-600 mb-8">
+            Training a large language model is a seven-stage industrial process spanning months of continuous compute. Each stage has distinct infrastructure requirements, bottlenecks, and cost profiles. Click any stage to expand its details.
+        </p>
+
+        <!-- Pipeline stages — desktop horizontal, mobile vertical -->
+        <div class="space-y-4" id="pipeline-container">
+
+            <!-- Stage 1 -->
+            <div class="pipeline-stage bg-white border-2 border-emerald-200 rounded-xl overflow-hidden cursor-pointer"
+                 onclick="toggleStage('s1')">
+                <div class="flex items-center gap-4 p-4">
+                    <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0">1</div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-gray-800">Data Collection &amp; Acquisition</h3>
+                            <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Cost pillar: Data</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-0.5">Web crawls, licensed datasets, curated corpora</p>
+                    </div>
+                    <svg id="s1-icon" class="w-5 h-5 text-emerald-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </div>
+                <div id="s1" class="hidden px-6 pb-6 border-t border-emerald-100">
+                    <div class="pt-4 grid md:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-emerald-50 rounded-lg p-4">
+                            <div class="font-semibold text-emerald-800 mb-2">Sources</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ Common Crawl (petabytes of web text)</li>
+                                <li>▸ Books3, Project Gutenberg</li>
+                                <li>▸ GitHub code repositories</li>
+                                <li>▸ Wikipedia, ArXiv, PubMed</li>
+                                <li>▸ Licensed publisher datasets</li>
+                            </ul>
+                        </div>
+                        <div class="bg-cyan-50 rounded-lg p-4">
+                            <div class="font-semibold text-cyan-800 mb-2">Infrastructure</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ Distributed web crawlers</li>
+                                <li>▸ Petabyte-scale object storage (S3/GCS)</li>
+                                <li>▸ High-bandwidth data pipelines</li>
+                                <li>▸ Deduplication at scale</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 rounded-lg p-4">
+                            <div class="font-semibold text-blue-800 mb-2">Cost Drivers</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ Storage: ~$20–50K/PB/month</li>
+                                <li>▸ Data licensing: $1M–$50M+</li>
+                                <li>▸ Crawl compute: hundreds of nodes</li>
+                                <li>▸ Human annotation: $5–25/hour</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 2 -->
+            <div class="pipeline-stage bg-white border-2 border-teal-200 rounded-xl overflow-hidden cursor-pointer"
+                 onclick="toggleStage('s2')">
+                <div class="flex items-center gap-4 p-4">
+                    <div class="w-10 h-10 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold shrink-0">2</div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-gray-800">Data Preprocessing &amp; Filtering</h3>
+                            <span class="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded-full font-medium">Cost pillar: Compute + Time</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-0.5">Quality filtering, deduplication, PII removal, language detection</p>
+                    </div>
+                    <svg id="s2-icon" class="w-5 h-5 text-teal-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </div>
+                <div id="s2" class="hidden px-6 pb-6 border-t border-teal-100">
+                    <div class="pt-4 grid md:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-teal-50 rounded-lg p-4">
+                            <div class="font-semibold text-teal-800 mb-2">Key Steps</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ MinHash deduplication</li>
+                                <li>▸ Quality scoring (perplexity filters)</li>
+                                <li>▸ Toxicity &amp; adult content filtering</li>
+                                <li>▸ Near-dedup at doc &amp; paragraph level</li>
+                                <li>▸ Domain &amp; language balancing</li>
+                            </ul>
+                        </div>
+                        <div class="bg-cyan-50 rounded-lg p-4">
+                            <div class="font-semibold text-cyan-800 mb-2">Scale</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ Input: 50–500TB raw HTML</li>
+                                <li>▸ Output: 1–15TB clean text</li>
+                                <li>▸ Retention rate: 2–30%</li>
+                                <li>▸ Runs: days to weeks on 1K+ CPUs</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 rounded-lg p-4">
+                            <div class="font-semibold text-blue-800 mb-2">Tools</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ Apache Spark / Ray</li>
+                                <li>▸ CCNet, DataComp, Dolmino</li>
+                                <li>▸ fastText language detection</li>
+                                <li>▸ Regex &amp; heuristic filters</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 3 -->
+            <div class="pipeline-stage bg-white border-2 border-cyan-200 rounded-xl overflow-hidden cursor-pointer"
+                 onclick="toggleStage('s3')">
+                <div class="flex items-center gap-4 p-4">
+                    <div class="w-10 h-10 rounded-full bg-cyan-600 text-white flex items-center justify-center font-bold shrink-0">3</div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-gray-800">Tokenization</h3>
+                            <span class="text-xs bg-cyan-100 text-cyan-700 px-2 py-0.5 rounded-full font-medium">Cost pillar: Time</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-0.5">BPE or SentencePiece — converting text to integer token sequences</p>
+                    </div>
+                    <svg id="s3-icon" class="w-5 h-5 text-cyan-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </div>
+                <div id="s3" class="hidden px-6 pb-6 border-t border-cyan-100">
+                    <div class="pt-4 grid md:grid-cols-2 gap-4 text-sm">
+                        <div class="bg-cyan-50 rounded-lg p-4">
+                            <div class="font-semibold text-cyan-800 mb-2">Tokenizer Approaches</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ <strong>BPE</strong> (GPT-4): 100K vocabulary, handles code well</li>
+                                <li>▸ <strong>SentencePiece</strong> (Gemini): language-agnostic unigram model</li>
+                                <li>▸ <strong>LLaMA tokenizer</strong>: modified BPE with 32K vocab</li>
+                                <li>▸ Context window impacts total token count</li>
+                            </ul>
+                        </div>
+                        <div class="bg-teal-50 rounded-lg p-4">
+                            <div class="font-semibold text-teal-800 mb-2">Scale &amp; Speed</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ GPT-4: ~13T training tokens</li>
+                                <li>▸ LLaMA-3 70B: ~15T tokens</li>
+                                <li>▸ Tokenization: ~1–5 GB/s throughput</li>
+                                <li>▸ Output stored as binary shards (MMap)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 4 -->
+            <div class="pipeline-stage bg-white border-2 border-blue-200 rounded-xl overflow-hidden cursor-pointer"
+                 onclick="toggleStage('s4')">
+                <div class="flex items-center gap-4 p-4">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold shrink-0">4</div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-gray-800">Pre-Training</h3>
+                            <span class="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Cost pillar: Compute + Energy (dominant)</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-0.5">Next-token prediction on trillions of tokens across thousands of GPUs</p>
+                    </div>
+                    <svg id="s4-icon" class="w-5 h-5 text-blue-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </div>
+                <div id="s4" class="hidden px-6 pb-6 border-t border-blue-100">
+                    <div class="pt-4 grid md:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-blue-50 rounded-lg p-4">
+                            <div class="font-semibold text-blue-800 mb-2">Objective</div>
+                            <p class="text-gray-700">Minimize cross-entropy loss on next-token prediction across the full training corpus. The model learns grammar, facts, reasoning, and world knowledge purely through self-supervised learning — no human labels required at this stage.</p>
+                        </div>
+                        <div class="bg-indigo-50 rounded-lg p-4">
+                            <div class="font-semibold text-indigo-800 mb-2">Infrastructure</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ 1K–25K NVIDIA A100/H100 GPUs</li>
+                                <li>▸ NVLink + InfiniBand (400 Gb/s)</li>
+                                <li>▸ Tensor / pipeline parallelism</li>
+                                <li>▸ bf16 mixed-precision training</li>
+                                <li>▸ Gradient checkpointing</li>
+                            </ul>
+                        </div>
+                        <div class="bg-purple-50 rounded-lg p-4">
+                            <div class="font-semibold text-purple-800 mb-2">Cost &amp; Duration</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ 60–90% of total training cost</li>
+                                <li>▸ 2–6 months continuous run</li>
+                                <li>▸ A100 GPU: ~$2–4/hr (cloud)</li>
+                                <li>▸ H100 GPU: ~$3–6/hr (cloud)</li>
+                                <li>▸ Mid-run failures = catastrophic</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 5 -->
+            <div class="pipeline-stage bg-white border-2 border-violet-200 rounded-xl overflow-hidden cursor-pointer"
+                 onclick="toggleStage('s5')">
+                <div class="flex items-center gap-4 p-4">
+                    <div class="w-10 h-10 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold shrink-0">5</div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-gray-800">Supervised Fine-Tuning (SFT)</h3>
+                            <span class="text-xs bg-violet-100 text-violet-700 px-2 py-0.5 rounded-full font-medium">Cost pillar: Data + Compute</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-0.5">Training on curated instruction-response pairs to align behavior</p>
+                    </div>
+                    <svg id="s5-icon" class="w-5 h-5 text-violet-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </div>
+                <div id="s5" class="hidden px-6 pb-6 border-t border-violet-100">
+                    <div class="pt-4 grid md:grid-cols-2 gap-4 text-sm">
+                        <div class="bg-violet-50 rounded-lg p-4">
+                            <div class="font-semibold text-violet-800 mb-2">Process</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ 10K–1M human-written instruction/response pairs</li>
+                                <li>▸ Format: chat templates (system + user + assistant)</li>
+                                <li>▸ Domains: coding, math, reasoning, safety</li>
+                                <li>▸ Duration: hours to days (much cheaper than pre-training)</li>
+                                <li>▸ Transforms base model → instruction-following model</li>
+                            </ul>
+                        </div>
+                        <div class="bg-pink-50 rounded-lg p-4">
+                            <div class="font-semibold text-pink-800 mb-2">Cost</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ Human annotators: $1M–$20M</li>
+                                <li>▸ Compute: 1–5% of pre-training cost</li>
+                                <li>▸ Data quality > data quantity here</li>
+                                <li>▸ OpenAI used ~40 trainers for InstructGPT SFT</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 6 -->
+            <div class="pipeline-stage bg-white border-2 border-pink-200 rounded-xl overflow-hidden cursor-pointer"
+                 onclick="toggleStage('s6')">
+                <div class="flex items-center gap-4 p-4">
+                    <div class="w-10 h-10 rounded-full bg-pink-600 text-white flex items-center justify-center font-bold shrink-0">6</div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-gray-800">RLHF — Reinforcement Learning from Human Feedback</h3>
+                            <span class="text-xs bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full font-medium">Cost pillar: Data + Compute</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-0.5">Reward modeling + PPO to align with human preferences</p>
+                    </div>
+                    <svg id="s6-icon" class="w-5 h-5 text-pink-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </div>
+                <div id="s6" class="hidden px-6 pb-6 border-t border-pink-100">
+                    <div class="pt-4 grid md:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-pink-50 rounded-lg p-4">
+                            <div class="font-semibold text-pink-800 mb-2">Reward Model (RM)</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ Trained on human preference rankings</li>
+                                <li>▸ Rankers compare model outputs A vs B</li>
+                                <li>▸ RM learns to score helpfulness &amp; safety</li>
+                                <li>▸ ~100K–500K comparison pairs</li>
+                            </ul>
+                        </div>
+                        <div class="bg-rose-50 rounded-lg p-4">
+                            <div class="font-semibold text-rose-800 mb-2">PPO Training</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ Policy (LLM) generates rollouts</li>
+                                <li>▸ RM scores each rollout</li>
+                                <li>▸ KL-divergence penalty keeps model near SFT</li>
+                                <li>▸ Most computationally complex stage</li>
+                            </ul>
+                        </div>
+                        <div class="bg-orange-50 rounded-lg p-4">
+                            <div class="font-semibold text-orange-800 mb-2">Modern Alternatives</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ DPO (Direct Preference Optimization)</li>
+                                <li>▸ RLAIF (AI-generated feedback)</li>
+                                <li>▸ Constitutional AI (Anthropic)</li>
+                                <li>▸ 2–5× cheaper than standard RLHF</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 7 -->
+            <div class="pipeline-stage bg-white border-2 border-amber-200 rounded-xl overflow-hidden cursor-pointer"
+                 onclick="toggleStage('s7')">
+                <div class="flex items-center gap-4 p-4">
+                    <div class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold shrink-0">7</div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-gray-800">Deployment &amp; Inference Infrastructure</h3>
+                            <span class="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">Cost pillar: Compute (ongoing)</span>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-0.5">Serving the model at scale — often the dominant lifetime cost</p>
+                    </div>
+                    <svg id="s7-icon" class="w-5 h-5 text-amber-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </div>
+                <div id="s7" class="hidden px-6 pb-6 border-t border-amber-100">
+                    <div class="pt-4 grid md:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-amber-50 rounded-lg p-4">
+                            <div class="font-semibold text-amber-800 mb-2">Serving Stack</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ vLLM / TGI for throughput optimization</li>
+                                <li>▸ PagedAttention for KV cache efficiency</li>
+                                <li>▸ Quantization (INT8, AWQ, GPTQ)</li>
+                                <li>▸ Speculative decoding</li>
+                                <li>▸ Multi-region load balancing</li>
+                            </ul>
+                        </div>
+                        <div class="bg-orange-50 rounded-lg p-4">
+                            <div class="font-semibold text-orange-800 mb-2">API Pricing (per 1M tokens)</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ GPT-4o: ~$5 input / $15 output</li>
+                                <li>▸ Claude 3.5 Sonnet: $3 / $15</li>
+                                <li>▸ Gemini 1.5 Pro: $1.25 / $5</li>
+                                <li>▸ LLaMA-3 70B (self-hosted): ~$0.60</li>
+                            </ul>
+                        </div>
+                        <div class="bg-yellow-50 rounded-lg p-4">
+                            <div class="font-semibold text-yellow-800 mb-2">Key Metrics</div>
+                            <ul class="text-gray-700 space-y-1">
+                                <li>▸ TTFT: Time to First Token</li>
+                                <li>▸ TPS: Tokens Per Second</li>
+                                <li>▸ GPU utilization target: 80%+</li>
+                                <li>▸ Inference &gt; training cost at scale</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         THE FOUR COST PILLARS
+    ═══════════════════════════════════════════ -->
+    <section class="fade-in">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">The Four Cost Pillars</h2>
+            <div class="section-divider"></div>
+            <p class="text-gray-600 mt-4">LLM training costs fall into four primary categories. Understanding each pillar — and how they interact — is essential for infrastructure planning and ROI analysis.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+
+            <!-- Pillar 1: Data -->
+            <div class="pillar-card bg-white rounded-2xl shadow-md border border-gray-100 p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-100 flex items-center justify-center text-3xl shrink-0">🗃️</div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-emerald-600">Pillar 1</span>
+                        <h3 class="text-xl font-bold text-gray-900">Data Acquisition</h3>
+                    </div>
+                </div>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    Data is the foundation of every LLM. The cost encompasses web crawl infrastructure, licensed content from publishers (news, books, code), human annotation for SFT and RLHF, and storage at petabyte scale.
+                </p>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Web crawl + storage</span>
+                        <span class="text-sm font-semibold text-emerald-700">$1M – $10M</span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-2">
+                        <div class="bg-emerald-500 h-2 rounded-full cost-bar" style="width: 20%"></div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Licensed content</span>
+                        <span class="text-sm font-semibold text-emerald-700">$5M – $50M+</span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-2">
+                        <div class="bg-emerald-400 h-2 rounded-full cost-bar" style="width: 50%"></div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Human annotation (SFT/RLHF)</span>
+                        <span class="text-sm font-semibold text-emerald-700">$1M – $20M</span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-2">
+                        <div class="bg-emerald-300 h-2 rounded-full cost-bar" style="width: 30%"></div>
+                    </div>
+                </div>
+                <div class="mt-4 bg-emerald-50 rounded-lg p-3 text-xs text-gray-600">
+                    <strong class="text-emerald-700">Key insight:</strong> The New York Times alone is reportedly valued at $150–250M in licensing negotiations with AI companies. Data scarcity is emerging as the next major constraint after compute.
+                </div>
+            </div>
+
+            <!-- Pillar 2: Compute -->
+            <div class="pillar-card bg-white rounded-2xl shadow-md border border-gray-100 p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center text-3xl shrink-0">⚡</div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-blue-600">Pillar 2</span>
+                        <h3 class="text-xl font-bold text-gray-900">Computational Resources</h3>
+                    </div>
+                </div>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    GPU/TPU compute is the dominant training cost. Modern frontier models require clusters of thousands of accelerators running continuously for months. The choice between owned hardware and cloud rental significantly impacts the cost structure.
+                </p>
+                <div class="grid grid-cols-2 gap-3 mb-4 text-sm">
+                    <div class="bg-blue-50 border border-blue-100 rounded-lg p-3">
+                        <div class="font-semibold text-blue-800 mb-1">NVIDIA H100 (SXM5)</div>
+                        <div class="text-gray-600">80GB HBM3 · 3.9 PFLOPS (bf16) · ~$3–5/hr cloud</div>
+                    </div>
+                    <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3">
+                        <div class="font-semibold text-indigo-800 mb-1">Google TPU v5p</div>
+                        <div class="text-gray-600">459 TFLOPS · Pods of 4,096 chips · ~$4.20/hr</div>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-100 rounded-lg p-3">
+                        <div class="font-semibold text-purple-800 mb-1">AWS Trainium2</div>
+                        <div class="text-gray-600">Designed for transformer training · ~40% cost savings vs GPU</div>
+                    </div>
+                    <div class="bg-violet-50 border border-violet-100 rounded-lg p-3">
+                        <div class="font-semibold text-violet-800 mb-1">Meta's Grand Teton</div>
+                        <div class="text-gray-600">Custom GPU server · 8× A100 · NVLink + InfiniBand</div>
+                    </div>
+                </div>
+                <div class="bg-blue-50 rounded-lg p-3 text-xs text-gray-600">
+                    <strong class="text-blue-700">Key insight:</strong> Compute efficiency (FLOPS/dollar) is improving ~2× per year, but model sizes are growing faster. Chinchilla scaling laws show optimal compute allocation between model size and training tokens.
+                </div>
+            </div>
+
+            <!-- Pillar 3: Energy -->
+            <div class="pillar-card bg-white rounded-2xl shadow-md border border-gray-100 p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-100 flex items-center justify-center text-3xl shrink-0">🔋</div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-amber-600">Pillar 3</span>
+                        <h3 class="text-xl font-bold text-gray-900">Energy Consumption</h3>
+                    </div>
+                </div>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    LLM training has a significant environmental footprint. An NVIDIA H100 consumes ~700W at peak load. A cluster of 10,000 GPUs draws ~7 MW continuously — roughly the power demand of 6,000 homes.
+                </p>
+                <div class="space-y-4 mb-4">
+                    <div class="flex items-start gap-3 bg-amber-50 rounded-lg p-3">
+                        <span class="text-2xl">🌍</span>
+                        <div class="text-sm">
+                            <div class="font-semibold text-amber-800">GPT-3 training CO₂</div>
+                            <div class="text-gray-600">~552 tons CO₂eq — equivalent to ~120 cars driving for a year</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 bg-orange-50 rounded-lg p-3">
+                        <span class="text-2xl">💡</span>
+                        <div class="text-sm">
+                            <div class="font-semibold text-orange-800">GPT-4 estimated energy</div>
+                            <div class="text-gray-600">~400–500 MWh for training run (est.) at ~10× GPT-3 scale</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 bg-yellow-50 rounded-lg p-3">
+                        <span class="text-2xl">⚙️</span>
+                        <div class="text-sm">
+                            <div class="font-semibold text-yellow-800">PUE (Power Usage Effectiveness)</div>
+                            <div class="text-gray-600">Best hyperscaler data centers achieve PUE of 1.1–1.2 (industry avg: 1.58)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-amber-50 rounded-lg p-3 text-xs text-gray-600">
+                    <strong class="text-amber-700">Key insight:</strong> Inference dwarfs training in cumulative energy use once deployed at scale. A single ChatGPT query uses ~10× the energy of a Google search.
+                </div>
+            </div>
+
+            <!-- Pillar 4: Time -->
+            <div class="pillar-card bg-white rounded-2xl shadow-md border border-gray-100 p-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-14 h-14 rounded-2xl bg-rose-100 flex items-center justify-center text-3xl shrink-0">⏱️</div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-rose-600">Pillar 4</span>
+                        <h3 class="text-xl font-bold text-gray-900">Time</h3>
+                    </div>
+                </div>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    Training time is both a cost multiplier and a strategic constraint. A 3-month pre-training run locks up capital and hardware. Longer runs increase the probability of hardware failures, network issues, and checkpoint losses.
+                </p>
+                <div class="space-y-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-28 text-sm text-gray-600 shrink-0">GPT-3 (2020)</div>
+                        <div class="flex-1 bg-gray-100 rounded-full h-3">
+                            <div class="bg-rose-400 h-3 rounded-full" style="width: 25%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 w-24 shrink-0">~34 days / 1K GPUs</div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-28 text-sm text-gray-600 shrink-0">LLaMA-2 70B</div>
+                        <div class="flex-1 bg-gray-100 rounded-full h-3">
+                            <div class="bg-rose-500 h-3 rounded-full" style="width: 45%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 w-24 shrink-0">~52 days / 2K GPUs</div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-28 text-sm text-gray-600 shrink-0">GPT-4 (est.)</div>
+                        <div class="flex-1 bg-gray-100 rounded-full h-3">
+                            <div class="bg-rose-600 h-3 rounded-full" style="width: 75%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 w-24 shrink-0">~90 days / 25K GPUs</div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-28 text-sm text-gray-600 shrink-0">Gemini Ultra (est.)</div>
+                        <div class="flex-1 bg-gray-100 rounded-full h-3">
+                            <div class="bg-rose-700 h-3 rounded-full" style="width: 90%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 w-24 shrink-0">~120 days / TPU v4</div>
+                    </div>
+                </div>
+                <div class="mt-4 bg-rose-50 rounded-lg p-3 text-xs text-gray-600">
+                    <strong class="text-rose-700">Key insight:</strong> Hardware failures during pre-training are near-certain at scale. Robust checkpointing every 30 minutes and fault-tolerant distributed training frameworks (Megatron-LM, DeepSpeed) are non-negotiable.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         MODEL COMPARISON TABLE
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Model Infrastructure Comparison</h2>
+        <div class="section-divider mb-6"></div>
+        <p class="text-gray-600 mb-8">Side-by-side comparison of infrastructure choices and estimated training costs for four leading foundation models. Note: GPT-4 details remain partially proprietary — estimates from SemiAnalysis and Epoch AI research.</p>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-sm">
+                <thead>
+                    <tr class="bg-gray-900 text-white">
+                        <th class="px-5 py-4 text-left font-semibold rounded-tl-lg">Dimension</th>
+                        <th class="px-5 py-4 text-left font-semibold">
+                            <span class="model-badge-openai px-2 py-0.5 rounded-full text-xs font-bold">OpenAI</span><br>
+                            <span class="text-white">GPT-4</span>
+                        </th>
+                        <th class="px-5 py-4 text-left font-semibold">
+                            <span class="model-badge-meta px-2 py-0.5 rounded-full text-xs font-bold">Meta</span><br>
+                            <span class="text-white">LLaMA-3 70B</span>
+                        </th>
+                        <th class="px-5 py-4 text-left font-semibold">
+                            <span class="model-badge-google px-2 py-0.5 rounded-full text-xs font-bold">Google</span><br>
+                            <span class="text-white">Gemini Ultra</span>
+                        </th>
+                        <th class="px-5 py-4 text-left font-semibold rounded-tr-lg">
+                            <span class="model-badge-anthropic px-2 py-0.5 rounded-full text-xs font-bold">Anthropic</span><br>
+                            <span class="text-white">Claude 3 Opus</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 font-semibold text-gray-700">Architecture</td>
+                        <td class="px-5 py-4 text-gray-600">MoE (est. 8×220B)</td>
+                        <td class="px-5 py-4 text-gray-600">Dense decoder-only, 70B params</td>
+                        <td class="px-5 py-4 text-gray-600">MoE, multimodal</td>
+                        <td class="px-5 py-4 text-gray-600">Dense transformer (est. 52B+)</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 font-semibold text-gray-700">Training Tokens</td>
+                        <td class="px-5 py-4 text-gray-600">~13T (est.)</td>
+                        <td class="px-5 py-4 text-gray-600">15T tokens</td>
+                        <td class="px-5 py-4 text-gray-600">Undisclosed</td>
+                        <td class="px-5 py-4 text-gray-600">Undisclosed</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 font-semibold text-gray-700">Training Hardware</td>
+                        <td class="px-5 py-4 text-gray-600">~25K A100 80GB</td>
+                        <td class="px-5 py-4 text-gray-600">~2,048 A100 80GB</td>
+                        <td class="px-5 py-4 text-gray-600">TPU v4 / v5p pods</td>
+                        <td class="px-5 py-4 text-gray-600">A100 / A10 clusters (AWS)</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 font-semibold text-gray-700">Training Duration</td>
+                        <td class="px-5 py-4 text-gray-600">~90 days (est.)</td>
+                        <td class="px-5 py-4 text-gray-600">~49 days</td>
+                        <td class="px-5 py-4 text-gray-600">~120 days (est.)</td>
+                        <td class="px-5 py-4 text-gray-600">~60–90 days (est.)</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 font-semibold text-gray-700">Est. Training Cost</td>
+                        <td class="px-5 py-4 font-semibold text-blue-700">$78M – $100M+</td>
+                        <td class="px-5 py-4 font-semibold text-pink-700">~$1.7M</td>
+                        <td class="px-5 py-4 font-semibold text-amber-700">$60M – $191M</td>
+                        <td class="px-5 py-4 font-semibold text-emerald-700">~$20M – $50M</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 font-semibold text-gray-700">Alignment Method</td>
+                        <td class="px-5 py-4 text-gray-600">RLHF + PPO</td>
+                        <td class="px-5 py-4 text-gray-600">DPO + RLHF</td>
+                        <td class="px-5 py-4 text-gray-600">RLHF + RLAIF</td>
+                        <td class="px-5 py-4 text-gray-600">Constitutional AI + RLHF</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-5 py-4 font-semibold text-gray-700">Inference Pricing</td>
+                        <td class="px-5 py-4 text-gray-600">$5 / $15 per 1M tokens</td>
+                        <td class="px-5 py-4 text-gray-600">~$0.60–$0.90 (self-hosted)</td>
+                        <td class="px-5 py-4 text-gray-600">$1.25 / $5 per 1M tokens</td>
+                        <td class="px-5 py-4 text-gray-600">$15 / $75 per 1M tokens</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 rounded-b-lg">
+                        <td class="px-5 py-4 font-semibold text-gray-700 rounded-bl-lg">Open Source</td>
+                        <td class="px-5 py-4"><span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-medium">Closed</span></td>
+                        <td class="px-5 py-4"><span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium">Open Weights</span></td>
+                        <td class="px-5 py-4"><span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-medium">Closed</span></td>
+                        <td class="px-5 py-4 rounded-br-lg"><span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-medium">Closed</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p class="text-xs text-gray-400 mt-4">* Cost estimates sourced from SemiAnalysis (2023), Epoch AI (2024), and public technical reports. GPT-4 and Gemini Ultra details remain partially proprietary.</p>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         SCALING LAWS & CHINCHILLA INSIGHT
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">Scaling Laws &amp; Compute-Optimal Training</h2>
+        <div class="section-divider mb-8"></div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-4">The Chinchilla Result</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    DeepMind's 2022 Chinchilla paper fundamentally changed how the industry thinks about training LLMs. It showed that most large models were <em>undertrained</em> — they used too many parameters for their compute budget, resulting in suboptimal performance per dollar.
+                </p>
+                <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-5 space-y-3">
+                    <div class="flex items-start gap-3">
+                        <span class="text-emerald-600 font-bold shrink-0">Rule:</span>
+                        <p class="text-gray-700 text-sm">For compute-optimal training, model parameters and training tokens should scale equally. Specifically: <strong>~20 training tokens per model parameter</strong>.</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 font-mono text-sm text-gray-800">
+                        Optimal tokens = 20 × N_params<br>
+                        <span class="text-gray-400"># 70B model → ~1.4T tokens optimal</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="text-emerald-600 font-bold shrink-0">Impact:</span>
+                        <p class="text-gray-700 text-sm">GPT-3 (175B params, 300B tokens) was significantly undertrained. Chinchilla (70B params, 1.4T tokens) outperformed it despite being 2.5× smaller.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Key Scaling Dimensions</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4 bg-blue-50 rounded-xl p-4">
+                        <div class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold shrink-0 text-sm">N</div>
+                        <div>
+                            <div class="font-bold text-blue-800">Model Parameters (N)</div>
+                            <p class="text-gray-600 text-sm mt-1">More parameters = more capacity. But larger models require more memory, more GPUs, and more expensive inference. Scales as O(N²) in attention layers.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 bg-teal-50 rounded-xl p-4">
+                        <div class="w-12 h-12 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold shrink-0 text-sm">D</div>
+                        <div>
+                            <div class="font-bold text-teal-800">Training Data (D)</div>
+                            <p class="text-gray-600 text-sm mt-1">More tokens = better coverage of knowledge. Diminishing returns eventually appear, but most frontier models still benefit from more data. Quality matters more than raw quantity.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4 bg-purple-50 rounded-xl p-4">
+                        <div class="w-12 h-12 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold shrink-0 text-sm">C</div>
+                        <div>
+                            <div class="font-bold text-purple-800">Compute Budget (C)</div>
+                            <p class="text-gray-600 text-sm mt-1">C = 6ND (approximately). Given a fixed compute budget, Chinchilla shows the optimal split between N and D. Total FLOPs = the binding constraint in practice.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ══════════════════════════════════════════
+         REFERENCES
+    ═══════════════════════════════════════════ -->
+    <section class="bg-white rounded-2xl shadow-lg p-8 md:p-12 fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 mb-2">References</h2>
+        <div class="section-divider mb-8"></div>
+        <ul class="space-y-4 text-gray-700 text-sm">
+            <li class="flex gap-3">
+                <span class="text-emerald-600 font-bold shrink-0">[1]</span>
+                <span>Hoffmann, J., et al. (2022). Training Compute-Optimal Large Language Models (Chinchilla). <em>DeepMind / NeurIPS</em>. <a href="https://arxiv.org/abs/2203.15556" target="_blank" class="text-emerald-600 hover:underline">arXiv:2203.15556</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-emerald-600 font-bold shrink-0">[2]</span>
+                <span>Ouyang, L., et al. (2022). Training language models to follow instructions with human feedback (InstructGPT). <em>OpenAI / NeurIPS</em>. <a href="https://arxiv.org/abs/2203.02155" target="_blank" class="text-emerald-600 hover:underline">arXiv:2203.02155</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-emerald-600 font-bold shrink-0">[3]</span>
+                <span>Meta AI. (2024). <em>Meta LLaMA 3 Technical Report</em>. <a href="https://ai.meta.com/blog/meta-llama-3/" target="_blank" class="text-emerald-600 hover:underline">ai.meta.com/blog/meta-llama-3</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-emerald-600 font-bold shrink-0">[4]</span>
+                <span>Gemini Team, Google. (2023). <em>Gemini: A Family of Highly Capable Multimodal Models</em>. <a href="https://arxiv.org/abs/2312.11805" target="_blank" class="text-emerald-600 hover:underline">arXiv:2312.11805</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-emerald-600 font-bold shrink-0">[5]</span>
+                <span>Anthropic. (2023). <em>Model Card and Evaluations for Claude Models</em>. <a href="https://www.anthropic.com/model-card" target="_blank" class="text-emerald-600 hover:underline">anthropic.com/model-card</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-emerald-600 font-bold shrink-0">[6]</span>
+                <span>Cottier, B., et al. (2024). The rising costs of training frontier AI models. <em>Epoch AI</em>. <a href="https://epochai.org/blog/training-costs" target="_blank" class="text-emerald-600 hover:underline">epochai.org/blog/training-costs</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-emerald-600 font-bold shrink-0">[7]</span>
+                <span>Bastian, M. (2023). GPT-4's training reportedly cost over $100 million. <em>SemiAnalysis</em>. <a href="https://semianalysis.com" target="_blank" class="text-emerald-600 hover:underline">semianalysis.com</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-emerald-600 font-bold shrink-0">[8]</span>
+                <span>Patterson, D., et al. (2021). Carbon Considerations for Large AI Models. <em>Google Research</em>. <a href="https://arxiv.org/abs/2104.10350" target="_blank" class="text-emerald-600 hover:underline">arXiv:2104.10350</a></span>
+            </li>
+            <li class="flex gap-3">
+                <span class="text-emerald-600 font-bold shrink-0">[9]</span>
+                <span>Indiana Wesleyan University – AIML-501 Course Materials: "Generative AI LLM Infrastructure: Training Process and Costs" (2026).</span>
+            </li>
+        </ul>
+    </section>
+
+</main>
+
+
+<!-- Footer -->
+<footer class="hero-gradient text-slate-400 py-8 px-6 text-center mt-16">
+    <p class="text-sm">Babacar Diouf · AIML-501 Professional Portfolio · Indiana Wesleyan University · 2026</p>
+    <p class="text-xs mt-1 text-slate-500">Artifact 3: Generative AI LLM Infrastructure – Training Process &amp; Costs</p>
+    <div class="mt-4 flex justify-center gap-4 flex-wrap">
+        <a href="artifact-algorithm-types.html" class="text-blue-400 hover:text-blue-300 text-xs transition">Artifact 1: ML Algorithm Types</a>
+        <span class="text-slate-600">|</span>
+        <a href="artifact-neural-network.html" class="text-purple-400 hover:text-purple-300 text-xs transition">Artifact 2: Neural Networks</a>
+        <span class="text-slate-600">|</span>
+        <a href="artifact-llm-infrastructure.html" class="text-emerald-300 text-xs">Artifact 3: LLM Infrastructure</a>
+    </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+    // ── Pipeline accordion ────────────────────
+    function toggleStage(id) {
+        const panel = document.getElementById(id);
+        const icon  = document.getElementById(id + '-icon');
+        const isOpen = !panel.classList.contains('hidden');
+
+        // Close all panels first
+        ['s1','s2','s3','s4','s5','s6','s7'].forEach(sid => {
+            document.getElementById(sid).classList.add('hidden');
+            document.getElementById(sid + '-icon').style.transform = '';
+        });
+
+        // Toggle current
+        if (!isOpen) {
+            panel.classList.remove('hidden');
+            icon.style.transform = 'rotate(180deg)';
+        }
+    }
+
+    // ── Scroll fade-in ──────────────────────────
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ── Animate cost bars on scroll ──────────────
+    const barObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.querySelectorAll('.cost-bar').forEach(bar => {
+                    const target = bar.style.width;
+                    bar.style.width = '0';
+                    setTimeout(() => { bar.style.width = target; }, 100);
+                });
+            }
+        });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.pillar-card').forEach(card => barObserver.observe(card));
+</script>
+
+</body>
+</html>
